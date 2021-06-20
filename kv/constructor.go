@@ -2,8 +2,11 @@ package kv
 
 import (
 	"auth"
+	"os"
 
 	"github.com/TudorHulban/kv"
+	badger "github.com/TudorHulban/kv-badger"
+	"github.com/TudorHulban/log"
 )
 
 type Config struct {
@@ -11,15 +14,24 @@ type Config struct {
 }
 
 type AuthKV struct {
+	kv.KVStore
+
 	Cfg Config
 }
 
 var _ auth.IAuthenticator = &AuthKV{}
 
-func NewKVAuth(cfg Config) auth.IAuthenticator {
-	return &AuthKV{
-		Cfg: cfg,
+func NewKVAuth(cfg Config) (auth.IAuthenticator, error) {
+	store, errStore := badger.NewBStoreInMem(log.NewLogger(log.DEBUG, os.Stdout, true))
+	if errStore != nil {
+		return nil, errStore
 	}
+
+	return &AuthKV{
+		KVStore: store,
+
+		Cfg: cfg,
+	}, nil
 }
 
 // interface methods to be implemented
