@@ -12,12 +12,12 @@ import (
 
 // GenerateSALT Generates salt based on settings value.
 func GenerateSALT(length int) string {
-	return randomString(length)
+	return RandomString(length)
 }
 
 // GenerateSessionID Generates session ID based on settings value and UNIX time.
 func GenerateSessionID(length int) string {
-	return UXSecs() + randomString(length)
+	return UXSecs() + RandomString(length)
 }
 
 // HASHPassword Uses bcrypt to generate password hash.
