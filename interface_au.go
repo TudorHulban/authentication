@@ -11,7 +11,7 @@ type Customer struct {
 	FirstName    string
 	LastName     string
 	PasswordSalt string
-	Password     string
+	PasswordHash string
 	Role         string
 }
 
