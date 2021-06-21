@@ -7,4 +7,5 @@ var (
 	ErrUnknownCredentials = errors.New("bad credentials")
 
 	ErrEmailExists = errors.New("email already exists")
+	ErrInternal = errors.New("internal error")	
 )
