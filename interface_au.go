@@ -17,6 +17,7 @@ type Customer struct {
 
 type IAuthenticator interface {
 	Create(Customer) error
+	CustomerDetails(email string) (*Customer, error)
 	UpdateName(email, firstName, lastName string) error
 	UpdatePassword(email, newPassword string) error
 	Authenticate(email, password string) error
