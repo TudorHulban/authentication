@@ -1,10 +1,10 @@
-package infra
+package stores
 
 import (
 	"context"
 
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
-	storememory "github.com/TudorHulban/authentication/infra/store-memory"
+	storememory "github.com/TudorHulban/authentication/infra/stores/store-memory"
 )
 
 type IStore interface {

@@ -22,3 +22,25 @@ func (e ErrValidation) Error() string {
 
 	return res[0] + _space + res[1] + _space + res[2]
 }
+
+type ErrNilInput struct {
+	InputName string
+}
+
+func (e ErrNilInput) Error() string {
+	return fmt.Sprintf(
+		"nil Input, name: %s",
+		e.InputName,
+	)
+}
+
+type ErrInvalidInput struct {
+	InputName string
+}
+
+func (e ErrInvalidInput) Error() string {
+	return fmt.Sprintf(
+		"invalid Input, name: %s",
+		e.InputName,
+	)
+}

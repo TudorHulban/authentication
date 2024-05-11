@@ -5,15 +5,15 @@ import (
 
 	"github.com/TudorHulban/authentication/apperrors"
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
-	"github.com/TudorHulban/authentication/infra"
+	"github.com/TudorHulban/authentication/infra/stores"
 	"github.com/asaskevich/govalidator"
 )
 
 type Service struct {
-	store infra.IStore
+	store stores.IStore
 }
 
-func NewService(store infra.IStore) *Service {
+func NewService(store stores.IStore) *Service {
 	return &Service{
 		store: store,
 	}
