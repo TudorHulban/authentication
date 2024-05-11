@@ -6,7 +6,7 @@ import (
 )
 
 type App struct {
-	serviceUser suser.Service
+	ServiceUser suser.Service
 }
 
 type PiersApp struct {
@@ -20,7 +20,7 @@ func NewApp(piers *PiersApp) (*App, error) {
 	}
 
 	return &App{
-			serviceUser: *piers.ServiceUser,
+			ServiceUser: *piers.ServiceUser,
 		},
 		nil
 }
