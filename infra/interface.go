@@ -4,6 +4,7 @@ import (
 	"context"
 
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
+	storememory "github.com/TudorHulban/authentication/infra/store-memory"
 )
 
 type IStore interface {
@@ -12,3 +13,5 @@ type IStore interface {
 	UpdateUserInfo(ctx context.Context, userCredentials *appuser.UserCredentials, userInfo *appuser.UserInfo) error
 	DeleteUser(ctx context.Context, userCredentials *appuser.UserCredentials) error
 }
+
+var _ IStore = &storememory.StoreMemory{}
