@@ -1,8 +1,6 @@
 package app
 
 import (
-	"fmt"
-
 	"github.com/TudorHulban/authentication/apperrors"
 	"github.com/TudorHulban/authentication/helpers"
 	"github.com/TudorHulban/authentication/services/suser"
@@ -62,14 +60,5 @@ func NewApp(params *ParamsNewApp, piers *PiersApp) (*App, error) {
 }
 
 func (a *App) Start() error {
-	fmt.Printf(
-		"listening on localhost:%s\n",
-		a.port,
-	)
-	fmt.Printf(
-		"routes:%d\n",
-		len(a.Transport.GetRoutes()),
-	)
-
 	return a.Transport.Listen(":" + a.port)
 }
