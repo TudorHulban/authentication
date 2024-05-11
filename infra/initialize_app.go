@@ -10,8 +10,9 @@ import (
 	"github.com/TudorHulban/authentication/services/suser"
 )
 
-func InitializeApp() *app.App {
+func InitializeApp(config *app.ParamsNewApp) *app.App {
 	app, errCr := app.NewApp(
+		config,
 		&app.PiersApp{
 			ServiceUser: suser.NewService(
 				storememory.NewStoreMemory(),

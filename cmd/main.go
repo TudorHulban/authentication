@@ -8,7 +8,10 @@ import (
 )
 
 func main() {
-	app := infra.InitializeApp()
+	app := infra.InitializeApp(
+		&configuration,
+	)
+	infra.InitializeTransportRoutes(app)
 
 	ctx := context.Background()
 
@@ -16,4 +19,6 @@ func main() {
 		ctx,
 		app,
 	)
+
+	app.Start()
 }
