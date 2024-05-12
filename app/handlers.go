@@ -1,9 +1,9 @@
 package app
 
 import (
-	"fmt"
 	"strconv"
 
+	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/services/suser"
 	"github.com/gofiber/fiber/v2"
 )
@@ -17,36 +17,15 @@ func (a *App) HandlerLoginPage(c *fiber.Ctx) error {
 }
 
 func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
-	sessionID, errConvert := strconv.Atoi(
-		c.Cookies(CookieLoggedUser),
-	)
-	if errConvert != nil {
-		c.Set("HX-Redirect", RouteLogin)
-
-		c.Redirect(
-			RouteLogin,
-			fiber.StatusUnauthorized,
-		)
+	user, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
+	if errGetUser != nil {
+		return c.SendStatus(fiber.StatusInternalServerError)
 	}
-
-	cachedUser, errGet := a.ServiceSessions.GetUser(
-		int64(sessionID),
-	)
-	if errGet != nil || cachedUser == nil {
-		c.Set("HX-Redirect", RouteLogin)
-
-		c.Redirect(
-			RouteLogin,
-			fiber.StatusUnauthorized,
-		)
-	}
-
-	fmt.Println("xxx3", cachedUser, errGet, errGet == nil)
 
 	return c.Render(
 		"pages/logged",
 		fiber.Map{
-			"name": cachedUser.Name,
+			"name": user.Name,
 		},
 		"layouts/base",
 	)

@@ -1,6 +1,8 @@
 package app
 
 const (
+	RoutesAll = "/"
+
 	RouteLogin  = "/login"
 	RouteLogged = "/logged"
 )

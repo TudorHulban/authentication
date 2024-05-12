@@ -3,15 +3,14 @@ package main
 import (
 	"context"
 
+	"github.com/TudorHulban/authentication/app"
 	"github.com/TudorHulban/authentication/fixtures"
-	"github.com/TudorHulban/authentication/infra"
 )
 
 func main() {
-	app := infra.InitializeApp(
+	app := app.InitializeApp(
 		&configuration,
 	)
-	infra.InitializeTransportRoutes(app)
 
 	ctx := context.Background()
 

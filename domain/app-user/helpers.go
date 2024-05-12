@@ -8,7 +8,7 @@ import (
 
 type KeyLoggedUser struct{}
 
-func injectLoggedUserIn(ctx context.Context, user *User) context.Context {
+func InjectLoggedUserIn(ctx context.Context, user *User) context.Context {
 	return context.WithValue(
 		ctx,
 		KeyLoggedUser{},
@@ -16,7 +16,7 @@ func injectLoggedUserIn(ctx context.Context, user *User) context.Context {
 	)
 }
 
-func extractLoggedUserFrom(ctx context.Context) (*User, error) {
+func ExtractLoggedUserFrom(ctx context.Context) (*User, error) {
 	loggedUser := ctx.Value(
 		KeyLoggedUser{},
 	)

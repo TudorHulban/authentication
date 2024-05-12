@@ -7,7 +7,6 @@ import (
 	"github.com/TudorHulban/authentication/services/suser"
 	"github.com/asaskevich/govalidator"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/template/jet/v2"
 )
 
@@ -64,12 +63,4 @@ func NewApp(params *ParamsNewApp, piers *PiersApp) (*App, error) {
 			port: params.Port,
 		},
 		nil
-}
-
-func (a *App) Start() error {
-	a.Transport.Use(
-		logger.New(),
-	)
-
-	return a.Transport.Listen(":" + a.port)
 }

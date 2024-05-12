@@ -16,12 +16,12 @@ func TestLoggedUserInContext(t *testing.T) {
 		},
 	}
 
-	ctxUpdated := injectLoggedUserIn(
+	ctxUpdated := InjectLoggedUserIn(
 		ctx,
 		&user,
 	)
 
-	extractedUser, errGet := extractLoggedUserFrom(
+	extractedUser, errGet := ExtractLoggedUserFrom(
 		ctxUpdated,
 	)
 	require.NoError(t, errGet)

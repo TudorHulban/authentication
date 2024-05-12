@@ -1,22 +1,23 @@
-package infra
+package app
 
-import (
-	"github.com/TudorHulban/authentication/app"
-)
-
-func InitializeTransportRoutes(application *app.App) {
+func InitializeTransportRoutes(application *App) {
 	application.Transport.Get(
-		app.RouteLogin,
+		RoutesAll,
 		application.HandlerLoginPage,
 	)
 
 	application.Transport.Get(
-		app.RouteLogged,
+		RouteLogin,
+		application.HandlerLoginPage,
+	)
+
+	application.Transport.Get(
+		RouteLogged,
 		application.HandlerLoggedInPage,
 	)
 
 	application.Transport.Post(
-		app.RouteLogin,
+		RouteLogin,
 		application.HandlerLoginRequest,
 	)
 }
