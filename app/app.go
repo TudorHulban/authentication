@@ -3,14 +3,17 @@ package app
 import (
 	"github.com/TudorHulban/authentication/apperrors"
 	"github.com/TudorHulban/authentication/helpers"
+	"github.com/TudorHulban/authentication/services/ssessions"
 	"github.com/TudorHulban/authentication/services/suser"
 	"github.com/asaskevich/govalidator"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/template/jet/v2"
 )
 
 type App struct {
-	ServiceUser suser.Service
+	ServiceUser     suser.Service
+	ServiceSessions ssessions.Service
 
 	port string
 
@@ -25,7 +28,8 @@ type ParamsNewApp struct {
 }
 
 type PiersApp struct {
-	ServiceUser *suser.Service
+	ServiceUser     *suser.Service
+	ServiceSessions *ssessions.Service
 }
 
 func NewApp(params *ParamsNewApp, piers *PiersApp) (*App, error) {
@@ -47,6 +51,8 @@ func NewApp(params *ParamsNewApp, piers *PiersApp) (*App, error) {
 
 			Transport: fiber.New(
 				fiber.Config{
+					Prefork: true,
+
 					Views: jet.New(
 						params.TemplateFolder,
 						params.TemplateFilesExtension,
@@ -60,5 +66,9 @@ func NewApp(params *ParamsNewApp, piers *PiersApp) (*App, error) {
 }
 
 func (a *App) Start() error {
+	a.Transport.Use(
+		logger.New(),
+	)
+
 	return a.Transport.Listen(":" + a.port)
 }

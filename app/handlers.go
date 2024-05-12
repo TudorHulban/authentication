@@ -2,12 +2,13 @@ package app
 
 import (
 	"fmt"
+	"strconv"
 
 	"github.com/TudorHulban/authentication/services/suser"
 	"github.com/gofiber/fiber/v2"
 )
 
-func (a *App) LoginPageHandler(c *fiber.Ctx) error {
+func (a *App) HandlerLoginPage(c *fiber.Ctx) error {
 	return c.Render(
 		"pages/login",
 		nil,
@@ -15,15 +16,31 @@ func (a *App) LoginPageHandler(c *fiber.Ctx) error {
 	)
 }
 
-func (a *App) LoggedInPageHandler(c *fiber.Ctx) error {
+func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
+	sessionID, errConvert := strconv.Atoi(
+		c.Cookies(CookieLoggedUser),
+	)
+	if errConvert != nil {
+		c.Set("HX-Redirect", RouteLogin)
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+
+	cachedUser, errGet := a.ServiceSessions.GetUser(
+		int64(sessionID),
+	)
+	if errGet != nil {
+		c.Set("HX-Redirect", RouteLogin)
+		return c.SendStatus(fiber.StatusUnauthorized)
+	}
+
 	return c.Render(
 		"pages/logged-in",
-		nil,
+		cachedUser,
 		"layouts/base",
 	)
 }
 
-func (a *App) LoginRequestHandler(c *fiber.Ctx) error {
+func (a *App) HandlerLoginRequest(c *fiber.Ctx) error {
 	var params suser.ParamsGetUser
 
 	if err := c.BodyParser(&params); err != nil {
@@ -48,6 +65,19 @@ func (a *App) LoginRequestHandler(c *fiber.Ctx) error {
 
 	fmt.Println(reconstructedUser)
 
-	c.Set("HX-Redirect", "/logged-in")
-	return c.SendStatus(200)
+	c.Cookie(
+		&fiber.Cookie{
+			Name: CookieLoggedUser,
+			Value: strconv.Itoa(
+				int(
+					a.ServiceSessions.PutUserTTL(
+						reconstructedUser,
+					),
+				),
+			),
+		},
+	)
+
+	c.Set("HX-Redirect", RouteLogged)
+	return c.SendStatus(fiber.StatusOK)
 }

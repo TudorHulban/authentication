@@ -1,0 +1,7 @@
+{{include "../partials/header"}}
+
+<h2>HTMX Logged</h2>
+
+<h1>hi {{Name}}!</h1>
+
+{{include "../partials/footer"}}

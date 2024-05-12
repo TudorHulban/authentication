@@ -6,17 +6,17 @@ import (
 
 func InitializeTransportRoutes(application *app.App) {
 	application.Transport.Get(
-		"/login",
-		application.LoginPageHandler,
+		app.RouteLogin,
+		application.HandlerLoginPage,
 	)
 
 	application.Transport.Get(
-		"/logged-in",
-		application.LoggedInPageHandler,
+		app.RouteLogged,
+		application.HandlerLoggedInPage,
 	)
 
 	application.Transport.Post(
-		"/login",
-		application.LoginRequestHandler,
+		app.RouteLogin,
+		application.HandlerLoginRequest,
 	)
 }
