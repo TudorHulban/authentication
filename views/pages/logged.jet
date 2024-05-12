@@ -2,6 +2,6 @@
 
 <h2>HTMX Logged</h2>
 
-<h1>hi {{Name}}!</h1>
+<h3>hi {{name}}!</h3>
 
 {{include "../partials/footer"}}

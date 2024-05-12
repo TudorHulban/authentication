@@ -3,18 +3,19 @@ package ssessions
 import (
 	"time"
 
-	cachelruspecialised "github.com/TudorHulban/LRU/cache-lruspecialised"
+	"github.com/TudorHulban/authentication/apperrors"
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
+	"github.com/TudorHulban/authentication/infra/cache/lru"
 )
 
 type Service struct {
-	cacheAppUser *cachelruspecialised.CacheLRU[int64, appuser.User]
+	cacheAppUser *lru.CacheLRU[int64, appuser.User]
 }
 
 func NewService() *Service {
 	return &Service{
-		cacheAppUser: cachelruspecialised.NewCacheLRU[int64, appuser.User](
-			&cachelruspecialised.ParamsNewCacheLRU{
+		cacheAppUser: lru.NewCacheLRU[int64, appuser.User](
+			&lru.ParamsNewCacheLRU{
 				TTL:      5 * time.Minute,
 				Capacity: 16,
 			},
@@ -26,7 +27,14 @@ func (s *Service) getSessionID() int64 {
 	return time.Now().UnixNano()
 }
 
-func (s *Service) PutUserTTL(user *appuser.User) int64 {
+func (s *Service) PutUserTTL(user *appuser.User) (int64, error) {
+	if user == nil {
+		return 0,
+			apperrors.ErrNilInput{
+				InputName: "user",
+			}
+	}
+
 	sessionID := s.getSessionID()
 
 	s.cacheAppUser.PutTTL(
@@ -34,7 +42,8 @@ func (s *Service) PutUserTTL(user *appuser.User) int64 {
 		*user,
 	)
 
-	return sessionID
+	return sessionID,
+		nil
 }
 
 func (s *Service) GetUser(sessionID int64) (*appuser.User, error) {

@@ -12,8 +12,8 @@ import (
 )
 
 type App struct {
-	ServiceUser     suser.Service
-	ServiceSessions ssessions.Service
+	ServiceUser     *suser.Service
+	ServiceSessions *ssessions.Service
 
 	port string
 
@@ -47,7 +47,8 @@ func NewApp(params *ParamsNewApp, piers *PiersApp) (*App, error) {
 	}
 
 	return &App{
-			ServiceUser: *piers.ServiceUser,
+			ServiceUser:     piers.ServiceUser,
+			ServiceSessions: piers.ServiceSessions,
 
 			Transport: fiber.New(
 				fiber.Config{

@@ -3,7 +3,6 @@ module github.com/TudorHulban/authentication
 go 1.21.6
 
 require (
-	github.com/TudorHulban/LRU v0.0.0-20240508073328-d4407c706a83
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2
 	github.com/gofiber/fiber/v2 v2.52.4
 	github.com/gofiber/template/jet/v2 v2.1.9

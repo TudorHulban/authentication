@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/TudorHulban/authentication/services/suser"
@@ -34,8 +33,10 @@ func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
 	}
 
 	return c.Render(
-		"pages/logged-in",
-		cachedUser,
+		"pages/logged",
+		fiber.Map{
+			"name": cachedUser.Name,
+		},
 		"layouts/base",
 	)
 }
@@ -63,16 +64,19 @@ func (a *App) HandlerLoginRequest(c *fiber.Ctx) error {
 		)
 	}
 
-	fmt.Println(reconstructedUser)
+	sessionID, errCacheLoggedUser := a.ServiceSessions.PutUserTTL(
+		reconstructedUser,
+	)
+	if errCacheLoggedUser != nil {
+		return errCacheLoggedUser
+	}
 
 	c.Cookie(
 		&fiber.Cookie{
 			Name: CookieLoggedUser,
 			Value: strconv.Itoa(
 				int(
-					a.ServiceSessions.PutUserTTL(
-						reconstructedUser,
-					),
+					sessionID,
 				),
 			),
 		},
