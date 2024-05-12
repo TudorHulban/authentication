@@ -135,8 +135,16 @@ func (c *CacheLRU[K, V]) Get(key K) (*V, error) {
 			go c.Delete(key)
 
 			return nil,
-				apperrors.ErrEntryNotFound{}
+				apperrors.ErrEntryNotFound{
+					Key: key,
+				}
+		}
 
+		if item == nil {
+			return nil,
+				apperrors.ErrEntryNotFound{
+					Key: key,
+				}
 		}
 
 		c.Queue.MoveToFront(item.keyPtr)
@@ -146,7 +154,9 @@ func (c *CacheLRU[K, V]) Get(key K) (*V, error) {
 	}
 
 	return nil,
-		apperrors.ErrEntryNotFound{}
+		apperrors.ErrEntryNotFound{
+			Key: key,
+		}
 }
 
 func (c *CacheLRU[K, V]) Delete(key K) error {

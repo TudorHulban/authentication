@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"strconv"
 
 	"github.com/TudorHulban/authentication/services/suser"
@@ -21,16 +22,26 @@ func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
 	)
 	if errConvert != nil {
 		c.Set("HX-Redirect", RouteLogin)
-		return c.SendStatus(fiber.StatusUnauthorized)
+
+		c.Redirect(
+			RouteLogin,
+			fiber.StatusUnauthorized,
+		)
 	}
 
 	cachedUser, errGet := a.ServiceSessions.GetUser(
 		int64(sessionID),
 	)
-	if errGet != nil {
+	if errGet != nil || cachedUser == nil {
 		c.Set("HX-Redirect", RouteLogin)
-		return c.SendStatus(fiber.StatusUnauthorized)
+
+		c.Redirect(
+			RouteLogin,
+			fiber.StatusUnauthorized,
+		)
 	}
+
+	fmt.Println("xxx3", cachedUser, errGet, errGet == nil)
 
 	return c.Render(
 		"pages/logged",

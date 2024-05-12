@@ -1,15 +1,14 @@
 package apperrors
 
-const msgErrEntryNotFound = "entry not found"
+import "fmt"
 
-type ErrEntryNotFound struct{}
-
-func (ErrEntryNotFound) Error() string {
-	return msgErrEntryNotFound
+type ErrEntryNotFound struct {
+	Key any
 }
 
-func (e ErrEntryNotFound) Is(err error) bool {
-	_, couldCast := err.(ErrEntryNotFound)
-
-	return couldCast
+func (e ErrEntryNotFound) Error() string {
+	return fmt.Sprintf(
+		"entry for key '%v' not found",
+		e.Key,
+	)
 }

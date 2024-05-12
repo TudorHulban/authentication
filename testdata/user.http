@@ -1,0 +1,17 @@
+@domain = http://localhost:9000
+@endpointLogin=/login
+@endpointLogged=/logged
+
+### Login
+POST {{domain}}{{endpointLogin}} HTTP/1.1
+content-type: application/json
+
+{
+    "email": "x@x.co",
+    "password": "123"
+}
+
+### Get Logged Page
+GET {{domain}}{{endpointLogged}} HTTP/1.1
+
+
