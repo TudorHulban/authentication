@@ -1,6 +1,7 @@
 package appuser
 
 type UserInfo struct {
+	ID   uint
 	Name string
 }
 

@@ -8,21 +8,21 @@ import (
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 )
 
-type StoreMemory struct {
+type StoreUser struct {
 	cache map[appuser.UserCredentials]appuser.UserInfo
 
 	mu sync.RWMutex
 }
 
-func NewStoreMemory() *StoreMemory {
-	return &StoreMemory{
+func NewStoreMemory() *StoreUser {
+	return &StoreUser{
 		cache: make(
 			map[appuser.UserCredentials]appuser.UserInfo,
 		),
 	}
 }
 
-func (s *StoreMemory) CreateUser(ctx context.Context, user *appuser.User) error {
+func (s *StoreUser) CreateUser(ctx context.Context, user *appuser.User) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -38,7 +38,7 @@ func (s *StoreMemory) CreateUser(ctx context.Context, user *appuser.User) error 
 	return nil
 }
 
-func (s *StoreMemory) GetUserInfo(ctx context.Context, userCredentials *appuser.UserCredentials, userInfo *appuser.UserInfo) error {
+func (s *StoreUser) GetUserInfo(ctx context.Context, userCredentials *appuser.UserCredentials, userInfo *appuser.UserInfo) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -55,7 +55,7 @@ func (s *StoreMemory) GetUserInfo(ctx context.Context, userCredentials *appuser.
 	return nil
 }
 
-func (s *StoreMemory) UpdateUserInfo(ctx context.Context, userCredentials *appuser.UserCredentials, userInfo *appuser.UserInfo) error {
+func (s *StoreUser) UpdateUserInfo(ctx context.Context, userCredentials *appuser.UserCredentials, userInfo *appuser.UserInfo) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -71,7 +71,7 @@ func (s *StoreMemory) UpdateUserInfo(ctx context.Context, userCredentials *appus
 	return nil
 }
 
-func (s *StoreMemory) DeleteUser(ctx context.Context, userCredentials *appuser.UserCredentials) error {
+func (s *StoreUser) DeleteUser(ctx context.Context, userCredentials *appuser.UserCredentials) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
