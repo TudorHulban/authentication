@@ -140,13 +140,6 @@ func (c *CacheLRU[K, V]) Get(key K) (*V, error) {
 				}
 		}
 
-		if item == nil {
-			return nil,
-				apperrors.ErrEntryNotFound{
-					Key: key,
-				}
-		}
-
 		c.Queue.MoveToFront(item.keyPtr)
 
 		return &item.payload,
