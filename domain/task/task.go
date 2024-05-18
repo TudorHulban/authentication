@@ -8,7 +8,7 @@ type TaskInfo struct {
 	TimestampOfLastUpdate int64
 	OpenedByUserID        uint
 	Kind                  uint8
-	Status                uint8
+	Status                TaskStatus
 }
 
 type Task struct {
