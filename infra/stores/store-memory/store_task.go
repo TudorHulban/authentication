@@ -9,8 +9,9 @@ import (
 	"github.com/TudorHulban/authentication/helpers"
 )
 
+// TODO: move to concurrent safe maps.
 type StoreTask struct {
-	cacheTask  map[helpers.PrimaryKey]task.TaskInfo
+	cacheTask  map[helpers.PrimaryKey]*task.TaskInfo
 	cacheEvent map[helpers.PrimaryKey][]*task.Event // key is task pk
 
 	mu sync.RWMutex
@@ -19,7 +20,7 @@ type StoreTask struct {
 func NewStoreTask() *StoreTask {
 	return &StoreTask{
 		cacheTask: make(
-			map[helpers.PrimaryKey]task.TaskInfo,
+			map[helpers.PrimaryKey]*task.TaskInfo,
 		),
 
 		cacheEvent: make(
@@ -48,7 +49,7 @@ func (s *StoreTask) GetTaskByID(ctx context.Context, taskID helpers.PrimaryKey, 
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	cachedTask, exists := s.cacheTask[helpers.PrimaryKey(taskID)]
+	reconstructedTask, exists := s.cacheTask[helpers.PrimaryKey(taskID)]
 	if !exists {
 		return fmt.Errorf(
 			"task with ID %d not found",
@@ -56,7 +57,7 @@ func (s *StoreTask) GetTaskByID(ctx context.Context, taskID helpers.PrimaryKey, 
 		)
 	}
 
-	*result = cachedTask
+	*result = *reconstructedTask
 
 	return nil
 }
@@ -98,17 +99,15 @@ func (s *StoreTask) AddEvent(ctx context.Context, taskID helpers.PrimaryKey, eve
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	cachedEvents, exists := s.cacheEvent[taskID]
-	if !exists {
+	_, existsTask := s.cacheTask[taskID]
+	if !existsTask {
 		return fmt.Errorf(
 			"task with ID %d not found",
 			taskID,
 		)
 	}
 
-	cachedEvents = append(cachedEvents, event)
-
-	s.cacheEvent[taskID] = cachedEvents
+	s.cacheEvent[taskID] = append(s.cacheEvent[taskID], event)
 
 	return nil
 }
