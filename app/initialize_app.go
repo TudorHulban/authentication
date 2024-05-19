@@ -1,10 +1,13 @@
 package app
 
 import (
+	"context"
 	"log"
 	"os"
 
 	"github.com/TudorHulban/authentication/apperrors"
+	"github.com/TudorHulban/authentication/domain/task"
+	"github.com/TudorHulban/authentication/fixtures"
 	storememory "github.com/TudorHulban/authentication/infra/stores/store-memory"
 	"github.com/TudorHulban/authentication/services/ssessions"
 	"github.com/TudorHulban/authentication/services/stask"
@@ -36,6 +39,19 @@ func InitializeApp(config *ParamsNewApp) *App {
 			apperrors.OSExitForApplicationIssues,
 		)
 	}
+
+	fixtures.FixtureTaskWEvents(
+		context.Background(),
+		&fixtures.PiersFixtureTaskWEvents{
+			ServiceTask: app.serviceTask,
+		},
+		&fixtures.ParamsFixtureTaskWEvents{
+			TaskName:           "task 1",
+			TaskKind:           task.KindUndefined,
+			TaskOpenedByUserID: 1,
+			NumberEvents:       10,
+		},
+	)
 
 	return app
 }

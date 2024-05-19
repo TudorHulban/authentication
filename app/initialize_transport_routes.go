@@ -28,6 +28,11 @@ func InitializeTransportRoutes(application *App) {
 
 	application.Transport.Get(
 		RouteTasks,
-		application.HandlerTasksPage,
+		application.HandlerSearchTasks,
+	)
+
+	application.Transport.Get(
+		RouteTask,
+		application.HandlerTaskID,
 	)
 }

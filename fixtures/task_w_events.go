@@ -2,13 +2,11 @@ package fixtures
 
 import (
 	"context"
-	"testing"
 
 	"github.com/TudorHulban/authentication/domain/task"
 	"github.com/TudorHulban/authentication/helpers"
 	"github.com/TudorHulban/authentication/services/stask"
 	"github.com/go-loremipsum/loremipsum"
-	"github.com/stretchr/testify/require"
 )
 
 type PiersFixtureTaskWEvents struct {
@@ -23,7 +21,7 @@ type ParamsFixtureTaskWEvents struct {
 	NumberEvents uint
 }
 
-func FixtureTaskWEvents(ctx context.Context, piers *PiersFixtureTaskWEvents, params *ParamsFixtureTaskWEvents, t *testing.T) helpers.PrimaryKey {
+func FixtureTaskWEvents(ctx context.Context, piers *PiersFixtureTaskWEvents, params *ParamsFixtureTaskWEvents) (helpers.PrimaryKey, error) {
 	idTask, errCr := piers.ServiceTask.CreateTask(
 		ctx,
 		&stask.ParamsCreateTask{
@@ -33,22 +31,27 @@ func FixtureTaskWEvents(ctx context.Context, piers *PiersFixtureTaskWEvents, par
 			OpenedByUserID: params.TaskOpenedByUserID,
 		},
 	)
-	require.NoError(t, errCr)
+	if errCr != nil {
+		return helpers.PrimaryKeyZero,
+			errCr
+	}
 
 	loremIpsumGenerator := loremipsum.New()
 
 	for range params.NumberEvents {
-		require.NoError(t,
-			piers.ServiceTask.AddEvent(
-				ctx,
-				idTask,
-				&stask.ParamsAddEvent{
-					EventContent:   loremIpsumGenerator.Sentence(),
-					OpenedByUserID: params.TaskOpenedByUserID,
-				},
-			),
-		)
+		if errAddEvent := piers.ServiceTask.AddEvent(
+			ctx,
+			idTask,
+			&stask.ParamsAddEvent{
+				EventContent:   loremIpsumGenerator.Sentence(),
+				OpenedByUserID: params.TaskOpenedByUserID,
+			},
+		); errAddEvent != nil {
+			return helpers.PrimaryKeyZero,
+				errAddEvent
+		}
 	}
 
-	return idTask
+	return idTask,
+		nil
 }

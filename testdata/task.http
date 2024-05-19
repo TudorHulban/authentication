@@ -1,0 +1,6 @@
+@domain = http://localhost:9000
+@endpointTask=/task
+@id=1
+
+### GET task
+GET {{domain}}{{endpointTask}}/{{id}} HTTP/1.1

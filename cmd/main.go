@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/TudorHulban/authentication/app"
 	"github.com/TudorHulban/authentication/fixtures"
@@ -14,10 +15,14 @@ func main() {
 
 	ctx := context.Background()
 
-	fixtures.InitializeAddTestUser(
+	fixtures.FixtureAddTestUser(
 		ctx,
-		app,
+		&fixtures.PiersFixtureAddTestUser{
+			ServiceUser: app.ServiceUser,
+		},
 	)
 
-	app.Start()
+	fmt.Println(
+		app.Start(),
+	)
 }

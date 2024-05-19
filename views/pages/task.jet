@@ -1,0 +1,10 @@
+{{include "../partials/header"}}
+
+Task: {{ task.Name }}
+
+{{ range events }}
+    {{ .TimestampOfAdd }} -   {{ .Content }}
+{{ end }}
+
+
+{{include "../partials/footer"}}

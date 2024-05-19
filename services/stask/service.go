@@ -2,6 +2,7 @@ package stask
 
 import (
 	"context"
+	"strconv"
 	"time"
 
 	"github.com/TudorHulban/authentication/domain/task"
@@ -56,19 +57,33 @@ func (s *Service) CreateTask(ctx context.Context, params *ParamsCreateTask) (hel
 		nil
 }
 
-func (s *Service) GetTaskByID(ctx context.Context, taskID helpers.PrimaryKey) (*task.TaskInfo, error) {
+type ParamsGetTaskByID struct {
+	TaskID       string
+	UserLoggedID uint
+}
+
+func (s *Service) GetTaskByID(ctx context.Context, params *ParamsGetTaskByID) (*task.Task, error) {
+	numericPK, errConv := strconv.Atoi(params.TaskID)
+	if errConv != nil {
+		return nil,
+			errConv
+	}
+
 	var result task.TaskInfo
 
 	if errGet := s.store.GetTaskByID(
 		ctx,
-		task.PrimaryKeyTask(taskID),
+		task.PrimaryKeyTask(numericPK),
 		&result,
 	); errGet != nil {
 		return nil,
 			errGet
 	}
 
-	return &result,
+	return &task.Task{
+			PrimaryKeyTask: task.PrimaryKeyTask(numericPK),
+			TaskInfo:       &result,
+		},
 		nil
 }
 

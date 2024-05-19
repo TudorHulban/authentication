@@ -3,12 +3,15 @@ package fixtures
 import (
 	"context"
 
-	"github.com/TudorHulban/authentication/app"
 	"github.com/TudorHulban/authentication/services/suser"
 )
 
-func InitializeAddTestUser(ctx context.Context, application *app.App) error {
-	return application.ServiceUser.CreateUser(
+type PiersFixtureAddTestUser struct {
+	ServiceUser *suser.Service
+}
+
+func FixtureAddTestUser(ctx context.Context, piers *PiersFixtureAddTestUser) error {
+	return piers.ServiceUser.CreateUser(
 		ctx,
 		&suser.ParamsCreateUser{
 			Email:    testUser.Email,

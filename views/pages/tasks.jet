@@ -5,7 +5,7 @@
 Tasks: {{len(tasks)}}
 
 {{ range tasks }}
-    {{ .Name }} -   {{ .Status }}
+    <a href="{{route}}/{{.PrimaryKeyTask}}">Task {{ .Name }}</a>
 {{ end }}
 
 {{include "../partials/footer"}}

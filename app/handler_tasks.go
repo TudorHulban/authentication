@@ -3,12 +3,13 @@ package app
 import (
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/domain/task"
+	"github.com/TudorHulban/authentication/helpers"
 	"github.com/TudorHulban/authentication/services/stask"
 	"github.com/gofiber/fiber/v2"
 )
 
 func (a *App) HandlerAddTask(c *fiber.Ctx) error {
-	user, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
+	userLogged, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
 	if errGetUser != nil {
 		return c.Status(fiber.StatusInternalServerError).
 			JSON(
@@ -36,7 +37,7 @@ func (a *App) HandlerAddTask(c *fiber.Ctx) error {
 	pkConstructedTask, errGetTask := a.serviceTask.CreateTask(
 		c.Context(),
 		&stask.ParamsCreateTask{
-			OpenedByUserID: user.ID,
+			OpenedByUserID: userLogged.ID,
 			TaskName:       params.TaskName,
 			TaskKind:       params.TaskKind,
 		},
@@ -62,8 +63,8 @@ func (a *App) HandlerAddTask(c *fiber.Ctx) error {
 		)
 }
 
-func (a *App) HandlerTasksPage(c *fiber.Ctx) error {
-	user, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
+func (a *App) HandlerSearchTasks(c *fiber.Ctx) error {
+	userLogged, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
 	if errGetUser != nil {
 		return c.Status(fiber.StatusInternalServerError).
 			JSON(
@@ -85,8 +86,63 @@ func (a *App) HandlerTasksPage(c *fiber.Ctx) error {
 	return c.Render(
 		"pages/tasks",
 		fiber.Map{
-			"name":  user.Name,
+			"name":  userLogged.Name,
 			"tasks": reconstructedTasks,
+			"route": a.baseURL() + RouteTask,
+		},
+		"layouts/base",
+	)
+}
+
+func (a *App) HandlerTaskID(c *fiber.Ctx) error {
+	userLogged, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
+	if errGetUser != nil {
+		return c.Status(fiber.StatusInternalServerError).
+			JSON(
+				&fiber.Map{
+					"success": false,
+					"error":   errGetUser,
+				},
+			)
+	}
+
+	reconstructedTask, errGetTask := a.serviceTask.GetTaskByID(
+		c.Context(),
+		&stask.ParamsGetTaskByID{
+			TaskID:       c.Params("id"),
+			UserLoggedID: userLogged.ID,
+		},
+	)
+	if errGetTask != nil {
+		return c.Status(fiber.StatusInternalServerError).
+			JSON(
+				&fiber.Map{
+					"success": false,
+					"error":   errGetTask,
+				},
+			)
+	}
+
+	reconstructedEvents, errGetEvents := a.serviceTask.GetEventsForTaskID(
+		c.Context(),
+		helpers.PrimaryKey(reconstructedTask.PrimaryKeyTask),
+	)
+	if errGetEvents != nil {
+		return c.Status(fiber.StatusInternalServerError).
+			JSON(
+				&fiber.Map{
+					"success": false,
+					"error":   errGetEvents,
+				},
+			)
+	}
+
+	return c.Render(
+		"pages/task",
+		fiber.Map{
+			"name":   userLogged.Name,
+			"task":   reconstructedTask,
+			"events": reconstructedEvents,
 		},
 		"layouts/base",
 	)

@@ -3,6 +3,7 @@ package stask
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"testing"
 
 	"github.com/TudorHulban/authentication/domain/task"
@@ -27,7 +28,13 @@ func TestTask(t *testing.T) {
 	require.NoError(t, errCr)
 	require.NotZero(t, pkTask1)
 
-	reconstructedTask, errGet := service.GetTaskByID(ctx, pkTask1)
+	reconstructedTask, errGet := service.GetTaskByID(
+		ctx,
+		&ParamsGetTaskByID{
+			TaskID:       strconv.Itoa(int(pkTask1)),
+			UserLoggedID: 1,
+		},
+	)
 	require.NoError(t, errGet)
 	require.NotNil(t, reconstructedTask)
 	require.Equal(t,
