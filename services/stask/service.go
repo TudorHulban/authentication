@@ -20,23 +20,30 @@ func NewService(store stores.IStoreTask) *Service {
 	}
 }
 
-func (s *Service) CreateTask(ctx context.Context, item *task.TaskInfo) (helpers.PrimaryKey, error) {
-	pk := helpers.PrimaryKey(
+type ParamsCreateTask struct {
+	TaskName       string
+	OpenedByUserID uint
+	TaskKind       task.TaskKind
+}
+
+func (s *Service) CreateTask(ctx context.Context, params *ParamsCreateTask) (helpers.PrimaryKey, error) {
+	pk := task.PrimaryKeyTask(
 		epochid.NewIDIncremental10KWCoCorrection(),
 	)
 
 	if errCr := s.store.CreateTask(
 		ctx,
 		&task.Task{
-			PrimaryKey: pk,
+			PrimaryKeyTask: pk,
+
 			TaskInfo: &task.TaskInfo{
-				Name:           item.Name,
-				OpenedByUserID: item.OpenedByUserID,
-				Kind:           item.Kind,
+				Name: params.TaskName,
 
 				TaskMetadata: &task.TaskMetadata{
 					TimestampOfLastUpdate: time.Now().UnixNano(),
 					Status:                task.StatusNew,
+					OpenedByUserID:        params.OpenedByUserID,
+					Kind:                  params.TaskKind,
 				},
 			},
 		},
@@ -45,7 +52,7 @@ func (s *Service) CreateTask(ctx context.Context, item *task.TaskInfo) (helpers.
 			errCr
 	}
 
-	return pk,
+	return helpers.PrimaryKey(pk),
 		nil
 }
 
@@ -54,7 +61,7 @@ func (s *Service) GetTaskByID(ctx context.Context, taskID helpers.PrimaryKey) (*
 
 	if errGet := s.store.GetTaskByID(
 		ctx,
-		taskID,
+		task.PrimaryKeyTask(taskID),
 		&result,
 	); errGet != nil {
 		return nil,
@@ -68,7 +75,7 @@ func (s *Service) GetTaskByID(ctx context.Context, taskID helpers.PrimaryKey) (*
 func (s *Service) CloseTask(ctx context.Context, taskID helpers.PrimaryKey, status task.TaskStatus) error {
 	return s.store.CloseTask(
 		ctx,
-		taskID,
+		task.PrimaryKeyTask(taskID),
 		status,
 	)
 }
@@ -76,7 +83,7 @@ func (s *Service) CloseTask(ctx context.Context, taskID helpers.PrimaryKey, stat
 func (s *Service) AddEvent(ctx context.Context, taskID helpers.PrimaryKey, event *task.EventInfo) error {
 	return s.store.AddEvent(
 		ctx,
-		taskID,
+		task.PrimaryKeyTask(taskID),
 		&task.Event{
 			PrimaryKey: helpers.PrimaryKey(
 				epochid.NewIDIncremental10KWCoCorrection(),
@@ -92,6 +99,6 @@ func (s *Service) AddEvent(ctx context.Context, taskID helpers.PrimaryKey, event
 func (s *Service) GetEventsForTaskID(ctx context.Context, taskID helpers.PrimaryKey) ([]*task.Event, error) {
 	return s.store.GetEventsForTaskID(
 		ctx,
-		taskID,
+		task.PrimaryKeyTask(taskID),
 	)
 }

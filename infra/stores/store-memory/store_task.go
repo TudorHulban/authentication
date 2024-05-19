@@ -6,13 +6,12 @@ import (
 	"sync"
 
 	"github.com/TudorHulban/authentication/domain/task"
-	"github.com/TudorHulban/authentication/helpers"
 )
 
 // TODO: move to concurrent safe maps.
 type StoreTask struct {
-	cacheTask  map[helpers.PrimaryKey]*task.TaskInfo
-	cacheEvent map[helpers.PrimaryKey][]*task.Event // key is task pk
+	cacheTask  map[task.PrimaryKeyTask]*task.TaskInfo
+	cacheEvent map[task.PrimaryKeyTask][]*task.Event
 
 	mu sync.RWMutex
 }
@@ -20,11 +19,11 @@ type StoreTask struct {
 func NewStoreTask() *StoreTask {
 	return &StoreTask{
 		cacheTask: make(
-			map[helpers.PrimaryKey]*task.TaskInfo,
+			map[task.PrimaryKeyTask]*task.TaskInfo,
 		),
 
 		cacheEvent: make(
-			map[helpers.PrimaryKey][]*task.Event,
+			map[task.PrimaryKeyTask][]*task.Event,
 		),
 	}
 }
@@ -33,23 +32,23 @@ func (s *StoreTask) CreateTask(ctx context.Context, task *task.Task) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	if _, exists := s.cacheTask[task.PrimaryKey]; exists {
+	if _, exists := s.cacheTask[task.PrimaryKeyTask]; exists {
 		return fmt.Errorf(
 			"task with ID %d already exists",
-			task.PrimaryKey,
+			task.PrimaryKeyTask,
 		)
 	}
 
-	s.cacheTask[task.PrimaryKey] = task.TaskInfo
+	s.cacheTask[task.PrimaryKeyTask] = task.TaskInfo
 
 	return nil
 }
 
-func (s *StoreTask) GetTaskByID(ctx context.Context, taskID helpers.PrimaryKey, result *task.TaskInfo) error {
+func (s *StoreTask) GetTaskByID(ctx context.Context, taskID task.PrimaryKeyTask, result *task.TaskInfo) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	reconstructedTask, exists := s.cacheTask[helpers.PrimaryKey(taskID)]
+	reconstructedTask, exists := s.cacheTask[taskID]
 	if !exists {
 		return fmt.Errorf(
 			"task with ID %d not found",
@@ -65,16 +64,16 @@ func (s *StoreTask) GetTaskByID(ctx context.Context, taskID helpers.PrimaryKey, 
 func (s *StoreTask) UpdateTask(ctx context.Context, task *task.Task) {
 	s.mu.Lock()
 
-	s.cacheTask[task.PrimaryKey] = task.TaskInfo
+	s.cacheTask[task.PrimaryKeyTask] = task.TaskInfo
 
 	s.mu.Unlock()
 }
 
-func (s *StoreTask) CloseTask(ctx context.Context, taskID helpers.PrimaryKey, status task.TaskStatus) error {
+func (s *StoreTask) CloseTask(ctx context.Context, taskID task.PrimaryKeyTask, status task.TaskStatus) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	cachedTask, exists := s.cacheTask[helpers.PrimaryKey(taskID)]
+	cachedTask, exists := s.cacheTask[taskID]
 	if !exists {
 		return fmt.Errorf(
 			"task with ID %d not found",
@@ -87,15 +86,16 @@ func (s *StoreTask) CloseTask(ctx context.Context, taskID helpers.PrimaryKey, st
 	s.UpdateTask(
 		ctx,
 		&task.Task{
-			PrimaryKey: taskID,
-			TaskInfo:   cachedTask,
+			PrimaryKeyTask: taskID,
+
+			TaskInfo: cachedTask,
 		},
 	)
 
 	return nil
 }
 
-func (s *StoreTask) AddEvent(ctx context.Context, taskID helpers.PrimaryKey, event *task.Event) error {
+func (s *StoreTask) AddEvent(ctx context.Context, taskID task.PrimaryKeyTask, event *task.Event) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -112,7 +112,7 @@ func (s *StoreTask) AddEvent(ctx context.Context, taskID helpers.PrimaryKey, eve
 	return nil
 }
 
-func (s *StoreTask) GetEventsForTaskID(ctx context.Context, taskID helpers.PrimaryKey) ([]*task.Event, error) {
+func (s *StoreTask) GetEventsForTaskID(ctx context.Context, taskID task.PrimaryKeyTask) ([]*task.Event, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 

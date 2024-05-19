@@ -5,7 +5,6 @@ import (
 
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/domain/task"
-	"github.com/TudorHulban/authentication/helpers"
 	storememory "github.com/TudorHulban/authentication/infra/stores/store-memory"
 )
 
@@ -20,11 +19,11 @@ var _ IStoreUser = &storememory.StoreUser{}
 
 type IStoreTask interface {
 	CreateTask(ctx context.Context, task *task.Task) error
-	GetTaskByID(ctx context.Context, taskID helpers.PrimaryKey, result *task.TaskInfo) error
-	CloseTask(ctx context.Context, taskID helpers.PrimaryKey, status task.TaskStatus) error
+	GetTaskByID(ctx context.Context, taskID task.PrimaryKeyTask, result *task.TaskInfo) error
+	CloseTask(ctx context.Context, taskID task.PrimaryKeyTask, status task.TaskStatus) error
 
-	AddEvent(ctx context.Context, taskID helpers.PrimaryKey, event *task.Event) error
-	GetEventsForTaskID(ctx context.Context, taskID helpers.PrimaryKey) ([]*task.Event, error)
+	AddEvent(ctx context.Context, taskID task.PrimaryKeyTask, event *task.Event) error
+	GetEventsForTaskID(ctx context.Context, taskID task.PrimaryKeyTask) ([]*task.Event, error)
 }
 
 var _ IStoreTask = &storememory.StoreTask{}

@@ -10,18 +10,19 @@ import (
 )
 
 func TestTask(t *testing.T) {
-
 	service := NewService(
 		storememory.NewStoreTask(),
 	)
 
-	t1 := task.TaskInfo{
-		Name: "xxx",
+	paramTask := ParamsCreateTask{
+		TaskName:       "xxx",
+		OpenedByUserID: 1,
+		TaskKind:       task.KindUndefined,
 	}
 
 	ctx := context.Background()
 
-	pkTask1, errCr := service.CreateTask(ctx, &t1)
+	pkTask1, errCr := service.CreateTask(ctx, &paramTask)
 	require.NoError(t, errCr)
 	require.NotZero(t, pkTask1)
 
@@ -29,10 +30,11 @@ func TestTask(t *testing.T) {
 	require.NoError(t, errGet)
 	require.NotNil(t, reconstructedTask)
 	require.Equal(t,
-		t1.Name,
+		paramTask.TaskName,
 		reconstructedTask.Name,
 	)
 	require.NotZero(t, reconstructedTask.TimestampOfLastUpdate, "timestamp")
+	require.NotZero(t, reconstructedTask.OpenedByUserID)
 	require.EqualValues(t,
 		task.StatusNew,
 		reconstructedTask.Status,
