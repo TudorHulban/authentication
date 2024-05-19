@@ -20,6 +20,8 @@ type App struct {
 	port string
 
 	Transport *fiber.App
+
+	authenticationDisabled bool
 }
 
 type ParamsNewApp struct {
@@ -27,6 +29,8 @@ type ParamsNewApp struct {
 	TemplateFilesExtension string `valid:"required"`
 
 	Port string `valid:"required"`
+
+	AuthenticationDisabled bool
 }
 
 type PiersApp struct {
@@ -68,6 +72,8 @@ func NewApp(params *ParamsNewApp, piers *PiersApp) (*App, error) {
 
 			host: "http://localhost",
 			port: params.Port,
+
+			authenticationDisabled: params.AuthenticationDisabled,
 		},
 		nil
 }

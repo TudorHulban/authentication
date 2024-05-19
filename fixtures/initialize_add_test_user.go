@@ -14,9 +14,9 @@ func FixtureAddTestUser(ctx context.Context, piers *PiersFixtureAddTestUser) err
 	return piers.ServiceUser.CreateUser(
 		ctx,
 		&suser.ParamsCreateUser{
-			Email:    testUser.Email,
-			Password: testUser.Password,
-			Name:     testUser.Name,
+			Email:    TestUser.Email,
+			Password: TestUser.Password,
+			Name:     TestUser.Name,
 		},
 	)
 }
