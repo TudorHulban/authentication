@@ -4,4 +4,6 @@
 
 <h3>hi {{name}}!</h3>
 
+<a href="{{route}}">Tasks</a>
+
 {{include "../partials/footer"}}

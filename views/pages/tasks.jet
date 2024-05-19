@@ -2,8 +2,10 @@
 
 <h2>HTMX Logged</h2>
 
+Tasks: {{len(tasks)}}
+
 {{ range tasks }}
-    {{ .Name, .Status }}
+    {{ .Name }} -   {{ .Status }}
 {{ end }}
 
 {{include "../partials/footer"}}

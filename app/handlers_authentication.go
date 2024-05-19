@@ -25,7 +25,8 @@ func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
 	return c.Render(
 		"pages/logged",
 		fiber.Map{
-			"name": user.Name,
+			"name":  user.Name,
+			"route": a.baseRoot() + RouteTasks,
 		},
 		"layouts/base",
 	)

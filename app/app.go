@@ -16,6 +16,7 @@ type App struct {
 	serviceSessions *ssessions.Service
 	serviceTask     *stask.Service
 
+	host string
 	port string
 
 	Transport *fiber.App
@@ -65,6 +66,7 @@ func NewApp(params *ParamsNewApp, piers *PiersApp) (*App, error) {
 				},
 			),
 
+			host: "http://localhost",
 			port: params.Port,
 		},
 		nil

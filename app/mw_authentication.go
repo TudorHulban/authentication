@@ -7,7 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func (a *App) MwAuthorization() func(c *fiber.Ctx) error {
+func (a *App) MwAuthentication() func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
 		sessionID, errConvert := strconv.Atoi(
 			c.Cookies(CookieLoggedUser),

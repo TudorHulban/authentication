@@ -2,6 +2,7 @@ package stask
 
 import (
 	"context"
+	"fmt"
 	"testing"
 
 	"github.com/TudorHulban/authentication/domain/task"
@@ -38,6 +39,15 @@ func TestTask(t *testing.T) {
 	require.EqualValues(t,
 		task.StatusNew,
 		reconstructedTask.Status,
+	)
+
+	reconstructedTasks, errGetTasks := service.SearchTasks(ctx, &task.ParamsSearchTasks{})
+	require.NoError(t, errGetTasks)
+	require.NotZero(t, reconstructedTasks)
+
+	fmt.Println(
+		reconstructedTasks[0].PrimaryKeyTask,
+		reconstructedTasks[0].TaskInfo,
 	)
 
 	e1 := task.EventInfo{
