@@ -1,10 +1,11 @@
 module github.com/TudorHulban/authentication
 
-go 1.21.6
+go 1.22
 
 require (
 	github.com/TudorHulban/epochid v0.0.0-20220912160557-6fd65ab75fcc
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2
+	github.com/go-loremipsum/loremipsum v1.1.3
 	github.com/gofiber/fiber/v2 v2.52.4
 	github.com/gofiber/template/jet/v2 v2.1.9
 	github.com/stretchr/testify v1.9.0

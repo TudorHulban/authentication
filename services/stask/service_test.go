@@ -48,7 +48,10 @@ func TestTask(t *testing.T) {
 		service.AddEvent(
 			ctx,
 			pkTask1,
-			&e1,
+			&ParamsAddEvent{
+				EventContent:   e1.Content,
+				OpenedByUserID: 1,
+			},
 		),
 	)
 
@@ -60,7 +63,10 @@ func TestTask(t *testing.T) {
 		service.AddEvent(
 			ctx,
 			pkTask1,
-			&e2,
+			&ParamsAddEvent{
+				EventContent:   e2.Content,
+				OpenedByUserID: 1,
+			},
 		),
 	)
 

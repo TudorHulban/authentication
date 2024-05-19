@@ -80,7 +80,12 @@ func (s *Service) CloseTask(ctx context.Context, taskID helpers.PrimaryKey, stat
 	)
 }
 
-func (s *Service) AddEvent(ctx context.Context, taskID helpers.PrimaryKey, event *task.EventInfo) error {
+type ParamsAddEvent struct {
+	EventContent   string
+	OpenedByUserID uint
+}
+
+func (s *Service) AddEvent(ctx context.Context, taskID helpers.PrimaryKey, params *ParamsAddEvent) error {
 	return s.store.AddEvent(
 		ctx,
 		task.PrimaryKeyTask(taskID),
@@ -88,9 +93,11 @@ func (s *Service) AddEvent(ctx context.Context, taskID helpers.PrimaryKey, event
 			PrimaryKey: helpers.PrimaryKey(
 				epochid.NewIDIncremental10KWCoCorrection(),
 			),
+
 			EventInfo: &task.EventInfo{
-				Content:        event.Content,
+				Content:        params.EventContent,
 				TimestampOfAdd: time.Now().UnixNano(),
+				OpenedByUserID: params.OpenedByUserID,
 			},
 		},
 	)
