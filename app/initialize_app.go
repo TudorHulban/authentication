@@ -7,6 +7,7 @@ import (
 	"github.com/TudorHulban/authentication/apperrors"
 	storememory "github.com/TudorHulban/authentication/infra/stores/store-memory"
 	"github.com/TudorHulban/authentication/services/ssessions"
+	"github.com/TudorHulban/authentication/services/stask"
 	"github.com/TudorHulban/authentication/services/suser"
 )
 
@@ -16,6 +17,10 @@ func InitializeApp(config *ParamsNewApp) *App {
 		&PiersApp{
 			ServiceUser: suser.NewService(
 				storememory.NewStoreMemory(),
+			),
+
+			ServiceTask: stask.NewService(
+				storememory.NewStoreTask(),
 			),
 
 			ServiceSessions: ssessions.NewService(),

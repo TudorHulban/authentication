@@ -20,7 +20,7 @@ func (a *App) MwAuthorization() func(c *fiber.Ctx) error {
 			)
 		}
 
-		cachedUser, errGet := a.ServiceSessions.GetUser(
+		cachedUser, errGet := a.serviceSessions.GetUser(
 			int64(sessionID),
 		)
 		if errGet != nil {

@@ -72,6 +72,13 @@ func (s *Service) GetTaskByID(ctx context.Context, taskID helpers.PrimaryKey) (*
 		nil
 }
 
+func (s *Service) SearchTasks(ctx context.Context, params *task.ParamsSearchTasks) ([]*task.Task, error) {
+	return s.store.SearchTasks(
+		ctx,
+		params,
+	)
+}
+
 func (s *Service) CloseTask(ctx context.Context, taskID helpers.PrimaryKey, status task.TaskStatus) error {
 	return s.store.CloseTask(
 		ctx,

@@ -54,7 +54,7 @@ func (a *App) HandlerLoginRequest(c *fiber.Ctx) error {
 		)
 	}
 
-	sessionID, errCacheLoggedUser := a.ServiceSessions.PutUserTTL(
+	sessionID, errCacheLoggedUser := a.serviceSessions.PutUserTTL(
 		reconstructedUser,
 	)
 	if errCacheLoggedUser != nil {

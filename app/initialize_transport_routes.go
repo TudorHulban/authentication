@@ -20,4 +20,9 @@ func InitializeTransportRoutes(application *App) {
 		RouteLogin,
 		application.HandlerLoginRequest,
 	)
+
+	application.Transport.Get(
+		RouteTasks,
+		application.HandlerTasksPage,
+	)
 }

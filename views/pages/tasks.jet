@@ -1,0 +1,9 @@
+{{include "../partials/header"}}
+
+<h2>HTMX Logged</h2>
+
+{{ range tasks }}
+    {{ .Name, .Status }}
+{{ end }}
+
+{{include "../partials/footer"}}

@@ -4,6 +4,7 @@ import (
 	"github.com/TudorHulban/authentication/apperrors"
 	"github.com/TudorHulban/authentication/helpers"
 	"github.com/TudorHulban/authentication/services/ssessions"
+	"github.com/TudorHulban/authentication/services/stask"
 	"github.com/TudorHulban/authentication/services/suser"
 	"github.com/asaskevich/govalidator"
 	"github.com/gofiber/fiber/v2"
@@ -12,7 +13,8 @@ import (
 
 type App struct {
 	ServiceUser     *suser.Service
-	ServiceSessions *ssessions.Service
+	serviceSessions *ssessions.Service
+	serviceTask     *stask.Service
 
 	port string
 
@@ -29,6 +31,8 @@ type ParamsNewApp struct {
 type PiersApp struct {
 	ServiceUser     *suser.Service
 	ServiceSessions *ssessions.Service
+
+	ServiceTask *stask.Service
 }
 
 func NewApp(params *ParamsNewApp, piers *PiersApp) (*App, error) {
@@ -47,7 +51,8 @@ func NewApp(params *ParamsNewApp, piers *PiersApp) (*App, error) {
 
 	return &App{
 			ServiceUser:     piers.ServiceUser,
-			ServiceSessions: piers.ServiceSessions,
+			serviceSessions: piers.ServiceSessions,
+			serviceTask:     piers.ServiceTask,
 
 			Transport: fiber.New(
 				fiber.Config{

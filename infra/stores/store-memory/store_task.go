@@ -61,6 +61,28 @@ func (s *StoreTask) GetTaskByID(ctx context.Context, taskID task.PrimaryKeyTask,
 	return nil
 }
 
+func (s *StoreTask) SearchTasks(ctx context.Context, params *task.ParamsSearchTasks) ([]*task.Task, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	result := make([]*task.Task, 0)
+
+	for pk, taskInfo := range s.cacheTask {
+		// TODO: apply filtering
+
+		result = append(
+			result,
+			&task.Task{
+				PrimaryKeyTask: pk,
+				TaskInfo:       taskInfo,
+			},
+		)
+	}
+
+	return result,
+		nil
+}
+
 func (s *StoreTask) UpdateTask(ctx context.Context, task *task.Task) {
 	s.mu.Lock()
 

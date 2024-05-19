@@ -5,6 +5,8 @@ const (
 
 	RouteLogin  = "/login"
 	RouteLogged = "/logged"
+
+	RouteTasks = "/tasks"
 )
 
 const (
