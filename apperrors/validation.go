@@ -7,12 +7,12 @@ type ErrValidation struct {
 	Caller string
 }
 
-const areaErrServiceValidation = "Validation"
+const areaErrValidation = "Validation"
 
 func (e ErrValidation) Error() string {
 	var res [3]string
 
-	res[0] = fmt.Sprintf("Area: %s", areaErrServiceValidation)
+	res[0] = fmt.Sprintf("Area: %s", areaErrValidation)
 	res[1] = fmt.Sprintf("Caller: %s", e.Caller)
 
 	res[2] = ""
@@ -41,6 +41,28 @@ type ErrInvalidInput struct {
 func (e ErrInvalidInput) Error() string {
 	return fmt.Sprintf(
 		"invalid Input, name: %s",
+		e.InputName,
+	)
+}
+
+type ErrNegativeInput struct {
+	InputName string
+}
+
+func (e ErrNegativeInput) Error() string {
+	return fmt.Sprintf(
+		"negative Input Name: %s",
+		e.InputName,
+	)
+}
+
+type ErrZeroInput struct {
+	InputName string
+}
+
+func (e ErrZeroInput) Error() string {
+	return fmt.Sprintf(
+		"zero Input Name: %s",
 		e.InputName,
 	)
 }
