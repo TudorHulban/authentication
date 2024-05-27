@@ -32,7 +32,7 @@ func InitializeTransportRoutes(application *App) {
 	)
 
 	application.Transport.Get(
-		RouteTask,
+		RouteTask+"/:id",
 		application.HandlerTaskID,
 	)
 }

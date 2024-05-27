@@ -4,3 +4,7 @@
 
 ### GET task
 GET {{domain}}{{endpointTask}}/{{id}} HTTP/1.1
+
+
+### GET task free style
+GET {{domain}}{{endpointTask}}/17168196778406920000 HTTP/1.1

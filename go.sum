@@ -6,6 +6,8 @@ github.com/TudorHulban/epochid v0.0.0-20220912160557-6fd65ab75fcc h1:iKNpk9TQEy0
 github.com/TudorHulban/epochid v0.0.0-20220912160557-6fd65ab75fcc/go.mod h1:RmFeB3R0jxMrWEcPvDrpkhy0JrtfXAiihJ0D2VPwLmI=
 github.com/TudorHulban/log v0.0.0-20220417102515-4df74e30f0a0 h1:oEN0fnc1h8dlpKVOExCSH07sK9gZdlLsCIZRt5VsT5g=
 github.com/TudorHulban/log v0.0.0-20220417102515-4df74e30f0a0/go.mod h1:ew305nN8YryUTCYmLewSYkDsgLnlhUGMrFxhvastTLI=
+github.com/TudorHulban/log v0.0.0-20240527135802-62be49f44f13 h1:k+Qa/wiJJozrGTUC3lu27uPVNj7ueFGZsA04K//+xEw=
+github.com/TudorHulban/log v0.0.0-20240527135802-62be49f44f13/go.mod h1:QQc2uRbJg0yERt+Ia87FHTUeXqGuj5qm+6Q4B7uHw4E=
 github.com/andybalholm/brotli v1.0.5 h1:8uQZIdzKmjc/iuPu7O2ioW48L81FgatrcpfFmiq/cCs=
 github.com/andybalholm/brotli v1.0.5/go.mod h1:fO7iG3H7G2nSZ7m0zPUDn85XEX2GTukHGRSepvi9Eig=
 github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 h1:DklsrG3dyBCFEj5IhUbnKptjxatkF07cF2ak3yi77so=

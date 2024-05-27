@@ -2,9 +2,18 @@
 
 Task: {{ task.Name }}
 
+<table>
+  <tr>
+    <th>Timestamp</th>
+    <th>Content</th>
+  </tr>
 {{ range events }}
-    {{ .TimestampOfAdd }} -   {{ .Content }}
+  <tr>
+    <td>{{ .TimestampOfAdd }}</td>
+    <td>{{ .Content }}s</td>
+  </tr> 
 {{ end }}
+</table>
 
 
 {{include "../partials/footer"}}

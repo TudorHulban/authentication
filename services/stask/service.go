@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/TudorHulban/authentication/apperrors"
 	"github.com/TudorHulban/authentication/domain/task"
 	"github.com/TudorHulban/authentication/helpers"
 	"github.com/TudorHulban/authentication/infra/stores"
@@ -63,10 +64,13 @@ type ParamsGetTaskByID struct {
 }
 
 func (s *Service) GetTaskByID(ctx context.Context, params *ParamsGetTaskByID) (*task.Task, error) {
-	numericPK, errConv := strconv.Atoi(params.TaskID)
+	numericPK, errConv := strconv.ParseUint(params.TaskID, 10, 64)
 	if errConv != nil {
 		return nil,
-			errConv
+			apperrors.ErrServiceValidation{
+				Issue:  errConv,
+				Caller: "GetTaskByID",
+			}
 	}
 
 	var result task.TaskInfo

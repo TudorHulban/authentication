@@ -3,9 +3,7 @@ package app
 import (
 	"github.com/TudorHulban/authentication/fixtures"
 	"github.com/TudorHulban/authentication/services/suser"
-	"github.com/TudorHulban/log"
 	"github.com/gofiber/fiber/v2"
-	fiberlog "github.com/gofiber/fiber/v2/log"
 )
 
 func (a *App) root() string {
@@ -17,9 +15,15 @@ func (a *App) baseURL() string {
 }
 
 func (a *App) Start() error {
-	fiberlog.SetLogger(
-		log.NewLogger(log.DEBUG, output, true),
-	)
+	// fiberlog.SetLogger(
+	// 	log.NewLogger(
+	// 		&log.ParamsNewLogger{
+	// 			LoggerLevel:   log.LevelDEBUG,
+	// 			LoggerWriter:  os.Stdout,
+	// 			WithTimestamp: timestamp.TimestampNano,
+	// 		},
+	// 	),
+	// )
 
 	var mw func(c *fiber.Ctx) error
 
