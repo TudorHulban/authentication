@@ -1,6 +1,8 @@
 {{include "../partials/header"}}
 
+<div>
 Task: {{ task.Name }}
+</div>
 
 <table>
   <tr>
@@ -9,7 +11,7 @@ Task: {{ task.Name }}
   </tr>
 {{ range events }}
   <tr>
-    <td>{{ .TimestampOfAdd }}</td>
+    <td>{{UnixNanoTo(.TimestampOfAdd)}}</td>
     <td>{{ .Content }}s</td>
   </tr> 
 {{ end }}

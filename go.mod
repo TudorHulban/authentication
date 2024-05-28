@@ -3,6 +3,7 @@ module github.com/TudorHulban/authentication
 go 1.22
 
 require (
+	github.com/CloudyKit/jet v2.1.2+incompatible
 	github.com/TudorHulban/epochid v0.0.0-20220912160557-6fd65ab75fcc
 	github.com/TudorHulban/log v0.0.0-20240527135802-62be49f44f13
 	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2

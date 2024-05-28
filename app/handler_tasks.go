@@ -143,6 +143,8 @@ func (a *App) HandlerTaskID(c *fiber.Ctx) error {
 			"name":   userLogged.Name,
 			"task":   reconstructedTask,
 			"events": reconstructedEvents,
+
+			"UnixNanoTo": helpers.UnixNanoTo,
 		},
 		"layouts/base",
 	)

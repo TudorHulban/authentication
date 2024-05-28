@@ -1,10 +1,17 @@
 @domain = http://localhost:9000
 @endpointTask=/task
+@endpointTasks=/tasks
 @id=1
+
+
+### GET tasks
+GET {{domain}}{{endpointTasks}} HTTP/1.1
 
 ### GET task
 GET {{domain}}{{endpointTask}}/{{id}} HTTP/1.1
 
-
 ### GET task free style
 GET {{domain}}{{endpointTask}}/17168196778406920000 HTTP/1.1
+
+###
+GET http://localhost:9000/task/17168826131406920000
