@@ -10,6 +10,7 @@ import (
 	"github.com/TudorHulban/authentication/helpers"
 	"github.com/TudorHulban/authentication/infra/stores"
 	"github.com/TudorHulban/epochid"
+	"github.com/asaskevich/govalidator"
 )
 
 type Service struct {
@@ -23,12 +24,20 @@ func NewService(store stores.IStoreTask) *Service {
 }
 
 type ParamsCreateTask struct {
-	TaskName       string
+	TaskName       string `valid:"required" json:"taskname"`
 	OpenedByUserID uint
 	TaskKind       task.TaskKind
 }
 
 func (s *Service) CreateTask(ctx context.Context, params *ParamsCreateTask) (helpers.PrimaryKey, error) {
+	if _, errValidation := govalidator.ValidateStruct(params); errValidation != nil {
+		return 0,
+			apperrors.ErrValidation{
+				Caller: "CreateTask",
+				Issue:  errValidation,
+			}
+	}
+
 	pk := task.PrimaryKeyTask(
 		epochid.NewIDIncremental10KWCoCorrection(),
 	)

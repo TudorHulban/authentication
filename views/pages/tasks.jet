@@ -1,11 +1,117 @@
 {{include "../partials/header"}}
 
 <h2>HTMX Logged</h2>
-
+<div>
 Tasks: {{len(tasks)}}
+</div>
 
+<div>
+<table id="tasks-list">
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+  </tr>
 {{ range tasks }}
-    <a href="{{route}}/{{.PrimaryKeyTask}}">Task {{ .Name }}</a>
+<tr>
+<td>{{ .PrimaryKeyTask }}</td>
+<td><a href="{{route}}/{{.PrimaryKeyTask}}">{{ .Name }}</a></td>
+</tr> 
 {{ end }}
+</table>
+</div>
+
+<template id="task-template">
+     <tr>
+        <td class="pk"></td>
+        <td><a href="" class="link-task">Link</a></td>
+    </tr>
+</template>
+
+<div>
+<button hx-target="#modal-content" onclick="openModal()">Create Task</button>
+</div>
+
+<div id="modal-content" class="modal">
+    <form onSubmit="closeModal();" hx-post="{{routeAddTask}}" hx-target="#tasks-list" hx-swap="none" hx-boost="true">
+        <label for="taskname">Task Name:</label><br>
+        <input type="text" id="name" name="taskname"><br>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<style>
+    /* Modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+        /* Control the modal size */
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+   function openModal() {
+       document.getElementById("modal-content").style.display = "flex";
+   }
+   
+   function closeModal() {
+       document.getElementById("modal-content").style.display = "none";
+   }
+   
+   window.addEventListener('keydown',
+       function (event) {
+           if (event.key === 'Escape') {
+               closeModal();
+           }
+       }
+   )
+
+    document.body.addEventListener('htmx:afterOnLoad', function(evt) {
+            if (evt.detail.target.id === "tasks-list") {
+                var itemTemplate = document.getElementById('task-template');
+                var newItem = JSON.parse(evt.detail.xhr.responseText);
+
+                var tr = itemTemplate.content.cloneNode(true);
+                tr.querySelector('.pk').textContent = newItem.PrimaryKeyTask;
+                tr.querySelector('.link-task').textContent = newItem.Name;
+                tr.querySelector('.link-task').href = "{{route}}/" +newItem.PrimaryKeyTask;
+
+                document.querySelector('#tasks-list tbody').appendChild(tr);
+            }
+        });
+</script>
 
 {{include "../partials/footer"}}

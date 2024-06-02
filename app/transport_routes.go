@@ -22,7 +22,7 @@ func InitializeTransportRoutes(application *App) {
 	)
 
 	application.Transport.Post(
-		RouteTasks,
+		RouteTask,
 		application.HandlerAddTask,
 	)
 

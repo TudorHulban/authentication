@@ -53,14 +53,27 @@ func (a *App) HandlerAddTask(c *fiber.Ctx) error {
 			)
 	}
 
-	return c.Status(fiber.StatusOK).
-		JSON(
-			&fiber.Map{
-				"success": true,
-				"pk":      pkConstructedTask,
-				"handler": "HandlerAddTask", // development only
-			},
-		)
+	reconstructedTask, errGet := a.serviceTask.GetTaskByID(
+		c.Context(),
+		&stask.ParamsGetTaskByID{
+			TaskID:       pkConstructedTask.String(),
+			UserLoggedID: userLogged.ID,
+		},
+	)
+	if errGet != nil {
+		return c.Status(fiber.StatusInternalServerError).
+			JSON(
+				&fiber.Map{
+					"success": false,
+					"error":   errGet,
+					"handler": "HandlerAddTask - serviceTask.GetTaskByID", // development only
+				},
+			)
+	}
+
+	return c.Status(fiber.StatusOK).JSON(
+		reconstructedTask,
+	)
 }
 
 func (a *App) HandlerSearchTasks(c *fiber.Ctx) error {
@@ -86,9 +99,10 @@ func (a *App) HandlerSearchTasks(c *fiber.Ctx) error {
 	return c.Render(
 		"pages/tasks",
 		fiber.Map{
-			"name":  userLogged.Name,
-			"tasks": reconstructedTasks,
-			"route": a.baseURL() + RouteTask,
+			"name":         userLogged.Name,
+			"tasks":        reconstructedTasks,
+			"route":        a.baseURL() + RouteTask,
+			"routeAddTask": RouteTask,
 		},
 		"layouts/base",
 	)
