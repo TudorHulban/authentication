@@ -9,23 +9,18 @@ Tasks: {{len(tasks)}}
     <th>#</th>
     <th>ID</th>
     <th>Name</th>
+    <th>Last Update</th>
   </tr>
 {{ range id, task := tasks }}
 <tr>
 <td>{{ id + 1 }}</td>
 <td>{{ task.PrimaryKeyTask }}</td>
 <td><a href="{{route}}/{{task.PrimaryKeyTask}}">{{ task.Name }}</a></td>
+<td>{{ task.TimestampOfLastUpdate }}</td>
 </tr> 
 {{ end }}
 </table>
 </div>
-
-<template id="task-template">
-     <tr>
-        <td class="pk"></td>
-        <td><a href="" class="link-task">Link</a></td>
-    </tr>
-</template>
 
 <div>
 <button hx-target="#modal-content" onclick="openModal()">Create Task</button>
@@ -40,8 +35,31 @@ Tasks: {{len(tasks)}}
     </form>
 </div>
 
+<script>
+   function openModal() {
+       document.getElementById("modal-content").style.display = "flex";
+   }
+   
+   function closeModal() {
+       document.getElementById("modal-content").style.display = "none";
+   }
+   
+   window.addEventListener('keydown',
+       function (event) {
+           if (event.key === 'Escape') {
+               closeModal();
+           }
+       }
+   )
+
+    document.body.addEventListener('htmx:afterOnLoad', function(evt) {
+            if (evt.detail.target.id === "tasks-list") {
+                window.location.replace("{{baseURL}}{{routeTasks}}");
+            }
+        });
+</script>
+
 <style>
-    /* Modal styles */
     .modal {
         display: none;
         position: fixed;
@@ -82,26 +100,4 @@ Tasks: {{len(tasks)}}
     }
 </style>
 
-<script>
-   function openModal() {
-       document.getElementById("modal-content").style.display = "flex";
-   }
-   
-   function closeModal() {
-       document.getElementById("modal-content").style.display = "none";
-   }
-   
-   window.addEventListener('keydown',
-       function (event) {
-           if (event.key === 'Escape') {
-               closeModal();
-           }
-       }
-   )
 
-    document.body.addEventListener('htmx:afterOnLoad', function(evt) {
-            if (evt.detail.target.id === "tasks-list") {
-                window.location.replace("{{baseURL}}{{routeTasks}}");
-            }
-        });
-</script>

@@ -47,10 +47,10 @@ func (s *Service) CreateTask(ctx context.Context, params *ParamsCreateTask) (hel
 		&task.Task{
 			PrimaryKeyTask: pk,
 
-			TaskInfo: &task.TaskInfo{
+			TaskInfo: task.TaskInfo{
 				Name: params.TaskName,
 
-				TaskMetadata: &task.TaskMetadata{
+				TaskMetadata: task.TaskMetadata{
 					TimestampOfLastUpdate: time.Now().UnixNano(),
 					Status:                task.StatusNew,
 					OpenedByUserID:        params.OpenedByUserID,
@@ -95,12 +95,12 @@ func (s *Service) GetTaskByID(ctx context.Context, params *ParamsGetTaskByID) (*
 
 	return &task.Task{
 			PrimaryKeyTask: task.PrimaryKeyTask(numericPK),
-			TaskInfo:       &result,
+			TaskInfo:       result,
 		},
 		nil
 }
 
-func (s *Service) SearchTasks(ctx context.Context, params *task.ParamsSearchTasks) ([]*task.Task, error) {
+func (s *Service) SearchTasks(ctx context.Context, params *task.ParamsSearchTasks) (task.Tasks, error) {
 	return s.store.SearchTasks(
 		ctx,
 		params,

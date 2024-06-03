@@ -10,7 +10,7 @@ import (
 
 // TODO: move to concurrent safe maps.
 type StoreTask struct {
-	cacheTask  map[task.PrimaryKeyTask]*task.TaskInfo
+	cacheTask  map[task.PrimaryKeyTask]task.TaskInfo
 	cacheEvent map[task.PrimaryKeyTask][]*task.Event
 
 	mu sync.RWMutex
@@ -19,7 +19,7 @@ type StoreTask struct {
 func NewStoreTask() *StoreTask {
 	return &StoreTask{
 		cacheTask: make(
-			map[task.PrimaryKeyTask]*task.TaskInfo,
+			map[task.PrimaryKeyTask]task.TaskInfo,
 		),
 
 		cacheEvent: make(
@@ -56,12 +56,12 @@ func (s *StoreTask) GetTaskByID(ctx context.Context, taskID task.PrimaryKeyTask,
 		)
 	}
 
-	*result = *reconstructedTask
+	*result = reconstructedTask
 
 	return nil
 }
 
-func (s *StoreTask) SearchTasks(ctx context.Context, params *task.ParamsSearchTasks) ([]*task.Task, error) {
+func (s *StoreTask) SearchTasks(ctx context.Context, params *task.ParamsSearchTasks) (task.Tasks, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 

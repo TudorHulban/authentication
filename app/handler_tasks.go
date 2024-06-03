@@ -72,7 +72,7 @@ func (a *App) HandlerAddTask(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(
-		reconstructedTask,
+		reconstructedTask.PrimaryKeyTask,
 	)
 }
 
@@ -90,7 +90,11 @@ func (a *App) HandlerTasks(c *fiber.Ctx) error {
 
 	reconstructedTasks, errGetTasks := a.serviceTask.SearchTasks(
 		c.Context(),
-		&task.ParamsSearchTasks{},
+		&task.ParamsSearchTasks{
+			ParamsPagination: helpers.ParamsPagination{
+				First: 10,
+			},
+		},
 	)
 	if errGetTasks != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
@@ -135,6 +139,7 @@ func (a *App) HandlerTaskID(c *fiber.Ctx) error {
 				&fiber.Map{
 					"success": false,
 					"error":   errGetTask,
+					"level":   "GetTaskByID",
 				},
 			)
 	}

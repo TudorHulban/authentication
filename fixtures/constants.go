@@ -1,6 +1,8 @@
 package fixtures
 
-import appuser "github.com/TudorHulban/authentication/domain/app-user"
+import (
+	appuser "github.com/TudorHulban/authentication/domain/app-user"
+)
 
 var TestUser = appuser.User{
 	UserCredentials: appuser.UserCredentials{

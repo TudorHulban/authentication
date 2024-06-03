@@ -8,6 +8,8 @@ import (
 	"github.com/TudorHulban/authentication/apperrors"
 	"github.com/TudorHulban/authentication/domain/task"
 	"github.com/TudorHulban/authentication/fixtures"
+	storefilefixtures "github.com/TudorHulban/authentication/fixtures/store-file-fixtures"
+	storefile "github.com/TudorHulban/authentication/infra/stores/store-file"
 	storememory "github.com/TudorHulban/authentication/infra/stores/store-memory"
 	"github.com/TudorHulban/authentication/services/ssessions"
 	"github.com/TudorHulban/authentication/services/stask"
@@ -23,7 +25,8 @@ func InitializeApp(config *ParamsNewApp) *App {
 			),
 
 			ServiceTask: stask.NewService(
-				storememory.NewStoreTask(),
+				// storememory.NewStoreTask(),
+				storefile.NewStoreTask(&storefilefixtures.ParamsStoreFile),
 			),
 
 			ServiceSessions: ssessions.NewService(),

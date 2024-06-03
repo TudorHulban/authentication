@@ -1,0 +1,26 @@
+[
+  {
+    "PrimaryKeyTask": 17174267851406920000,
+    "Name": "task 1",
+    "TimestampOfLastUpdate": 1717426785120365715,
+    "Status": 0,
+    "OpenedByUserID": 1,
+    "Kind": 0
+  },
+  {
+    "PrimaryKeyTask": 17174268001406920011,
+    "Name": "t1",
+    "TimestampOfLastUpdate": 1717426800131902803,
+    "Status": 0,
+    "OpenedByUserID": 0,
+    "Kind": 0
+  },
+  {
+    "PrimaryKeyTask": 17174268037406920012,
+    "Name": "t2",
+    "TimestampOfLastUpdate": 1717426803777592813,
+    "Status": 0,
+    "OpenedByUserID": 0,
+    "Kind": 0
+  }
+]

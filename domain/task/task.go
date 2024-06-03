@@ -10,11 +10,11 @@ type TaskMetadata struct {
 type TaskInfo struct {
 	Name string
 
-	*TaskMetadata
+	TaskMetadata
 }
 
 type Task struct {
 	PrimaryKeyTask
 
-	*TaskInfo
+	TaskInfo
 }
