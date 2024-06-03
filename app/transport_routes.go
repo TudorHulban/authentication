@@ -28,7 +28,7 @@ func InitializeTransportRoutes(application *App) {
 
 	application.Transport.Get(
 		RouteTasks,
-		application.HandlerSearchTasks,
+		application.HandlerTasks,
 	)
 
 	application.Transport.Get(

@@ -1,5 +1,3 @@
-{{include "../partials/header"}}
-
 <h2>HTMX Logged</h2>
 <div>
 Tasks: {{len(tasks)}}
@@ -8,13 +6,15 @@ Tasks: {{len(tasks)}}
 <div>
 <table id="tasks-list">
   <tr>
+    <th>#</th>
     <th>ID</th>
     <th>Name</th>
   </tr>
-{{ range tasks }}
+{{ range id, task := tasks }}
 <tr>
-<td>{{ .PrimaryKeyTask }}</td>
-<td><a href="{{route}}/{{.PrimaryKeyTask}}">{{ .Name }}</a></td>
+<td>{{ id + 1 }}</td>
+<td>{{ task.PrimaryKeyTask }}</td>
+<td><a href="{{route}}/{{task.PrimaryKeyTask}}">{{ task.Name }}</a></td>
 </tr> 
 {{ end }}
 </table>
@@ -101,17 +101,7 @@ Tasks: {{len(tasks)}}
 
     document.body.addEventListener('htmx:afterOnLoad', function(evt) {
             if (evt.detail.target.id === "tasks-list") {
-                var itemTemplate = document.getElementById('task-template');
-                var newItem = JSON.parse(evt.detail.xhr.responseText);
-
-                var tr = itemTemplate.content.cloneNode(true);
-                tr.querySelector('.pk').textContent = newItem.PrimaryKeyTask;
-                tr.querySelector('.link-task').textContent = newItem.Name;
-                tr.querySelector('.link-task').href = "{{route}}/" +newItem.PrimaryKeyTask;
-
-                document.querySelector('#tasks-list tbody').appendChild(tr);
+                window.location.replace("{{baseURL}}{{routeTasks}}");
             }
         });
 </script>
-
-{{include "../partials/footer"}}

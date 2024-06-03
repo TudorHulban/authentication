@@ -76,7 +76,7 @@ func (a *App) HandlerAddTask(c *fiber.Ctx) error {
 	)
 }
 
-func (a *App) HandlerSearchTasks(c *fiber.Ctx) error {
+func (a *App) HandlerTasks(c *fiber.Ctx) error {
 	userLogged, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
 	if errGetUser != nil {
 		return c.Status(fiber.StatusInternalServerError).
@@ -101,8 +101,10 @@ func (a *App) HandlerSearchTasks(c *fiber.Ctx) error {
 		fiber.Map{
 			"name":         userLogged.Name,
 			"tasks":        reconstructedTasks,
+			"baseURL":      a.baseURL(),
 			"route":        a.baseURL() + RouteTask,
 			"routeAddTask": RouteTask,
+			"routeTasks":   RouteTasks,
 		},
 		"layouts/base",
 	)
