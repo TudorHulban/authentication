@@ -24,7 +24,7 @@ func NewService(store stores.IStoreTicket) *Service {
 }
 
 type ParamsCreateTicket struct {
-	TicketName     string `valid:"required" json:"taskname"`
+	TicketName     string `valid:"required" json:"ticketname"`
 	OpenedByUserID uint   //`valid:"required"`
 	TicketKind     ticket.TicketKind
 }

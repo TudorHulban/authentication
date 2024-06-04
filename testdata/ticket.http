@@ -1,0 +1,28 @@
+@domain = http://localhost:9000
+@endpointTicket=/ticket
+@endpointTickets=/tickets
+@id=1
+
+
+### GET tickets
+GET {{domain}}{{endpointTickets}} HTTP/1.1
+
+### GET ticket
+GET {{domain}}{{endpointTicket}}/{{id}} HTTP/1.1
+
+### GET ticket free style
+GET {{domain}}{{endpointTicket}}/17168196778406920000 HTTP/1.1
+
+###
+GET http://localhost:9000/task/17168826131406920000
+
+###
+GET http://localhost:9000/ticket/17175139486406920011
+
+### add ticket
+POST {{domain}}{{endpointTicket}}
+content-type: application/json
+
+{
+    "ticketname": "T1"
+}

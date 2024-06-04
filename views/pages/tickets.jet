@@ -4,7 +4,7 @@ Tickets: {{len(tasks)}}
 </div>
 
 <div>
-<table id="tasks-list">
+<table id="tickets-list">
   <tr>
     <th>#</th>
     <th>ID</th>
@@ -30,78 +30,15 @@ Tickets: {{len(tasks)}}
 <button hx-target="#modal-content" onclick="openModal()">Create Ticket</button>
 </div>
 
-<div id="modal-content" class="modal">
-    <form onSubmit="closeModal();" hx-post="{{routeAddTask}}" hx-target="#tasks-list" hx-swap="none" hx-boost="true">
-        <label for="taskname">Task Name:</label><br>
-        <input type="text" id="name" name="taskname"><br>
-
-        <button type="submit">Submit</button>
-    </form>
-</div>
+{{include "../modals/create_ticket"}}
 
 <script>
-   function openModal() {
-       document.getElementById("modal-content").style.display = "flex";
-   }
-   
-   function closeModal() {
-       document.getElementById("modal-content").style.display = "none";
-   }
-   
-   window.addEventListener('keydown',
-       function (event) {
-           if (event.key === 'Escape') {
-               closeModal();
-           }
-       }
-   )
-
-    document.body.addEventListener('htmx:afterOnLoad', function(evt) {
-            if (evt.detail.target.id === "tasks-list") {
+    document.body.addEventListener('htmx:afterOnLoad',
+        function(evt) {
+            if (evt.detail.target.id === "tickets-list") {
                 window.location.replace("{{baseURL}}{{routeTasks}}");
             }
-        });
+        }
+    ); 
 </script>
-
-<style>
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgb(0, 0, 0);
-        background-color: rgba(0, 0, 0, 0.4);
-        justify-content: center;
-        align-items: center;
-    }
-
-    .modal-content {
-        background-color: #fefefe;
-        margin: auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        max-width: 500px;
-        /* Control the modal size */
-    }
-
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-</style>
-
 
