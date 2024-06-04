@@ -22,17 +22,17 @@ func InitializeTransportRoutes(application *App) {
 	)
 
 	application.Transport.Post(
-		RouteTask,
-		application.HandlerAddTask,
+		RouteTicket,
+		application.HandlerAddTicket,
 	)
 
 	application.Transport.Get(
-		RouteTasks,
+		RouteTickets,
 		application.HandlerTasks,
 	)
 
 	application.Transport.Get(
-		RouteTask+"/:id",
+		RouteTicket+"/:id",
 		application.HandlerTaskID,
 	)
 }

@@ -26,7 +26,7 @@ func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
 		"pages/logged",
 		fiber.Map{
 			"name":  user.Name,
-			"route": a.baseURL() + RouteTasks,
+			"route": a.baseURL() + RouteTickets,
 		},
 		"layouts/base",
 	)
@@ -74,5 +74,6 @@ func (a *App) HandlerLoginRequest(c *fiber.Ctx) error {
 	)
 
 	c.Set("HX-Redirect", RouteLogged)
+
 	return c.SendStatus(fiber.StatusOK)
 }

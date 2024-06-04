@@ -1,4 +1,4 @@
-package task
+package ticket
 
 import (
 	"fmt"

@@ -5,27 +5,27 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/TudorHulban/authentication/domain/task"
+	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
 	storefile "github.com/TudorHulban/authentication/infra/stores/store-file"
 	"github.com/stretchr/testify/require"
 )
 
 func TestStoreTask(t *testing.T) {
-	store := IStoreTask(storefile.NewStoreTask(&storefile.ParamsNewStoreTask{}))
+	store := IStoreTicket(storefile.NewStoreTicket(&storefile.ParamsNewStoreTickets{}))
 
-	t1 := task.Ticket{
+	t1 := ticket.Ticket{
 		PrimaryKeyTicket: 1,
 
-		TicketInfo: task.TicketInfo{
+		TicketInfo: ticket.TicketInfo{
 			Name: "t1",
 		},
 	}
 
-	t2 := task.Ticket{
+	t2 := ticket.Ticket{
 		PrimaryKeyTicket: 2,
 
-		TicketInfo: task.TicketInfo{
+		TicketInfo: ticket.TicketInfo{
 			Name: "t2",
 		},
 	}
@@ -33,17 +33,17 @@ func TestStoreTask(t *testing.T) {
 	ctx := context.Background()
 
 	require.NoError(t,
-		store.CreateTask(ctx, &t1),
+		store.CreateTicket(ctx, &t1),
 	)
 
 	require.NoError(t,
-		store.CreateTask(ctx, &t2),
+		store.CreateTicket(ctx, &t2),
 	)
 
-	var reconstructedTaskInfo1 task.TicketInfo
+	var reconstructedTaskInfo1 ticket.TicketInfo
 
 	require.NoError(t,
-		store.GetTaskByID(
+		store.GetTicketByID(
 			ctx,
 			t1.PrimaryKeyTicket,
 			&reconstructedTaskInfo1,
@@ -53,7 +53,7 @@ func TestStoreTask(t *testing.T) {
 
 	tasks, erGetTasks := store.SearchTasks(
 		ctx,
-		&task.ParamsSearchTasks{
+		&ticket.ParamsSearchTasks{
 			ParamsPagination: helpers.ParamsPagination{
 				First: 10,
 			},

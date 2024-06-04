@@ -6,8 +6,8 @@ const (
 	RouteLogin  = "/login"
 	RouteLogged = "/logged"
 
-	RouteTask  = "/task"
-	RouteTasks = "/tasks"
+	RouteTicket  = "/ticket"
+	RouteTickets = "/tickets"
 )
 
 const (

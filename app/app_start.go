@@ -41,8 +41,8 @@ func (a *App) Start() error {
 	a.Transport.Use(
 		[]string{
 			RouteLogged,
-			RouteTask,
-			RouteTasks,
+			RouteTicket,
+			RouteTickets,
 		},
 		mw,
 	)

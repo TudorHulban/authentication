@@ -4,7 +4,7 @@ import (
 	"context"
 
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
-	"github.com/TudorHulban/authentication/domain/task"
+	"github.com/TudorHulban/authentication/domain/ticket"
 	storefile "github.com/TudorHulban/authentication/infra/stores/store-file"
 	storememory "github.com/TudorHulban/authentication/infra/stores/store-memory"
 )
@@ -18,15 +18,15 @@ type IStoreUser interface {
 
 var _ IStoreUser = &storememory.StoreUser{}
 
-type IStoreTask interface {
-	CreateTask(ctx context.Context, task *task.Ticket) error
-	GetTaskByID(ctx context.Context, taskID task.PrimaryKeyTicket, result *task.TicketInfo) error
-	SearchTasks(ctx context.Context, params *task.ParamsSearchTasks) (task.Tickets, error)
-	CloseTask(ctx context.Context, taskID task.PrimaryKeyTicket, status task.TicketStatus) error
+type IStoreTicket interface {
+	CreateTicket(ctx context.Context, task *ticket.Ticket) error
+	GetTicketByID(ctx context.Context, taskID ticket.PrimaryKeyTicket, result *ticket.TicketInfo) error
+	SearchTasks(ctx context.Context, params *ticket.ParamsSearchTasks) (ticket.Tickets, error)
+	CloseTask(ctx context.Context, taskID ticket.PrimaryKeyTicket, status ticket.TicketStatus) error
 
-	AddEvent(ctx context.Context, taskID task.PrimaryKeyTicket, event *task.Event) error
-	GetEventsForTaskID(ctx context.Context, taskID task.PrimaryKeyTicket) ([]*task.Event, error)
+	AddEvent(ctx context.Context, taskID ticket.PrimaryKeyTicket, event *ticket.Event) error
+	GetEventsForTaskID(ctx context.Context, taskID ticket.PrimaryKeyTicket) ([]*ticket.Event, error)
 }
 
-var _ IStoreTask = &storememory.StoreTask{}
-var _ IStoreTask = &storefile.StoreTask{}
+var _ IStoreTicket = &storememory.StoreTicket{}
+var _ IStoreTicket = &storefile.StoreTickets{}

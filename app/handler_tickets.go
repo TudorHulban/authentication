@@ -2,13 +2,13 @@ package app
 
 import (
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
-	"github.com/TudorHulban/authentication/domain/task"
+	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
-	"github.com/TudorHulban/authentication/services/stask"
+	"github.com/TudorHulban/authentication/services/sticket"
 	"github.com/gofiber/fiber/v2"
 )
 
-func (a *App) HandlerAddTask(c *fiber.Ctx) error {
+func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 	userLogged, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
 	if errGetUser != nil {
 		return c.Status(fiber.StatusInternalServerError).
@@ -16,12 +16,12 @@ func (a *App) HandlerAddTask(c *fiber.Ctx) error {
 				&fiber.Map{
 					"success": false,
 					"error":   errGetUser,
-					"handler": "HandlerAddTask - ExtractLoggedUserFrom", // development only
+					"handler": "HandlerAddTicket - ExtractLoggedUserFrom", // development only
 				},
 			)
 	}
 
-	var params stask.ParamsCreateTask
+	var params sticket.ParamsCreateTicket
 
 	if errValidateBody := c.BodyParser(&params); errValidateBody != nil {
 		return c.Status(fiber.StatusBadRequest).
@@ -29,34 +29,34 @@ func (a *App) HandlerAddTask(c *fiber.Ctx) error {
 				&fiber.Map{
 					"success": false,
 					"error":   errValidateBody,
-					"handler": "HandlerAddTask - c.BodyParser", // development only
+					"handler": "HandlerAddTicket - c.BodyParser", // development only
 				},
 			)
 	}
 
-	pkConstructedTask, errGetTask := a.serviceTask.CreateTask(
+	pkConstructedTicket, errGetTicket := a.serviceTicket.CreateTicket(
 		c.Context(),
-		&stask.ParamsCreateTask{
+		&sticket.ParamsCreateTicket{
 			OpenedByUserID: userLogged.ID,
-			TaskName:       params.TaskName,
-			TaskKind:       params.TaskKind,
+			TicketName:     params.TicketName,
+			TicketKind:     params.TicketKind,
 		},
 	)
-	if errGetTask != nil {
+	if errGetTicket != nil {
 		return c.Status(fiber.StatusInternalServerError).
 			JSON(
 				&fiber.Map{
 					"success": false,
-					"error":   errGetTask,
-					"handler": "HandlerAddTask - serviceTask.CreateTask", // development only
+					"error":   errGetTicket,
+					"handler": "HandlerAddTicket - serviceTask.CreateTask", // development only
 				},
 			)
 	}
 
-	reconstructedTask, errGet := a.serviceTask.GetTaskByID(
+	reconstructedTicket, errGet := a.serviceTicket.GetTicketByID(
 		c.Context(),
-		&stask.ParamsGetTaskByID{
-			TaskID:       pkConstructedTask.String(),
+		&sticket.ParamsGetTicketByID{
+			TicketID:     pkConstructedTicket.String(),
 			UserLoggedID: userLogged.ID,
 		},
 	)
@@ -72,7 +72,7 @@ func (a *App) HandlerAddTask(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(
-		reconstructedTask.PrimaryKeyTicket,
+		reconstructedTicket.PrimaryKeyTicket,
 	)
 }
 
@@ -88,9 +88,9 @@ func (a *App) HandlerTasks(c *fiber.Ctx) error {
 			)
 	}
 
-	reconstructedTasks, errGetTasks := a.serviceTask.SearchTasks(
+	reconstructedTasks, errGetTasks := a.serviceTicket.SearchTasks(
 		c.Context(),
-		&task.ParamsSearchTasks{
+		&ticket.ParamsSearchTasks{
 			ParamsPagination: helpers.ParamsPagination{
 				First: 10,
 			},
@@ -101,14 +101,14 @@ func (a *App) HandlerTasks(c *fiber.Ctx) error {
 	}
 
 	return c.Render(
-		"pages/tasks",
+		"pages"+RouteTickets,
 		fiber.Map{
 			"name":         userLogged.Name,
 			"tasks":        reconstructedTasks,
 			"baseURL":      a.baseURL(),
-			"route":        a.baseURL() + RouteTask,
-			"routeAddTask": RouteTask,
-			"routeTasks":   RouteTasks,
+			"route":        a.baseURL() + RouteTicket,
+			"routeAddTask": RouteTicket,
+			"routeTasks":   RouteTickets,
 		},
 		"layouts/base",
 	)
@@ -126,10 +126,10 @@ func (a *App) HandlerTaskID(c *fiber.Ctx) error {
 			)
 	}
 
-	reconstructedTask, errGetTask := a.serviceTask.GetTaskByID(
+	reconstructedTask, errGetTask := a.serviceTicket.GetTicketByID(
 		c.Context(),
-		&stask.ParamsGetTaskByID{
-			TaskID:       c.Params("id"),
+		&sticket.ParamsGetTicketByID{
+			TicketID:     c.Params("id"),
 			UserLoggedID: userLogged.ID,
 		},
 	)
@@ -144,7 +144,7 @@ func (a *App) HandlerTaskID(c *fiber.Ctx) error {
 			)
 	}
 
-	reconstructedEvents, errGetEvents := a.serviceTask.GetEventsForTaskID(
+	reconstructedEvents, errGetEvents := a.serviceTicket.GetEventsForTaskID(
 		c.Context(),
 		helpers.PrimaryKey(reconstructedTask.PrimaryKeyTicket),
 	)
@@ -159,7 +159,7 @@ func (a *App) HandlerTaskID(c *fiber.Ctx) error {
 	}
 
 	return c.Render(
-		"pages/task",
+		"pages"+RouteTicket,
 		fiber.Map{
 			"name":   userLogged.Name,
 			"task":   reconstructedTask,

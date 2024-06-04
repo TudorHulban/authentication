@@ -1,6 +1,6 @@
 <h2>HTMX Logged</h2>
 <div>
-Tasks: {{len(tasks)}}
+Tickets: {{len(tasks)}}
 </div>
 
 <div>
@@ -9,21 +9,25 @@ Tasks: {{len(tasks)}}
     <th>#</th>
     <th>ID</th>
     <th>Name</th>
+    <th>Status</th>
+    <th>Opened by</th>
     <th>Last Update</th>
   </tr>
-{{ range id, task := tasks }}
+{{ range id, ticket := tasks }}
 <tr>
 <td>{{ id + 1 }}</td>
-<td>{{ task.PrimaryKeyTask }}</td>
-<td><a href="{{route}}/{{task.PrimaryKeyTask}}">{{ task.Name }}</a></td>
-<td>{{ task.TimestampOfLastUpdate }}</td>
+<td>{{ ticket.PrimaryKeyTicket }}</td>
+<td><a href="{{route}}/{{ticket.PrimaryKeyTicket}}">{{ ticket.Name }}</a></td>
+<td>{{ ticket.Status }}</td>
+<td>{{ ticket.OpenedByUserID }}</td>
+<td>{{ ticket.TimestampOfLastUpdate }}</td>
 </tr> 
 {{ end }}
 </table>
 </div>
 
 <div>
-<button hx-target="#modal-content" onclick="openModal()">Create Task</button>
+<button hx-target="#modal-content" onclick="openModal()">Create Ticket</button>
 </div>
 
 <div id="modal-content" class="modal">

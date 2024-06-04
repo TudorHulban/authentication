@@ -1,4 +1,4 @@
-package stask
+package sticket
 
 import (
 	"context"
@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/TudorHulban/authentication/domain/task"
+	"github.com/TudorHulban/authentication/domain/ticket"
 	storememory "github.com/TudorHulban/authentication/infra/stores/store-memory"
 	"github.com/stretchr/testify/require"
 )
@@ -16,39 +16,39 @@ func TestTask(t *testing.T) {
 		storememory.NewStoreTask(),
 	)
 
-	paramTask := ParamsCreateTask{
-		TaskName:       "xxx",
+	paramTicket := ParamsCreateTicket{
+		TicketName:     "xxx",
 		OpenedByUserID: 1,
-		TaskKind:       task.KindUndefined,
+		TicketKind:     ticket.KindUndefined,
 	}
 
 	ctx := context.Background()
 
-	pkTask1, errCr := service.CreateTask(ctx, &paramTask)
+	pkTask1, errCr := service.CreateTicket(ctx, &paramTicket)
 	require.NoError(t, errCr)
 	require.NotZero(t, pkTask1)
 
-	reconstructedTask, errGet := service.GetTaskByID(
+	reconstructedTicket, errGet := service.GetTicketByID(
 		ctx,
-		&ParamsGetTaskByID{
-			TaskID:       strconv.Itoa(int(pkTask1)),
+		&ParamsGetTicketByID{
+			TicketID:     strconv.Itoa(int(pkTask1)),
 			UserLoggedID: 1,
 		},
 	)
 	require.NoError(t, errGet)
-	require.NotNil(t, reconstructedTask)
+	require.NotNil(t, reconstructedTicket)
 	require.Equal(t,
-		paramTask.TaskName,
-		reconstructedTask.Name,
+		paramTicket.TicketName,
+		reconstructedTicket.Name,
 	)
-	require.NotZero(t, reconstructedTask.TimestampOfLastUpdate, "timestamp")
-	require.NotZero(t, reconstructedTask.OpenedByUserID)
+	require.NotZero(t, reconstructedTicket.TimestampOfLastUpdate, "timestamp")
+	require.NotZero(t, reconstructedTicket.OpenedByUserID)
 	require.EqualValues(t,
-		task.StatusNew,
-		reconstructedTask.Status,
+		ticket.StatusNew,
+		reconstructedTicket.Status,
 	)
 
-	reconstructedTasks, errGetTasks := service.SearchTasks(ctx, &task.ParamsSearchTasks{})
+	reconstructedTasks, errGetTasks := service.SearchTasks(ctx, &ticket.ParamsSearchTasks{})
 	require.NoError(t, errGetTasks)
 	require.NotZero(t, reconstructedTasks)
 
@@ -57,7 +57,7 @@ func TestTask(t *testing.T) {
 		reconstructedTasks[0].TicketInfo,
 	)
 
-	e1 := task.EventInfo{
+	e1 := ticket.EventInfo{
 		Content: "lorem ipsum 1",
 	}
 
@@ -72,7 +72,7 @@ func TestTask(t *testing.T) {
 		),
 	)
 
-	e2 := task.EventInfo{
+	e2 := ticket.EventInfo{
 		Content: "lorem ipsum 2",
 	}
 

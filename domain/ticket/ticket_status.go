@@ -1,4 +1,4 @@
-package task
+package ticket
 
 type TicketStatus uint8
 

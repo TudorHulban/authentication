@@ -8,35 +8,35 @@ import (
 	"os"
 	"sync"
 
-	"github.com/TudorHulban/authentication/domain/task"
+	"github.com/TudorHulban/authentication/domain/ticket"
 )
 
-type StoreTask struct {
-	pathCacheTask  string
-	pathCacheEvent string
+type StoreTickets struct {
+	pathCacheTicket string
+	pathCacheEvent  string
 
 	mu sync.RWMutex
 }
 
-type ParamsNewStoreTask struct {
-	PathCacheTask  string
-	PathCacheEvent string
+type ParamsNewStoreTickets struct {
+	PathCacheTickets string
+	PathCacheEvent   string
 }
 
-// TODO: make it portable
-func NewStoreTask(params *ParamsNewStoreTask) *StoreTask {
-	return &StoreTask{
-		pathCacheTask:  params.PathCacheTask,
-		pathCacheEvent: params.PathCacheEvent,
+// TODO: make it generic
+func NewStoreTicket(params *ParamsNewStoreTickets) *StoreTickets {
+	return &StoreTickets{
+		pathCacheTicket: params.PathCacheTickets,
+		pathCacheEvent:  params.PathCacheEvent,
 	}
 }
 
-func (s *StoreTask) readFileTask() (task.Tickets, error) {
-	file, err := os.Open(s.pathCacheTask)
+func (s *StoreTickets) readFile() (ticket.Tickets, error) {
+	file, err := os.Open(s.pathCacheTicket)
 	if err != nil {
 		if os.IsNotExist(err) {
 			return nil,
-				os.WriteFile(s.pathCacheTask, nil, 0644)
+				os.WriteFile(s.pathCacheTicket, nil, 0644)
 		}
 		return nil, err
 	}
@@ -47,7 +47,7 @@ func (s *StoreTask) readFileTask() (task.Tickets, error) {
 		return nil, err
 	}
 
-	var result task.Tickets
+	var result ticket.Tickets
 
 	if len(bytes) > 0 {
 		if err := json.Unmarshal(bytes, &result); err != nil {
@@ -57,87 +57,87 @@ func (s *StoreTask) readFileTask() (task.Tickets, error) {
 	return result, nil
 }
 
-func (s *StoreTask) writeFile(tasks task.Tickets) error {
+func (s *StoreTickets) writeFile(tasks ticket.Tickets) error {
 	bytes, err := json.MarshalIndent(tasks, "", "  ")
 	if err != nil {
 		return err
 	}
-	return os.WriteFile(s.pathCacheTask, bytes, 0644)
+	return os.WriteFile(s.pathCacheTicket, bytes, 0644)
 }
 
-func (s *StoreTask) CreateTask(ctx context.Context, task *task.Ticket) error {
+func (s *StoreTickets) CreateTicket(ctx context.Context, ticket *ticket.Ticket) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	items, err := s.readFileTask()
+	items, err := s.readFile()
 	if err != nil {
 		return err
 	}
 
-	_, errGetTaskByID := items.GetTaskByID(task.PrimaryKeyTicket)
+	_, errGetTaskByID := items.GetTaskByID(ticket.PrimaryKeyTicket)
 	if errGetTaskByID == nil {
 		return nil
 	}
 
-	items = append(items, task)
+	items = append(items, ticket)
 
 	return s.writeFile(items)
 }
 
-func (s *StoreTask) GetTaskByID(ctx context.Context, taskID task.PrimaryKeyTicket, result *task.TicketInfo) error {
+func (s *StoreTickets) GetTicketByID(ctx context.Context, taskID ticket.PrimaryKeyTicket, result *ticket.TicketInfo) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	tasks, errGetTasks := s.readFileTask()
+	tasks, errGetTasks := s.readFile()
 	if errGetTasks != nil {
 		return errGetTasks
 	}
 
-	task, errGetTask := tasks.GetTaskByID(taskID)
+	ticket, errGetTask := tasks.GetTaskByID(taskID)
 	if errGetTask != nil {
 		return errGetTask
 	}
 
-	*result = task.TicketInfo
+	*result = ticket.TicketInfo
 
 	return nil
 }
 
-func (s *StoreTask) SearchTasks(ctx context.Context, params *task.ParamsSearchTasks) (task.Tickets, error) {
+func (s *StoreTickets) SearchTasks(ctx context.Context, params *ticket.ParamsSearchTasks) (ticket.Tickets, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	return s.readFileTask()
+	return s.readFile()
 }
 
-func (s *StoreTask) UpdateTask(ctx context.Context, task *task.Ticket) {
+func (s *StoreTickets) UpdateTask(ctx context.Context, ticket *ticket.Ticket) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	items, err := s.readFileTask()
+	items, err := s.readFile()
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	for i, item := range items {
-		if item.PrimaryKeyTicket == task.PrimaryKeyTicket {
-			items[i] = task
+		if item.PrimaryKeyTicket == ticket.PrimaryKeyTicket {
+			items[i] = ticket
 
 			fmt.Println(s.writeFile(items))
 		}
 	}
 
-	fmt.Printf("item with ID %v not found", task.PrimaryKeyTicket)
+	fmt.Printf("item with ID %v not found", ticket.PrimaryKeyTicket)
 }
 
-func (s *StoreTask) CloseTask(ctx context.Context, taskID task.PrimaryKeyTicket, status task.TicketStatus) error {
+func (s *StoreTickets) CloseTask(ctx context.Context, taskID ticket.PrimaryKeyTicket, status ticket.TicketStatus) error {
 	return nil
 }
 
-func (s *StoreTask) AddEvent(ctx context.Context, taskID task.PrimaryKeyTicket, event *task.Event) error {
+func (s *StoreTickets) AddEvent(ctx context.Context, taskID ticket.PrimaryKeyTicket, event *ticket.Event) error {
 	return nil
 }
 
-func (s *StoreTask) GetEventsForTaskID(ctx context.Context, taskID task.PrimaryKeyTicket) ([]*task.Event, error) {
+func (s *StoreTickets) GetEventsForTaskID(ctx context.Context, taskID ticket.PrimaryKeyTicket) ([]*ticket.Event, error) {
 	return nil, nil
 }

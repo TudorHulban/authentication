@@ -1,9 +1,5 @@
-{{include "../partials/header"}}
-
 <h2>HTMX Logged</h2>
 
 <h3>hi {{name}}!</h3>
 
-<a href="{{route}}">Tasks</a>
-
-{{include "../partials/footer"}}
+<a href="{{route}}">Tickets</a>

@@ -6,13 +6,13 @@ import (
 	"os"
 
 	"github.com/TudorHulban/authentication/apperrors"
-	"github.com/TudorHulban/authentication/domain/task"
+	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/fixtures"
 	storefilefixtures "github.com/TudorHulban/authentication/fixtures/store-file-fixtures"
 	storefile "github.com/TudorHulban/authentication/infra/stores/store-file"
 	storememory "github.com/TudorHulban/authentication/infra/stores/store-memory"
 	"github.com/TudorHulban/authentication/services/ssessions"
-	"github.com/TudorHulban/authentication/services/stask"
+	"github.com/TudorHulban/authentication/services/sticket"
 	"github.com/TudorHulban/authentication/services/suser"
 )
 
@@ -24,9 +24,9 @@ func InitializeApp(config *ParamsNewApp) *App {
 				storememory.NewStoreMemory(),
 			),
 
-			ServiceTask: stask.NewService(
+			ServiceTicket: sticket.NewService(
 				// storememory.NewStoreTask(),
-				storefile.NewStoreTask(&storefilefixtures.ParamsStoreFile),
+				storefile.NewStoreTicket(&storefilefixtures.ParamsStoreFile),
 			),
 
 			ServiceSessions: ssessions.NewService(),
@@ -45,14 +45,14 @@ func InitializeApp(config *ParamsNewApp) *App {
 
 	fixtures.FixtureTaskWEvents(
 		context.Background(),
-		&fixtures.PiersFixtureTaskWEvents{
-			ServiceTask: app.serviceTask,
+		&fixtures.PiersFixtureTicketWEvents{
+			ServiceTicket: app.serviceTicket,
 		},
 		&fixtures.ParamsFixtureTaskWEvents{
-			TaskName:           "task 1",
-			TaskKind:           task.KindUndefined,
-			TaskOpenedByUserID: 1,
-			NumberEvents:       10,
+			TicketName:           "Ticket 1",
+			TicketKind:           ticket.KindUndefined,
+			TicketOpenedByUserID: 1,
+			NumberEvents:         10,
 		},
 	)
 

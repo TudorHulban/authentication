@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/TudorHulban/authentication/domain/task"
+	"github.com/TudorHulban/authentication/domain/ticket"
 )
 
-type cacheTask map[task.PrimaryKeyTicket]task.TicketInfo
+type cacheTask map[ticket.PrimaryKeyTicket]ticket.TicketInfo
 
 func (cache cacheTask) String() string {
 	result := []string{
