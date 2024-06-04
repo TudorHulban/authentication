@@ -76,7 +76,7 @@ func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 	)
 }
 
-func (a *App) HandlerTasks(c *fiber.Ctx) error {
+func (a *App) HandlerTickets(c *fiber.Ctx) error {
 	userLogged, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
 	if errGetUser != nil {
 		return c.Status(fiber.StatusInternalServerError).
@@ -103,6 +103,7 @@ func (a *App) HandlerTasks(c *fiber.Ctx) error {
 	return c.Render(
 		"pages"+RouteTickets,
 		fiber.Map{
+			"title":        "Tickets",
 			"name":         userLogged.Name,
 			"tasks":        reconstructedTasks,
 			"baseURL":      a.baseURL(),
@@ -114,7 +115,7 @@ func (a *App) HandlerTasks(c *fiber.Ctx) error {
 	)
 }
 
-func (a *App) HandlerTaskID(c *fiber.Ctx) error {
+func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 	userLogged, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
 	if errGetUser != nil {
 		return c.Status(fiber.StatusInternalServerError).
@@ -161,6 +162,7 @@ func (a *App) HandlerTaskID(c *fiber.Ctx) error {
 	return c.Render(
 		"pages"+RouteTicket,
 		fiber.Map{
+			"title":  "T" + reconstructedTask.PrimaryKeyTicket.String(),
 			"name":   userLogged.Name,
 			"task":   reconstructedTask,
 			"events": reconstructedEvents,

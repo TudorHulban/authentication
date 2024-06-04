@@ -28,11 +28,11 @@ func InitializeTransportRoutes(application *App) {
 
 	application.Transport.Get(
 		RouteTickets,
-		application.HandlerTasks,
+		application.HandlerTickets,
 	)
 
 	application.Transport.Get(
 		RouteTicket+"/:id",
-		application.HandlerTaskID,
+		application.HandlerTicketID,
 	)
 }

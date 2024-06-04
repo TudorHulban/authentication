@@ -11,7 +11,9 @@ import (
 func (a *App) HandlerLoginPage(c *fiber.Ctx) error {
 	return c.Render(
 		"pages/login",
-		nil,
+		fiber.Map{
+			"title": "Login",
+		},
 		"layouts/base",
 	)
 }
@@ -27,6 +29,7 @@ func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
 		fiber.Map{
 			"name":  user.Name,
 			"route": a.baseURL() + RouteTickets,
+			"title": "Home",
 		},
 		"layouts/base",
 	)
