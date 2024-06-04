@@ -10,8 +10,8 @@ import (
 
 // TODO: move to concurrent safe maps.
 type StoreTask struct {
-	cacheTask  map[task.PrimaryKeyTask]task.TaskInfo
-	cacheEvent map[task.PrimaryKeyTask][]*task.Event
+	cacheTask  map[task.PrimaryKeyTicket]task.TicketInfo
+	cacheEvent map[task.PrimaryKeyTicket][]*task.Event
 
 	mu sync.RWMutex
 }
@@ -19,32 +19,32 @@ type StoreTask struct {
 func NewStoreTask() *StoreTask {
 	return &StoreTask{
 		cacheTask: make(
-			map[task.PrimaryKeyTask]task.TaskInfo,
+			map[task.PrimaryKeyTicket]task.TicketInfo,
 		),
 
 		cacheEvent: make(
-			map[task.PrimaryKeyTask][]*task.Event,
+			map[task.PrimaryKeyTicket][]*task.Event,
 		),
 	}
 }
 
-func (s *StoreTask) CreateTask(ctx context.Context, task *task.Task) error {
+func (s *StoreTask) CreateTask(ctx context.Context, task *task.Ticket) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	if _, exists := s.cacheTask[task.PrimaryKeyTask]; exists {
+	if _, exists := s.cacheTask[task.PrimaryKeyTicket]; exists {
 		return fmt.Errorf(
 			"task with ID %d already exists",
-			task.PrimaryKeyTask,
+			task.PrimaryKeyTicket,
 		)
 	}
 
-	s.cacheTask[task.PrimaryKeyTask] = task.TaskInfo
+	s.cacheTask[task.PrimaryKeyTicket] = task.TicketInfo
 
 	return nil
 }
 
-func (s *StoreTask) GetTaskByID(ctx context.Context, taskID task.PrimaryKeyTask, result *task.TaskInfo) error {
+func (s *StoreTask) GetTaskByID(ctx context.Context, taskID task.PrimaryKeyTicket, result *task.TicketInfo) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -61,20 +61,20 @@ func (s *StoreTask) GetTaskByID(ctx context.Context, taskID task.PrimaryKeyTask,
 	return nil
 }
 
-func (s *StoreTask) SearchTasks(ctx context.Context, params *task.ParamsSearchTasks) (task.Tasks, error) {
+func (s *StoreTask) SearchTasks(ctx context.Context, params *task.ParamsSearchTasks) (task.Tickets, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	result := make([]*task.Task, 0)
+	result := make([]*task.Ticket, 0)
 
 	for pk, taskInfo := range s.cacheTask {
 		// TODO: apply filtering
 
 		result = append(
 			result,
-			&task.Task{
-				PrimaryKeyTask: pk,
-				TaskInfo:       taskInfo,
+			&task.Ticket{
+				PrimaryKeyTicket: pk,
+				TicketInfo:       taskInfo,
 			},
 		)
 	}
@@ -83,15 +83,15 @@ func (s *StoreTask) SearchTasks(ctx context.Context, params *task.ParamsSearchTa
 		nil
 }
 
-func (s *StoreTask) UpdateTask(ctx context.Context, task *task.Task) {
+func (s *StoreTask) UpdateTask(ctx context.Context, task *task.Ticket) {
 	s.mu.Lock()
 
-	s.cacheTask[task.PrimaryKeyTask] = task.TaskInfo
+	s.cacheTask[task.PrimaryKeyTicket] = task.TicketInfo
 
 	s.mu.Unlock()
 }
 
-func (s *StoreTask) CloseTask(ctx context.Context, taskID task.PrimaryKeyTask, status task.TaskStatus) error {
+func (s *StoreTask) CloseTask(ctx context.Context, taskID task.PrimaryKeyTicket, status task.TicketStatus) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -107,17 +107,17 @@ func (s *StoreTask) CloseTask(ctx context.Context, taskID task.PrimaryKeyTask, s
 
 	s.UpdateTask(
 		ctx,
-		&task.Task{
-			PrimaryKeyTask: taskID,
+		&task.Ticket{
+			PrimaryKeyTicket: taskID,
 
-			TaskInfo: cachedTask,
+			TicketInfo: cachedTask,
 		},
 	)
 
 	return nil
 }
 
-func (s *StoreTask) AddEvent(ctx context.Context, taskID task.PrimaryKeyTask, event *task.Event) error {
+func (s *StoreTask) AddEvent(ctx context.Context, taskID task.PrimaryKeyTicket, event *task.Event) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -134,7 +134,7 @@ func (s *StoreTask) AddEvent(ctx context.Context, taskID task.PrimaryKeyTask, ev
 	return nil
 }
 
-func (s *StoreTask) GetEventsForTaskID(ctx context.Context, taskID task.PrimaryKeyTask) ([]*task.Event, error) {
+func (s *StoreTask) GetEventsForTaskID(ctx context.Context, taskID task.PrimaryKeyTicket) ([]*task.Event, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 

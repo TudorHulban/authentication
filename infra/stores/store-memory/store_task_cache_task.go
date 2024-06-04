@@ -7,7 +7,7 @@ import (
 	"github.com/TudorHulban/authentication/domain/task"
 )
 
-type cacheTask map[task.PrimaryKeyTask]task.TaskInfo
+type cacheTask map[task.PrimaryKeyTicket]task.TicketInfo
 
 func (cache cacheTask) String() string {
 	result := []string{

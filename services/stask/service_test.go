@@ -53,8 +53,8 @@ func TestTask(t *testing.T) {
 	require.NotZero(t, reconstructedTasks)
 
 	fmt.Println(
-		reconstructedTasks[0].PrimaryKeyTask,
-		reconstructedTasks[0].TaskInfo,
+		reconstructedTasks[0].PrimaryKeyTicket,
+		reconstructedTasks[0].TicketInfo,
 	)
 
 	e1 := task.EventInfo{

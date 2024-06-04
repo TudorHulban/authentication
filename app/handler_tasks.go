@@ -72,7 +72,7 @@ func (a *App) HandlerAddTask(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(
-		reconstructedTask.PrimaryKeyTask,
+		reconstructedTask.PrimaryKeyTicket,
 	)
 }
 
@@ -146,7 +146,7 @@ func (a *App) HandlerTaskID(c *fiber.Ctx) error {
 
 	reconstructedEvents, errGetEvents := a.serviceTask.GetEventsForTaskID(
 		c.Context(),
-		helpers.PrimaryKey(reconstructedTask.PrimaryKeyTask),
+		helpers.PrimaryKey(reconstructedTask.PrimaryKeyTicket),
 	)
 	if errGetEvents != nil {
 		return c.Status(fiber.StatusInternalServerError).

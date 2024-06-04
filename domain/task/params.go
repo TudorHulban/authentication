@@ -5,8 +5,8 @@ import "github.com/TudorHulban/authentication/helpers"
 type ParamsSearchTasks struct {
 	helpers.ParamsPagination
 
-	WithStatus TaskStatus
-	WithKind   TaskKind
+	WithStatus TicketStatus
+	WithKind   TicketKind
 
 	WithLastUpdateBefore int64
 	WithLastUpdatedAfter int64

@@ -31,7 +31,7 @@ func NewStoreTask(params *ParamsNewStoreTask) *StoreTask {
 	}
 }
 
-func (s *StoreTask) readFileTask() (task.Tasks, error) {
+func (s *StoreTask) readFileTask() (task.Tickets, error) {
 	file, err := os.Open(s.pathCacheTask)
 	if err != nil {
 		if os.IsNotExist(err) {
@@ -47,7 +47,7 @@ func (s *StoreTask) readFileTask() (task.Tasks, error) {
 		return nil, err
 	}
 
-	var result task.Tasks
+	var result task.Tickets
 
 	if len(bytes) > 0 {
 		if err := json.Unmarshal(bytes, &result); err != nil {
@@ -57,7 +57,7 @@ func (s *StoreTask) readFileTask() (task.Tasks, error) {
 	return result, nil
 }
 
-func (s *StoreTask) writeFile(tasks task.Tasks) error {
+func (s *StoreTask) writeFile(tasks task.Tickets) error {
 	bytes, err := json.MarshalIndent(tasks, "", "  ")
 	if err != nil {
 		return err
@@ -65,7 +65,7 @@ func (s *StoreTask) writeFile(tasks task.Tasks) error {
 	return os.WriteFile(s.pathCacheTask, bytes, 0644)
 }
 
-func (s *StoreTask) CreateTask(ctx context.Context, task *task.Task) error {
+func (s *StoreTask) CreateTask(ctx context.Context, task *task.Ticket) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -74,7 +74,7 @@ func (s *StoreTask) CreateTask(ctx context.Context, task *task.Task) error {
 		return err
 	}
 
-	_, errGetTaskByID := items.GetTaskByID(task.PrimaryKeyTask)
+	_, errGetTaskByID := items.GetTaskByID(task.PrimaryKeyTicket)
 	if errGetTaskByID == nil {
 		return nil
 	}
@@ -84,7 +84,7 @@ func (s *StoreTask) CreateTask(ctx context.Context, task *task.Task) error {
 	return s.writeFile(items)
 }
 
-func (s *StoreTask) GetTaskByID(ctx context.Context, taskID task.PrimaryKeyTask, result *task.TaskInfo) error {
+func (s *StoreTask) GetTaskByID(ctx context.Context, taskID task.PrimaryKeyTicket, result *task.TicketInfo) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -98,19 +98,19 @@ func (s *StoreTask) GetTaskByID(ctx context.Context, taskID task.PrimaryKeyTask,
 		return errGetTask
 	}
 
-	*result = task.TaskInfo
+	*result = task.TicketInfo
 
 	return nil
 }
 
-func (s *StoreTask) SearchTasks(ctx context.Context, params *task.ParamsSearchTasks) (task.Tasks, error) {
+func (s *StoreTask) SearchTasks(ctx context.Context, params *task.ParamsSearchTasks) (task.Tickets, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
 	return s.readFileTask()
 }
 
-func (s *StoreTask) UpdateTask(ctx context.Context, task *task.Task) {
+func (s *StoreTask) UpdateTask(ctx context.Context, task *task.Ticket) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -120,24 +120,24 @@ func (s *StoreTask) UpdateTask(ctx context.Context, task *task.Task) {
 	}
 
 	for i, item := range items {
-		if item.PrimaryKeyTask == task.PrimaryKeyTask {
+		if item.PrimaryKeyTicket == task.PrimaryKeyTicket {
 			items[i] = task
 
 			fmt.Println(s.writeFile(items))
 		}
 	}
 
-	fmt.Printf("item with ID %v not found", task.PrimaryKeyTask)
+	fmt.Printf("item with ID %v not found", task.PrimaryKeyTicket)
 }
 
-func (s *StoreTask) CloseTask(ctx context.Context, taskID task.PrimaryKeyTask, status task.TaskStatus) error {
+func (s *StoreTask) CloseTask(ctx context.Context, taskID task.PrimaryKeyTicket, status task.TicketStatus) error {
 	return nil
 }
 
-func (s *StoreTask) AddEvent(ctx context.Context, taskID task.PrimaryKeyTask, event *task.Event) error {
+func (s *StoreTask) AddEvent(ctx context.Context, taskID task.PrimaryKeyTicket, event *task.Event) error {
 	return nil
 }
 
-func (s *StoreTask) GetEventsForTaskID(ctx context.Context, taskID task.PrimaryKeyTask) ([]*task.Event, error) {
+func (s *StoreTask) GetEventsForTaskID(ctx context.Context, taskID task.PrimaryKeyTicket) ([]*task.Event, error) {
 	return nil, nil
 }

@@ -14,18 +14,18 @@ import (
 func TestStoreTask(t *testing.T) {
 	store := IStoreTask(storefile.NewStoreTask(&storefile.ParamsNewStoreTask{}))
 
-	t1 := task.Task{
-		PrimaryKeyTask: 1,
+	t1 := task.Ticket{
+		PrimaryKeyTicket: 1,
 
-		TaskInfo: task.TaskInfo{
+		TicketInfo: task.TicketInfo{
 			Name: "t1",
 		},
 	}
 
-	t2 := task.Task{
-		PrimaryKeyTask: 2,
+	t2 := task.Ticket{
+		PrimaryKeyTicket: 2,
 
-		TaskInfo: task.TaskInfo{
+		TicketInfo: task.TicketInfo{
 			Name: "t2",
 		},
 	}
@@ -40,12 +40,12 @@ func TestStoreTask(t *testing.T) {
 		store.CreateTask(ctx, &t2),
 	)
 
-	var reconstructedTaskInfo1 task.TaskInfo
+	var reconstructedTaskInfo1 task.TicketInfo
 
 	require.NoError(t,
 		store.GetTaskByID(
 			ctx,
-			t1.PrimaryKeyTask,
+			t1.PrimaryKeyTicket,
 			&reconstructedTaskInfo1,
 		),
 	)

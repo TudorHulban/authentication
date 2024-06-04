@@ -7,11 +7,11 @@ import (
 	"github.com/TudorHulban/authentication/apperrors"
 )
 
-type Tasks []*Task
+type Tickets []*Ticket
 
-func (t Tasks) GetTaskByID(pk PrimaryKeyTask) (*Task, error) {
+func (t Tickets) GetTaskByID(pk PrimaryKeyTicket) (*Ticket, error) {
 	for _, task := range t {
-		if task.PrimaryKeyTask == pk {
+		if task.PrimaryKeyTicket == pk {
 			return task, nil
 		}
 	}
@@ -21,7 +21,7 @@ func (t Tasks) GetTaskByID(pk PrimaryKeyTask) (*Task, error) {
 	}
 }
 
-func (t Tasks) String() string {
+func (t Tickets) String() string {
 	result := []string{
 		fmt.Sprintf("Tasks: %d", len(t)),
 	}
@@ -30,7 +30,7 @@ func (t Tasks) String() string {
 		result = append(result,
 			fmt.Sprintf(
 				"ID: %v, Name: %s",
-				task.PrimaryKeyTask,
+				task.PrimaryKeyTicket,
 				task.Name,
 			),
 		)

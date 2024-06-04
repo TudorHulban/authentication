@@ -26,7 +26,7 @@ func NewService(store stores.IStoreTask) *Service {
 type ParamsCreateTask struct {
 	TaskName       string `valid:"required" json:"taskname"`
 	OpenedByUserID uint
-	TaskKind       task.TaskKind
+	TaskKind       task.TicketKind
 }
 
 func (s *Service) CreateTask(ctx context.Context, params *ParamsCreateTask) (helpers.PrimaryKey, error) {
@@ -38,19 +38,19 @@ func (s *Service) CreateTask(ctx context.Context, params *ParamsCreateTask) (hel
 			}
 	}
 
-	pk := task.PrimaryKeyTask(
+	pk := task.PrimaryKeyTicket(
 		epochid.NewIDIncremental10KWCoCorrection(),
 	)
 
 	if errCr := s.store.CreateTask(
 		ctx,
-		&task.Task{
-			PrimaryKeyTask: pk,
+		&task.Ticket{
+			PrimaryKeyTicket: pk,
 
-			TaskInfo: task.TaskInfo{
+			TicketInfo: task.TicketInfo{
 				Name: params.TaskName,
 
-				TaskMetadata: task.TaskMetadata{
+				TicketMetadata: task.TicketMetadata{
 					TimestampOfLastUpdate: time.Now().UnixNano(),
 					Status:                task.StatusNew,
 					OpenedByUserID:        params.OpenedByUserID,
@@ -72,7 +72,7 @@ type ParamsGetTaskByID struct {
 	UserLoggedID uint
 }
 
-func (s *Service) GetTaskByID(ctx context.Context, params *ParamsGetTaskByID) (*task.Task, error) {
+func (s *Service) GetTaskByID(ctx context.Context, params *ParamsGetTaskByID) (*task.Ticket, error) {
 	numericPK, errConv := strconv.ParseUint(params.TaskID, 10, 64)
 	if errConv != nil {
 		return nil,
@@ -82,35 +82,35 @@ func (s *Service) GetTaskByID(ctx context.Context, params *ParamsGetTaskByID) (*
 			}
 	}
 
-	var result task.TaskInfo
+	var result task.TicketInfo
 
 	if errGet := s.store.GetTaskByID(
 		ctx,
-		task.PrimaryKeyTask(numericPK),
+		task.PrimaryKeyTicket(numericPK),
 		&result,
 	); errGet != nil {
 		return nil,
 			errGet
 	}
 
-	return &task.Task{
-			PrimaryKeyTask: task.PrimaryKeyTask(numericPK),
-			TaskInfo:       result,
+	return &task.Ticket{
+			PrimaryKeyTicket: task.PrimaryKeyTicket(numericPK),
+			TicketInfo:       result,
 		},
 		nil
 }
 
-func (s *Service) SearchTasks(ctx context.Context, params *task.ParamsSearchTasks) (task.Tasks, error) {
+func (s *Service) SearchTasks(ctx context.Context, params *task.ParamsSearchTasks) (task.Tickets, error) {
 	return s.store.SearchTasks(
 		ctx,
 		params,
 	)
 }
 
-func (s *Service) CloseTask(ctx context.Context, taskID helpers.PrimaryKey, status task.TaskStatus) error {
+func (s *Service) CloseTask(ctx context.Context, taskID helpers.PrimaryKey, status task.TicketStatus) error {
 	return s.store.CloseTask(
 		ctx,
-		task.PrimaryKeyTask(taskID),
+		task.PrimaryKeyTicket(taskID),
 		status,
 	)
 }
@@ -123,7 +123,7 @@ type ParamsAddEvent struct {
 func (s *Service) AddEvent(ctx context.Context, taskID helpers.PrimaryKey, params *ParamsAddEvent) error {
 	return s.store.AddEvent(
 		ctx,
-		task.PrimaryKeyTask(taskID),
+		task.PrimaryKeyTicket(taskID),
 		&task.Event{
 			PrimaryKey: helpers.PrimaryKey(
 				epochid.NewIDIncremental10KWCoCorrection(),
@@ -141,6 +141,6 @@ func (s *Service) AddEvent(ctx context.Context, taskID helpers.PrimaryKey, param
 func (s *Service) GetEventsForTaskID(ctx context.Context, taskID helpers.PrimaryKey) ([]*task.Event, error) {
 	return s.store.GetEventsForTaskID(
 		ctx,
-		task.PrimaryKeyTask(taskID),
+		task.PrimaryKeyTicket(taskID),
 	)
 }

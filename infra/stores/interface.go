@@ -19,13 +19,13 @@ type IStoreUser interface {
 var _ IStoreUser = &storememory.StoreUser{}
 
 type IStoreTask interface {
-	CreateTask(ctx context.Context, task *task.Task) error
-	GetTaskByID(ctx context.Context, taskID task.PrimaryKeyTask, result *task.TaskInfo) error
-	SearchTasks(ctx context.Context, params *task.ParamsSearchTasks) (task.Tasks, error)
-	CloseTask(ctx context.Context, taskID task.PrimaryKeyTask, status task.TaskStatus) error
+	CreateTask(ctx context.Context, task *task.Ticket) error
+	GetTaskByID(ctx context.Context, taskID task.PrimaryKeyTicket, result *task.TicketInfo) error
+	SearchTasks(ctx context.Context, params *task.ParamsSearchTasks) (task.Tickets, error)
+	CloseTask(ctx context.Context, taskID task.PrimaryKeyTicket, status task.TicketStatus) error
 
-	AddEvent(ctx context.Context, taskID task.PrimaryKeyTask, event *task.Event) error
-	GetEventsForTaskID(ctx context.Context, taskID task.PrimaryKeyTask) ([]*task.Event, error)
+	AddEvent(ctx context.Context, taskID task.PrimaryKeyTicket, event *task.Event) error
+	GetEventsForTaskID(ctx context.Context, taskID task.PrimaryKeyTicket) ([]*task.Event, error)
 }
 
 var _ IStoreTask = &storememory.StoreTask{}

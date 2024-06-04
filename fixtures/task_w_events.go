@@ -15,7 +15,7 @@ type PiersFixtureTaskWEvents struct {
 
 type ParamsFixtureTaskWEvents struct {
 	TaskName           string
-	TaskKind           task.TaskKind
+	TaskKind           task.TicketKind
 	TaskOpenedByUserID uint
 
 	NumberEvents uint
