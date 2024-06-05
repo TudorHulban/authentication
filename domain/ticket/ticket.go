@@ -18,3 +18,7 @@ type Ticket struct {
 
 	TicketInfo
 }
+
+func GetID(t *Ticket) uint64 {
+	return uint64(t.PrimaryKeyTicket)
+}
