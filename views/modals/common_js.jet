@@ -1,5 +1,9 @@
 <script>
    function openModal() {
+       const errorTarget = document.getElementById("htmx-alert");
+       errorTarget.setAttribute("hidden", "true");
+       errorTarget.innerText = "";
+
        document.getElementById("modal-content").style.display = "flex";
    }
    
