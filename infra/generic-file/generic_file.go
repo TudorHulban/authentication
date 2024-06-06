@@ -1,6 +1,7 @@
 package genericfile
 
 import (
+	"errors"
 	"fmt"
 	"sync"
 )
@@ -21,7 +22,7 @@ func NewGenericStoreFile[T any](params *ParamsNewGenericStoreFile) *GenericStore
 	}
 }
 
-func (store *GenericStoreFile[T]) createFirstItem(item *T) error {
+func (store *GenericStoreFile[T]) CreateFirstItem(item *T) error {
 	store.mu.Lock()
 	defer store.mu.Unlock()
 
@@ -109,4 +110,19 @@ func (store *GenericStoreFile[T]) SearchItems(criteria func(*T) bool) ([]*T, err
 	}
 
 	return result, nil
+}
+
+func (store *GenericStoreFile[T]) SearchItem(criteriaPK func(*T) bool) (*T, error) {
+	reconstructedItems, errGet := store.SearchItems(criteriaPK)
+	if errGet != nil {
+		return nil, errGet
+	}
+
+	if len(reconstructedItems) > 1 {
+		return nil,
+			errors.New("duplicates found")
+	}
+
+	return reconstructedItems[0],
+		nil
 }

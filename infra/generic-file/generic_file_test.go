@@ -23,7 +23,7 @@ func TestGenericStore(t *testing.T) {
 		},
 	}
 
-	store.createFirstItem(&t1)
+	store.CreateFirstItem(&t1)
 
 	criteria := func(item *ticket.Ticket) bool {
 		return ticket.GetID(item) == uint64(t1.PrimaryKeyTicket)

@@ -22,3 +22,9 @@ type Ticket struct {
 func GetID(t *Ticket) uint64 {
 	return uint64(t.PrimaryKeyTicket)
 }
+
+var CriteriaPK = func(pk PrimaryKeyTicket) func(item *Ticket) bool {
+	return func(item *Ticket) bool {
+		return GetID(item) == uint64(pk)
+	}
+}
