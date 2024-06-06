@@ -37,10 +37,10 @@ func NewStoreTicket(params *ParamsNewStoreTickets) *StoreTickets {
 }
 
 func (s *StoreTickets) CreateTicket(ctx context.Context, item *ticket.Ticket) error {
-	return s.storeIickets.CreateItem(item, ticket.GetID)
+	return s.storeIickets.CreateItem(item, ticket.GetIDTicket)
 }
 
-func (s *StoreTickets) GetTicketByID(ctx context.Context, taskID ticket.PrimaryKeyTicket, result *ticket.TicketInfo) error {
+func (s *StoreTickets) GetTicketByID(ctx context.Context, taskID helpers.PrimaryKey, result *ticket.TicketInfo) error {
 	reconstructedItem, errGet := s.storeIickets.SearchItem(ticket.CriteriaPK(taskID))
 	if errGet != nil {
 		return errGet
@@ -56,17 +56,17 @@ func (s *StoreTickets) SearchTasks(ctx context.Context, params *ticket.ParamsSea
 }
 
 func (s *StoreTickets) UpdateTask(ctx context.Context, item *ticket.Ticket) error {
-	return s.storeIickets.UpdateItem(uint64(item.PrimaryKeyTicket), item, ticket.GetID)
+	return s.storeIickets.UpdateItem(uint64(item.PrimaryKey), item, ticket.GetIDTicket)
 }
 
-func (s *StoreTickets) CloseTask(ctx context.Context, taskID ticket.PrimaryKeyTicket, status ticket.TicketStatus) error {
+func (s *StoreTickets) CloseTask(ctx context.Context, taskID helpers.PrimaryKey, status ticket.TicketStatus) error {
 	return nil
 }
 
-func (s *StoreTickets) AddEvent(ctx context.Context, taskID ticket.PrimaryKeyTicket, event *ticket.Event) error {
-	return nil
+func (s *StoreTickets) AddEvent(ctx context.Context, taskID helpers.PrimaryKey, event *ticket.Event) error {
+	return s.storeTicketEvents.CreateItem(event, ticket.GetIDEvent)
 }
 
-func (s *StoreTickets) GetEventsForTaskID(ctx context.Context, taskID ticket.PrimaryKeyTicket) ([]*ticket.Event, error) {
-	return nil, nil
+func (s *StoreTickets) GetEventsForTaskID(ctx context.Context, taskID helpers.PrimaryKey) ([]*ticket.Event, error) {
+	return s.storeTicketEvents.SearchItems(helpers.CriteriaTrue)
 }

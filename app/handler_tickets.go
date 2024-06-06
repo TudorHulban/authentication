@@ -72,7 +72,7 @@ func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 	}
 
 	return c.Status(fiber.StatusOK).JSON(
-		reconstructedTicket.PrimaryKeyTicket,
+		reconstructedTicket.PrimaryKey,
 	)
 }
 
@@ -147,7 +147,7 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 
 	reconstructedEvents, errGetEvents := a.serviceTicket.GetEventsForTaskID(
 		c.Context(),
-		helpers.PrimaryKey(reconstructedTask.PrimaryKeyTicket),
+		helpers.PrimaryKey(reconstructedTask.PrimaryKey),
 	)
 	if errGetEvents != nil {
 		return c.Status(fiber.StatusInternalServerError).
@@ -162,7 +162,7 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 	return c.Render(
 		"pages"+RouteTicket,
 		fiber.Map{
-			"title":  "T" + reconstructedTask.PrimaryKeyTicket.String(),
+			"title":  "T" + reconstructedTask.PrimaryKey.String(),
 			"name":   userLogged.Name,
 			"task":   reconstructedTask,
 			"events": reconstructedEvents,

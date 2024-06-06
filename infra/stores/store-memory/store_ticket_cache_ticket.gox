@@ -5,9 +5,10 @@ import (
 	"strings"
 
 	"github.com/TudorHulban/authentication/domain/ticket"
+	"github.com/TudorHulban/authentication/helpers"
 )
 
-type cacheTask map[ticket.PrimaryKeyTicket]ticket.TicketInfo
+type cacheTask map[helpers.PrimaryKey]ticket.TicketInfo
 
 func (cache cacheTask) String() string {
 	result := []string{

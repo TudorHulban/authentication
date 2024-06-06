@@ -38,14 +38,14 @@ func (s *Service) CreateTicket(ctx context.Context, params *ParamsCreateTicket) 
 			}
 	}
 
-	pk := ticket.PrimaryKeyTicket(
+	pk := helpers.PrimaryKey(
 		epochid.NewIDIncremental10KWCoCorrection(),
 	)
 
 	if errCr := s.store.CreateTicket(
 		ctx,
 		&ticket.Ticket{
-			PrimaryKeyTicket: pk,
+			PrimaryKey: pk,
 
 			TicketInfo: ticket.TicketInfo{
 				Name: params.TicketName,
@@ -86,7 +86,7 @@ func (s *Service) GetTicketByID(ctx context.Context, params *ParamsGetTicketByID
 
 	if errGet := s.store.GetTicketByID(
 		ctx,
-		ticket.PrimaryKeyTicket(numericPK),
+		helpers.PrimaryKey(numericPK),
 		&result,
 	); errGet != nil {
 		return nil,
@@ -94,8 +94,8 @@ func (s *Service) GetTicketByID(ctx context.Context, params *ParamsGetTicketByID
 	}
 
 	return &ticket.Ticket{
-			PrimaryKeyTicket: ticket.PrimaryKeyTicket(numericPK),
-			TicketInfo:       result,
+			PrimaryKey: helpers.PrimaryKey(numericPK),
+			TicketInfo: result,
 		},
 		nil
 }
@@ -110,7 +110,7 @@ func (s *Service) SearchTasks(ctx context.Context, params *ticket.ParamsSearchTa
 func (s *Service) CloseTask(ctx context.Context, taskID helpers.PrimaryKey, status ticket.TicketStatus) error {
 	return s.store.CloseTask(
 		ctx,
-		ticket.PrimaryKeyTicket(taskID),
+		helpers.PrimaryKey(taskID),
 		status,
 	)
 }
@@ -123,7 +123,7 @@ type ParamsAddEvent struct {
 func (s *Service) AddEvent(ctx context.Context, taskID helpers.PrimaryKey, params *ParamsAddEvent) error {
 	return s.store.AddEvent(
 		ctx,
-		ticket.PrimaryKeyTicket(taskID),
+		helpers.PrimaryKey(taskID),
 		&ticket.Event{
 			PrimaryKey: helpers.PrimaryKey(
 				epochid.NewIDIncremental10KWCoCorrection(),
@@ -141,6 +141,6 @@ func (s *Service) AddEvent(ctx context.Context, taskID helpers.PrimaryKey, param
 func (s *Service) GetEventsForTaskID(ctx context.Context, taskID helpers.PrimaryKey) ([]*ticket.Event, error) {
 	return s.store.GetEventsForTaskID(
 		ctx,
-		ticket.PrimaryKeyTicket(taskID),
+		helpers.PrimaryKey(taskID),
 	)
 }

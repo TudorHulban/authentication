@@ -1,5 +1,7 @@
 package ticket
 
+import "github.com/TudorHulban/authentication/helpers"
+
 type TicketMetadata struct {
 	TimestampOfLastUpdate int64
 	Status                TicketStatus
@@ -14,17 +16,17 @@ type TicketInfo struct {
 }
 
 type Ticket struct {
-	PrimaryKeyTicket
+	helpers.PrimaryKey
 
 	TicketInfo
 }
 
-func GetID(t *Ticket) uint64 {
-	return uint64(t.PrimaryKeyTicket)
+func GetIDTicket(item *Ticket) uint64 {
+	return uint64(item.PrimaryKey)
 }
 
-var CriteriaPK = func(pk PrimaryKeyTicket) func(item *Ticket) bool {
+var CriteriaPK = func(pk helpers.PrimaryKey) func(item *Ticket) bool {
 	return func(item *Ticket) bool {
-		return GetID(item) == uint64(pk)
+		return GetIDTicket(item) == uint64(pk)
 	}
 }

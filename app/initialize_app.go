@@ -10,7 +10,6 @@ import (
 	"github.com/TudorHulban/authentication/fixtures"
 	storefilefixtures "github.com/TudorHulban/authentication/fixtures/store-file-fixtures"
 	storefile "github.com/TudorHulban/authentication/infra/stores/store-file"
-	storememory "github.com/TudorHulban/authentication/infra/stores/store-memory"
 	"github.com/TudorHulban/authentication/services/ssessions"
 	"github.com/TudorHulban/authentication/services/sticket"
 	"github.com/TudorHulban/authentication/services/suser"

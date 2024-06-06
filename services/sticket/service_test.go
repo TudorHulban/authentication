@@ -7,13 +7,18 @@ import (
 	"testing"
 
 	"github.com/TudorHulban/authentication/domain/ticket"
-	storememory "github.com/TudorHulban/authentication/infra/stores/store-memory"
+	storefile "github.com/TudorHulban/authentication/infra/stores/store-file"
 	"github.com/stretchr/testify/require"
 )
 
 func TestTask(t *testing.T) {
 	service := NewService(
-		storememory.NewStoreTask(),
+		storefile.NewStoreTicket(
+			&storefile.ParamsNewStoreTickets{
+				PathCacheTickets: ".local_test_tickets.json",
+				PathCacheEvent:   ".local_test_events.json",
+			},
+		),
 	)
 
 	paramTicket := ParamsCreateTicket{
@@ -53,7 +58,7 @@ func TestTask(t *testing.T) {
 	require.NotZero(t, reconstructedTasks)
 
 	fmt.Println(
-		reconstructedTasks[0].PrimaryKeyTicket,
+		reconstructedTasks[0].PrimaryKey,
 		reconstructedTasks[0].TicketInfo,
 	)
 

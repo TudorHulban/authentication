@@ -6,12 +6,13 @@ import (
 	"sync"
 
 	"github.com/TudorHulban/authentication/domain/ticket"
+	"github.com/TudorHulban/authentication/helpers"
 )
 
 // TODO: move to concurrent safe maps.
 type StoreTicket struct {
-	cacheTask  map[ticket.PrimaryKeyTicket]ticket.TicketInfo
-	cacheEvent map[ticket.PrimaryKeyTicket][]*ticket.Event
+	cacheTask  map[helpers.PrimaryKey]ticket.TicketInfo
+	cacheEvent map[helpers.PrimaryKey][]*ticket.Event
 
 	mu sync.RWMutex
 }
@@ -19,11 +20,11 @@ type StoreTicket struct {
 func NewStoreTask() *StoreTicket {
 	return &StoreTicket{
 		cacheTask: make(
-			map[ticket.PrimaryKeyTicket]ticket.TicketInfo,
+			map[helpers.PrimaryKey]ticket.TicketInfo,
 		),
 
 		cacheEvent: make(
-			map[ticket.PrimaryKeyTicket][]*ticket.Event,
+			map[helpers.PrimaryKey][]*ticket.Event,
 		),
 	}
 }
@@ -32,19 +33,19 @@ func (s *StoreTicket) CreateTicket(ctx context.Context, ticket *ticket.Ticket) e
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	if _, exists := s.cacheTask[ticket.PrimaryKeyTicket]; exists {
+	if _, exists := s.cacheTask[helpers.PrimaryKey]; exists {
 		return fmt.Errorf(
 			"task with ID %d already exists",
-			ticket.PrimaryKeyTicket,
+			helpers.PrimaryKey,
 		)
 	}
 
-	s.cacheTask[ticket.PrimaryKeyTicket] = ticket.TicketInfo
+	s.cacheTask[helpers.PrimaryKey] = ticket.TicketInfo
 
 	return nil
 }
 
-func (s *StoreTicket) GetTicketByID(ctx context.Context, taskID ticket.PrimaryKeyTicket, result *ticket.TicketInfo) error {
+func (s *StoreTicket) GetTicketByID(ctx context.Context, taskID helpers.PrimaryKey, result *ticket.TicketInfo) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -86,12 +87,12 @@ func (s *StoreTicket) SearchTasks(ctx context.Context, params *ticket.ParamsSear
 func (s *StoreTicket) UpdateTask(ctx context.Context, ticket *ticket.Ticket) {
 	s.mu.Lock()
 
-	s.cacheTask[ticket.PrimaryKeyTicket] = ticket.TicketInfo
+	s.cacheTask[helpers.PrimaryKey] = ticket.TicketInfo
 
 	s.mu.Unlock()
 }
 
-func (s *StoreTicket) CloseTask(ctx context.Context, taskID ticket.PrimaryKeyTicket, status ticket.TicketStatus) error {
+func (s *StoreTicket) CloseTask(ctx context.Context, taskID helpers.PrimaryKey, status ticket.TicketStatus) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -117,7 +118,7 @@ func (s *StoreTicket) CloseTask(ctx context.Context, taskID ticket.PrimaryKeyTic
 	return nil
 }
 
-func (s *StoreTicket) AddEvent(ctx context.Context, ticketID ticket.PrimaryKeyTicket, event *ticket.Event) error {
+func (s *StoreTicket) AddEvent(ctx context.Context, ticketID helpers.PrimaryKey, event *ticket.Event) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -134,7 +135,7 @@ func (s *StoreTicket) AddEvent(ctx context.Context, ticketID ticket.PrimaryKeyTi
 	return nil
 }
 
-func (s *StoreTicket) GetEventsForTaskID(ctx context.Context, taskID ticket.PrimaryKeyTicket) ([]*ticket.Event, error) {
+func (s *StoreTicket) GetEventsForTaskID(ctx context.Context, taskID helpers.PrimaryKey) ([]*ticket.Event, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 

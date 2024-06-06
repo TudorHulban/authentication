@@ -15,7 +15,7 @@ func TestStoreTask(t *testing.T) {
 	store := IStoreTicket(storefile.NewStoreTicket(&storefile.ParamsNewStoreTickets{}))
 
 	t1 := ticket.Ticket{
-		PrimaryKeyTicket: 1,
+		PrimaryKey: 1,
 
 		TicketInfo: ticket.TicketInfo{
 			Name: "t1",
@@ -23,7 +23,7 @@ func TestStoreTask(t *testing.T) {
 	}
 
 	t2 := ticket.Ticket{
-		PrimaryKeyTicket: 2,
+		PrimaryKey: 2,
 
 		TicketInfo: ticket.TicketInfo{
 			Name: "t2",
@@ -45,7 +45,7 @@ func TestStoreTask(t *testing.T) {
 	require.NoError(t,
 		store.GetTicketByID(
 			ctx,
-			t1.PrimaryKeyTicket,
+			t1.PrimaryKey,
 			&reconstructedTaskInfo1,
 		),
 	)

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/TudorHulban/authentication/domain/ticket"
+	"github.com/TudorHulban/authentication/helpers"
 	"github.com/stretchr/testify/require"
 )
 
@@ -16,7 +17,7 @@ func TestGenericStore(t *testing.T) {
 	require.NotNil(t, store)
 
 	t1 := ticket.Ticket{
-		PrimaryKeyTicket: ticket.PrimaryKeyTicket(1),
+		PrimaryKey: helpers.PrimaryKey(1),
 
 		TicketInfo: ticket.TicketInfo{
 			Name: "T1",
@@ -26,7 +27,7 @@ func TestGenericStore(t *testing.T) {
 	store.CreateFirstItem(&t1)
 
 	criteria := func(item *ticket.Ticket) bool {
-		return ticket.GetID(item) == uint64(t1.PrimaryKeyTicket)
+		return ticket.GetIDTicket(item) == uint64(t1.PrimaryKey)
 	}
 
 	recontructedItems1, errGet1 := store.SearchItems(criteria)
@@ -42,9 +43,9 @@ func TestGenericStore(t *testing.T) {
 
 	require.NoError(t,
 		store.UpdateItem(
-			uint64(t1.PrimaryKeyTicket),
+			uint64(t1.PrimaryKey),
 			&t1,
-			ticket.GetID,
+			ticket.GetIDTicket,
 		),
 	)
 
@@ -58,7 +59,7 @@ func TestGenericStore(t *testing.T) {
 	)
 
 	require.NoError(t,
-		store.DeleteItem(uint64(t1.PrimaryKeyTicket), ticket.GetID),
+		store.DeleteItem(uint64(t1.PrimaryKey), ticket.GetIDTicket),
 	)
 
 	recontructedItems3, errGet3 := store.SearchItems(criteria)

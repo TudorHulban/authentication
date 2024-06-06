@@ -5,13 +5,14 @@ import (
 	"strings"
 
 	"github.com/TudorHulban/authentication/apperrors"
+	"github.com/TudorHulban/authentication/helpers"
 )
 
 type Tickets []*Ticket
 
-func (t Tickets) GetTaskByID(pk PrimaryKeyTicket) (*Ticket, error) {
+func (t Tickets) GetTaskByID(pk helpers.PrimaryKey) (*Ticket, error) {
 	for _, task := range t {
-		if task.PrimaryKeyTicket == pk {
+		if task.PrimaryKey == pk {
 			return task, nil
 		}
 	}
@@ -30,7 +31,7 @@ func (t Tickets) String() string {
 		result = append(result,
 			fmt.Sprintf(
 				"ID: %v, Name: %s",
-				task.PrimaryKeyTicket,
+				task.PrimaryKey,
 				task.Name,
 			),
 		)

@@ -16,8 +16,8 @@ Tickets: {{len(tasks)}}
 {{ range id, ticket := tasks }}
 <tr>
 <td>{{ id + 1 }}</td>
-<td>{{ ticket.PrimaryKeyTicket }}</td>
-<td><a href="{{route}}/{{ticket.PrimaryKeyTicket}}">{{ ticket.Name }}</a></td>
+<td>{{ helpers.PrimaryKey }}</td>
+<td><a href="{{route}}/{{helpers.PrimaryKey}}">{{ ticket.Name }}</a></td>
 <td>{{ ticket.Status }}</td>
 <td>{{ ticket.OpenedByUserID }}</td>
 <td>{{ ticket.TimestampOfLastUpdate }}</td>
