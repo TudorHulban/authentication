@@ -91,7 +91,7 @@ func TestTask(t *testing.T) {
 		),
 	)
 
-	events, errGetEvents := service.GetEventsForTaskID(
+	events, errGetEvents := service.GetEventsForTicketID(
 		ctx,
 		pkTask1,
 	)

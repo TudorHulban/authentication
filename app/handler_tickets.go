@@ -92,6 +92,8 @@ func (a *App) HandlerTickets(c *fiber.Ctx) error {
 			)
 	}
 
+	fmt.Println("HandlerTickets - user extracted")
+
 	reconstructedTasks, errGetTasks := a.serviceTicket.SearchTasks(
 		c.Context(),
 		&ticket.ParamsSearchTasks{
@@ -101,8 +103,16 @@ func (a *App) HandlerTickets(c *fiber.Ctx) error {
 		},
 	)
 	if errGetTasks != nil {
-		return c.SendStatus(fiber.StatusInternalServerError)
+		return c.Status(fiber.StatusInternalServerError).
+			JSON(
+				&fiber.Map{
+					"success": false,
+					"error":   errGetTasks,
+				},
+			)
 	}
+
+	fmt.Println("HandlerTickets - SearchTasks")
 
 	return c.Render(
 		"pages"+RouteTickets,
@@ -149,7 +159,7 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 			)
 	}
 
-	reconstructedEvents, errGetEvents := a.serviceTicket.GetEventsForTaskID(
+	reconstructedEvents, errGetEvents := a.serviceTicket.GetEventsForTicketID(
 		c.Context(),
 		helpers.PrimaryKey(reconstructedTask.PrimaryKey),
 	)

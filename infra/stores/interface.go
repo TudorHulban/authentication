@@ -19,13 +19,13 @@ type IStoreUser interface {
 var _ IStoreUser = &storefile.StoreUsers{}
 
 type IStoreTicket interface {
-	CreateTicket(ctx context.Context, task *ticket.Ticket, force ...bool) error
-	GetTicketByID(ctx context.Context, taskID helpers.PrimaryKey, result *ticket.TicketInfo) error
+	CreateTicket(ctx context.Context, ticket *ticket.Ticket, force ...bool) error
+	GetTicketByID(ctx context.Context, ticketID helpers.PrimaryKey, result *ticket.TicketInfo) error
 	SearchTasks(ctx context.Context, params *ticket.ParamsSearchTasks) (ticket.Tickets, error)
-	CloseTask(ctx context.Context, taskID helpers.PrimaryKey, status ticket.TicketStatus) error
+	CloseTask(ctx context.Context, ticketID helpers.PrimaryKey, status ticket.TicketStatus) error
 
-	AddEvent(ctx context.Context, taskID helpers.PrimaryKey, event *ticket.Event) error
-	GetEventsForTaskID(ctx context.Context, taskID helpers.PrimaryKey) ([]*ticket.Event, error)
+	AddEvent(ctx context.Context, ticketID helpers.PrimaryKey, event *ticket.Event) error
+	GetEventsForTicketID(ctx context.Context, ticketID helpers.PrimaryKey) ([]*ticket.Event, error)
 }
 
 var _ IStoreTicket = &storefile.StoreTickets{}

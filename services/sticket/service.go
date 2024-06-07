@@ -143,9 +143,9 @@ func (s *Service) AddEvent(ctx context.Context, ticketID helpers.PrimaryKey, par
 	)
 }
 
-func (s *Service) GetEventsForTaskID(ctx context.Context, taskID helpers.PrimaryKey) ([]*ticket.Event, error) {
-	return s.store.GetEventsForTaskID(
+func (s *Service) GetEventsForTicketID(ctx context.Context, ticketID helpers.PrimaryKey) ([]*ticket.Event, error) {
+	return s.store.GetEventsForTicketID(
 		ctx,
-		helpers.PrimaryKey(taskID),
+		helpers.PrimaryKey(ticketID),
 	)
 }
