@@ -123,14 +123,16 @@ type ParamsAddEvent struct {
 	OpenedByUserID helpers.PrimaryKey
 }
 
-func (s *Service) AddEvent(ctx context.Context, taskID helpers.PrimaryKey, params *ParamsAddEvent) error {
+func (s *Service) AddEvent(ctx context.Context, ticketID helpers.PrimaryKey, params *ParamsAddEvent) error {
 	return s.store.AddEvent(
 		ctx,
-		helpers.PrimaryKey(taskID),
+		helpers.PrimaryKey(ticketID),
 		&ticket.Event{
 			PrimaryKey: helpers.PrimaryKey(
 				epochid.NewIDIncremental10KWCoCorrection(),
 			),
+
+			TicketPK: ticketID,
 
 			EventInfo: &ticket.EventInfo{
 				Content:        params.EventContent,

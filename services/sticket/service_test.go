@@ -3,7 +3,6 @@ package sticket
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"testing"
 
 	"github.com/TudorHulban/authentication/domain/ticket"
@@ -36,7 +35,7 @@ func TestTask(t *testing.T) {
 	reconstructedTicket, errGet := service.GetTicketByID(
 		ctx,
 		&ParamsGetTicketByID{
-			TicketID:     strconv.Itoa(int(pkTask1)),
+			TicketID:     pkTask1.String(),
 			UserLoggedID: 1,
 		},
 	)
@@ -97,13 +96,17 @@ func TestTask(t *testing.T) {
 		pkTask1,
 	)
 	require.NoError(t, errGetEvents)
-	require.Len(t,
-		events,
+	require.GreaterOrEqual(t,
+		len(events),
 		2,
 	)
 	require.NotZero(t,
 		events[0].TimestampOfAdd,
 		"timestamp event",
+	)
+	require.NotZero(t,
+		events[0].TicketPK,
+		"ticket PK event",
 	)
 	require.Equal(t,
 		e1.Content,

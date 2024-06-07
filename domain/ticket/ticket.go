@@ -3,9 +3,9 @@ package ticket
 import "github.com/TudorHulban/authentication/helpers"
 
 type TicketMetadata struct {
-	Status         TicketStatus
-	OpenedByUserID helpers.PrimaryKey
-	Kind           TicketKind
+	Status         TicketStatus       `json:",omitempty"`
+	OpenedByUserID helpers.PrimaryKey `json:",omitempty"`
+	Kind           TicketKind         `json:",omitempty"`
 }
 
 type TicketInfo struct {

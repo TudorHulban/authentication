@@ -4,6 +4,7 @@ import (
 	"github.com/TudorHulban/authentication/fixtures"
 	"github.com/TudorHulban/authentication/services/suser"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
 func (a *App) root() string {
@@ -15,16 +16,6 @@ func (a *App) baseURL() string {
 }
 
 func (a *App) Start() error {
-	// fiberlog.SetLogger(
-	// 	log.NewLogger(
-	// 		&log.ParamsNewLogger{
-	// 			LoggerLevel:   log.LevelDEBUG,
-	// 			LoggerWriter:  os.Stdout,
-	// 			WithTimestamp: timestamp.TimestampNano,
-	// 		},
-	// 	),
-	// )
-
 	var mw func(c *fiber.Ctx) error
 
 	if a.authenticationDisabled {
@@ -39,11 +30,14 @@ func (a *App) Start() error {
 	}
 
 	a.Transport.Use(
+		logger.New(),
+
 		[]string{
 			RouteLogged,
 			RouteTicket,
 			RouteTickets,
 		},
+
 		mw,
 	)
 

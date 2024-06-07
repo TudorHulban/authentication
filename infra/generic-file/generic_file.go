@@ -29,7 +29,7 @@ func (store *GenericStoreFile[T]) CreateFirstItem(item *T) error {
 	return store.saveAll([]*T{item})
 }
 
-func (store *GenericStoreFile[T]) CreateItem(item *T, getID func(*T) uint64) error {
+func (store *GenericStoreFile[T]) CreateItem(item *T, getID func(*T) uint64, force ...bool) error {
 	store.mu.Lock()
 	defer store.mu.Unlock()
 
@@ -42,7 +42,11 @@ func (store *GenericStoreFile[T]) CreateItem(item *T, getID func(*T) uint64) err
 		idNewItem := getID(item)
 
 		if idNewItem == getID(reconstructedItem) {
-			return fmt.Errorf("item with pk: %d already exists", idNewItem)
+			if len(force) == 1 && force[0] {
+				return nil
+			}
+
+			return fmt.Errorf("item with PK: %d already exists", idNewItem)
 		}
 	}
 

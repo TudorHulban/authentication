@@ -36,8 +36,8 @@ func NewStoreTicket(params *ParamsNewStoreTickets) *StoreTickets {
 	}
 }
 
-func (s *StoreTickets) CreateTicket(ctx context.Context, item *ticket.Ticket) error {
-	return s.storeTickets.CreateItem(item, ticket.GetIDTicket)
+func (s *StoreTickets) CreateTicket(ctx context.Context, item *ticket.Ticket, force ...bool) error {
+	return s.storeTickets.CreateItem(item, ticket.GetIDTicket, force...)
 }
 
 func (s *StoreTickets) GetTicketByID(ctx context.Context, taskID helpers.PrimaryKey, result *ticket.TicketInfo) error {

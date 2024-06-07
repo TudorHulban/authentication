@@ -8,9 +8,9 @@ import (
 )
 
 type Timestamp struct {
-	CreatedAt int64
-	UpdatedAt int64
-	DeletedAt sql.NullInt64
+	CreatedAt int64         `json:",omitempty"`
+	UpdatedAt int64         `json:",omitempty"`
+	DeletedAt sql.NullInt64 `json:",omitempty"`
 }
 
 func (t *Timestamp) WithCreateNow() Timestamp {

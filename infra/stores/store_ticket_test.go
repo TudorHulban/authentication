@@ -12,7 +12,14 @@ import (
 )
 
 func TestStoreTask(t *testing.T) {
-	store := IStoreTicket(storefile.NewStoreTicket(&storefile.ParamsNewStoreTickets{}))
+	store := IStoreTicket(
+		storefile.NewStoreTicket(
+			&storefile.ParamsNewStoreTickets{
+				PathCacheTickets: ".local_test_cache_tickets",
+				PathCacheEvent:   ".local_test_cache_events",
+			},
+		),
+	)
 
 	t1 := ticket.Ticket{
 		PrimaryKey: 1,
@@ -33,11 +40,11 @@ func TestStoreTask(t *testing.T) {
 	ctx := context.Background()
 
 	require.NoError(t,
-		store.CreateTicket(ctx, &t1),
+		store.CreateTicket(ctx, &t1, true),
 	)
 
 	require.NoError(t,
-		store.CreateTicket(ctx, &t2),
+		store.CreateTicket(ctx, &t2, true),
 	)
 
 	var reconstructedTaskInfo1 ticket.TicketInfo

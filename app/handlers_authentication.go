@@ -54,6 +54,8 @@ func (a *App) HandlerLoginRequest(c *fiber.Ctx) error {
 				"Password": "Username or email incorrect",
 
 				"errors": errGetItem,
+
+				"title": "Login",
 			},
 		)
 	}
