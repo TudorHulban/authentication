@@ -16,6 +16,8 @@ type IStoreUser interface {
 	DeleteUser(ctx context.Context, userCredentials *appuser.UserCredentials) error
 }
 
+var _ IStoreUser = &storefile.StoreUsers{}
+
 type IStoreTicket interface {
 	CreateTicket(ctx context.Context, task *ticket.Ticket) error
 	GetTicketByID(ctx context.Context, taskID helpers.PrimaryKey, result *ticket.TicketInfo) error

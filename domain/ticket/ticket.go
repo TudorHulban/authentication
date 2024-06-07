@@ -3,16 +3,16 @@ package ticket
 import "github.com/TudorHulban/authentication/helpers"
 
 type TicketMetadata struct {
-	TimestampOfLastUpdate int64
-	Status                TicketStatus
-	OpenedByUserID        uint
-	Kind                  TicketKind
+	Status         TicketStatus
+	OpenedByUserID helpers.PrimaryKey
+	Kind           TicketKind
 }
 
 type TicketInfo struct {
 	Name string
 
 	TicketMetadata
+	helpers.Timestamp
 }
 
 type Ticket struct {

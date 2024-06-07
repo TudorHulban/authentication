@@ -16,7 +16,7 @@ type PiersFixtureTicketWEvents struct {
 type ParamsFixtureTaskWEvents struct {
 	TicketName           string
 	TicketKind           ticket.TicketKind
-	TicketOpenedByUserID uint
+	TicketOpenedByUserID helpers.PrimaryKey
 
 	NumberEvents uint
 }

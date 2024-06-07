@@ -20,12 +20,11 @@ func InitializeApp(config *ParamsNewApp) *App {
 		config,
 		&PiersApp{
 			ServiceUser: suser.NewService(
-				storememory.NewStoreMemory(),
+				storefile.NewStoreUser(&storefilefixtures.ParamsStoreFileUsers),
 			),
 
 			ServiceTicket: sticket.NewService(
-				// storememory.NewStoreTask(),
-				storefile.NewStoreTicket(&storefilefixtures.ParamsStoreFile),
+				storefile.NewStoreTicket(&storefilefixtures.ParamsStoreFileTickets),
 			),
 
 			ServiceSessions: ssessions.NewService(),

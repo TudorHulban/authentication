@@ -24,8 +24,8 @@ func NewService(store stores.IStoreTicket) *Service {
 }
 
 type ParamsCreateTicket struct {
-	TicketName     string `valid:"required" json:"ticketname"`
-	OpenedByUserID uint   //`valid:"required"`
+	TicketName     string             `valid:"required" json:"ticketname"`
+	OpenedByUserID helpers.PrimaryKey //`valid:"required"`
 	TicketKind     ticket.TicketKind
 }
 
@@ -42,6 +42,8 @@ func (s *Service) CreateTicket(ctx context.Context, params *ParamsCreateTicket) 
 		epochid.NewIDIncremental10KWCoCorrection(),
 	)
 
+	var timestamp helpers.Timestamp
+
 	if errCr := s.store.CreateTicket(
 		ctx,
 		&ticket.Ticket{
@@ -51,11 +53,12 @@ func (s *Service) CreateTicket(ctx context.Context, params *ParamsCreateTicket) 
 				Name: params.TicketName,
 
 				TicketMetadata: ticket.TicketMetadata{
-					TimestampOfLastUpdate: time.Now().UnixNano(),
-					Status:                ticket.StatusNew,
-					OpenedByUserID:        params.OpenedByUserID,
-					Kind:                  params.TicketKind,
+					Status:         ticket.StatusNew,
+					OpenedByUserID: params.OpenedByUserID,
+					Kind:           params.TicketKind,
 				},
+
+				Timestamp: timestamp.WithCreateNow(),
 			},
 		},
 	); errCr != nil {
@@ -69,7 +72,7 @@ func (s *Service) CreateTicket(ctx context.Context, params *ParamsCreateTicket) 
 
 type ParamsGetTicketByID struct {
 	TicketID     string
-	UserLoggedID uint
+	UserLoggedID helpers.PrimaryKey
 }
 
 func (s *Service) GetTicketByID(ctx context.Context, params *ParamsGetTicketByID) (*ticket.Ticket, error) {
@@ -117,7 +120,7 @@ func (s *Service) CloseTask(ctx context.Context, taskID helpers.PrimaryKey, stat
 
 type ParamsAddEvent struct {
 	EventContent   string
-	OpenedByUserID uint
+	OpenedByUserID helpers.PrimaryKey
 }
 
 func (s *Service) AddEvent(ctx context.Context, taskID helpers.PrimaryKey, params *ParamsAddEvent) error {

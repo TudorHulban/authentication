@@ -1,8 +1,13 @@
 package appuser
 
+import "github.com/TudorHulban/authentication/helpers"
+
 type UserInfo struct {
-	ID   uint
+	helpers.PrimaryKey
+
 	Name string
+
+	helpers.Timestamp
 }
 
 type UserCredentials struct {
@@ -13,4 +18,14 @@ type UserCredentials struct {
 type User struct {
 	UserCredentials
 	UserInfo
+}
+
+func GetIDUser(item *User) uint64 {
+	return uint64(item.PrimaryKey)
+}
+
+var CriteriaCredentials = func(userCredentials *UserCredentials) func(item *User) bool {
+	return func(item *User) bool {
+		return item.UserCredentials == *userCredentials
+	}
 }

@@ -5,7 +5,7 @@ import "github.com/TudorHulban/authentication/helpers"
 type EventInfo struct {
 	Content        string
 	TimestampOfAdd int64
-	OpenedByUserID uint
+	OpenedByUserID helpers.PrimaryKey
 }
 
 type Event struct {

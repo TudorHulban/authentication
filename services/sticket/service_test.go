@@ -46,7 +46,7 @@ func TestTask(t *testing.T) {
 		paramTicket.TicketName,
 		reconstructedTicket.Name,
 	)
-	require.NotZero(t, reconstructedTicket.TimestampOfLastUpdate, "timestamp")
+	require.NotZero(t, reconstructedTicket.CreatedAt, "created at timestamp")
 	require.NotZero(t, reconstructedTicket.OpenedByUserID)
 	require.EqualValues(t,
 		ticket.StatusNew,
