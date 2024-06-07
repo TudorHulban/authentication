@@ -68,5 +68,7 @@ func (s *StoreTickets) AddEvent(ctx context.Context, ticketID helpers.PrimaryKey
 }
 
 func (s *StoreTickets) GetEventsForTicketID(ctx context.Context, ticketID helpers.PrimaryKey) ([]*ticket.Event, error) {
-	return s.storeTicketEvents.SearchItems(helpers.CriteriaTrue)
+	return s.storeTicketEvents.SearchItems(
+		ticket.CriteriaEventsOfTicket(ticketID),
+	)
 }

@@ -1,0 +1,12 @@
+[
+    {
+        "Email": "x@x.co",
+        "Password": "123",
+        "PrimaryKey": 0,
+        "Name": "John Doe",
+        "DeletedAt": {
+            "Int64": 0,
+            "Valid": false
+        }
+    }
+]

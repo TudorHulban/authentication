@@ -1,8 +1,6 @@
 package app
 
 import (
-	"fmt"
-
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
@@ -79,8 +77,6 @@ func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 }
 
 func (a *App) HandlerTickets(c *fiber.Ctx) error {
-	fmt.Println("HandlerTickets")
-
 	userLogged, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
 	if errGetUser != nil {
 		return c.Status(fiber.StatusInternalServerError).
@@ -91,8 +87,6 @@ func (a *App) HandlerTickets(c *fiber.Ctx) error {
 				},
 			)
 	}
-
-	fmt.Println("HandlerTickets - user extracted")
 
 	reconstructedTasks, errGetTasks := a.serviceTicket.SearchTasks(
 		c.Context(),
@@ -111,8 +105,6 @@ func (a *App) HandlerTickets(c *fiber.Ctx) error {
 				},
 			)
 	}
-
-	fmt.Println("HandlerTickets - SearchTasks")
 
 	return c.Render(
 		"pages"+RouteTickets,

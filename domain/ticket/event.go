@@ -20,8 +20,12 @@ func GetIDEvent(item *Event) uint64 {
 	return uint64(item.PrimaryKey)
 }
 
-var CriteriaEventsOfTicket = func(pk helpers.PrimaryKey) func(item *Ticket) bool {
-	return func(item *Ticket) bool {
-		return GetIDTicket(item) == uint64(pk)
+func GetIDEventTicket(item *Event) uint64 {
+	return uint64(item.TicketPK)
+}
+
+var CriteriaEventsOfTicket = func(pk helpers.PrimaryKey) func(item *Event) bool {
+	return func(item *Event) bool {
+		return GetIDEventTicket(item) == uint64(pk)
 	}
 }
