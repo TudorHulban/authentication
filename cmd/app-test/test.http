@@ -1,0 +1,8 @@
+@domain = http://localhost:3000
+@endpoint=/
+
+### GET template render
+GET {{domain}}{{endpoint}} HTTP/1.1
+
+### GET
+GET http://localhost:9000/ticket/17177738116406920000

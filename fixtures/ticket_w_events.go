@@ -22,7 +22,7 @@ type ParamsFixtureTaskWEvents struct {
 }
 
 func FixtureTaskWEvents(ctx context.Context, piers *PiersFixtureTicketWEvents, params *ParamsFixtureTaskWEvents) (helpers.PrimaryKey, error) {
-	idTask, errCr := piers.ServiceTicket.CreateTicket(
+	idTicket, errCr := piers.ServiceTicket.CreateTicket(
 		ctx,
 		&sticket.ParamsCreateTicket{
 			TicketName: params.TicketName,
@@ -41,10 +41,12 @@ func FixtureTaskWEvents(ctx context.Context, piers *PiersFixtureTicketWEvents, p
 	for range params.NumberEvents {
 		if errAddEvent := piers.ServiceTicket.AddEvent(
 			ctx,
-			idTask,
+
 			&sticket.ParamsAddEvent{
 				EventContent:   loremIpsumGenerator.Sentence(),
 				OpenedByUserID: params.TicketOpenedByUserID,
+
+				TicketID: idTicket,
 			},
 		); errAddEvent != nil {
 			return helpers.PrimaryKeyZero,
@@ -52,6 +54,6 @@ func FixtureTaskWEvents(ctx context.Context, piers *PiersFixtureTicketWEvents, p
 		}
 	}
 
-	return idTask,
+	return idTicket,
 		nil
 }

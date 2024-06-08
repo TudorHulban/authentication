@@ -68,10 +68,12 @@ func TestTask(t *testing.T) {
 	require.NoError(t,
 		service.AddEvent(
 			ctx,
-			pkTask1,
+
 			&ParamsAddEvent{
 				EventContent:   e1.Content,
 				OpenedByUserID: 1,
+
+				TicketID: pkTask1,
 			},
 		),
 	)
@@ -83,10 +85,12 @@ func TestTask(t *testing.T) {
 	require.NoError(t,
 		service.AddEvent(
 			ctx,
-			pkTask1,
+
 			&ParamsAddEvent{
 				EventContent:   e2.Content,
 				OpenedByUserID: 1,
+
+				TicketID: pkTask1,
 			},
 		),
 	)

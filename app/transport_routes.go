@@ -1,6 +1,8 @@
 package app
 
 func InitializeTransportRoutes(application *App) {
+	// Authentication
+
 	application.Transport.Get(
 		RoutesAll,
 		application.HandlerLoginPage,
@@ -21,6 +23,8 @@ func InitializeTransportRoutes(application *App) {
 		application.HandlerLoginRequest,
 	)
 
+	// Ticket
+
 	application.Transport.Post(
 		RouteTicket,
 		application.HandlerAddTicket,
@@ -34,5 +38,12 @@ func InitializeTransportRoutes(application *App) {
 	application.Transport.Get(
 		RouteTicket+"/:id",
 		application.HandlerTicketID,
+	)
+
+	// Event
+
+	application.Transport.Post(
+		RouteEvent,
+		application.HandlerAddEvent,
 	)
 }

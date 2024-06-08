@@ -13,7 +13,7 @@ func TestUnixNanoTo(t *testing.T) {
 
 	s.SetDevelopmentMode(true)
 
-	templ, errGet := s.GetTemplate("timestamp.jet")
+	templ, errGet := s.GetTemplate("timestamp_unixnanoto.jet")
 	require.NoError(t, errGet)
 
 	jetMap := jet.VarMap{}

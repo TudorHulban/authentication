@@ -1,6 +1,8 @@
 package app
 
 import (
+	"fmt"
+
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
@@ -48,7 +50,7 @@ func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 				&fiber.Map{
 					"success": false,
 					"error":   errGetTicket,
-					"handler": "HandlerAddTicket - serviceTask.CreateTask", // development only
+					"handler": "HandlerAddTicket - serviceTask.CreateTicket", // development only
 				},
 			)
 	}
@@ -66,7 +68,7 @@ func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 				&fiber.Map{
 					"success": false,
 					"error":   errGet,
-					"handler": "HandlerAddTask - serviceTask.GetTaskByID", // development only
+					"handler": "HandlerAddTask - serviceTask.GetTicketByID", // development only
 				},
 			)
 	}
@@ -111,7 +113,7 @@ func (a *App) HandlerTickets(c *fiber.Ctx) error {
 		fiber.Map{
 			"title":        "Tickets",
 			"name":         userLogged.Name,
-			"tasks":        reconstructedTasks,
+			"tickets":      reconstructedTasks,
 			"baseURL":      a.baseURL(),
 			"route":        a.baseURL() + RouteTicket,
 			"routeAddTask": RouteTicket,
@@ -151,6 +153,12 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 			)
 	}
 
+	fmt.Printf(
+		"task: %s\n %#v",
+		reconstructedTask.PrimaryKey.String(),
+		reconstructedTask,
+	)
+
 	reconstructedEvents, errGetEvents := a.serviceTicket.GetEventsForTicketID(
 		c.Context(),
 		helpers.PrimaryKey(reconstructedTask.PrimaryKey),
@@ -167,14 +175,18 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 
 	return c.Render(
 		"pages"+RouteTicket,
+
 		fiber.Map{
 			"title":  "T" + reconstructedTask.PrimaryKey.String(),
 			"name":   userLogged.Name,
-			"task":   reconstructedTask,
+			"ticket": reconstructedTask,
 			"events": reconstructedEvents,
+
+			"routeAddEvent": RouteEvent,
 
 			"UnixNanoTo": helpers.UnixNanoTo,
 		},
+
 		"layouts/base",
 	)
 }

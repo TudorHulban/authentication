@@ -1,16 +1,28 @@
 <div>
-Ticket: {{ task.Name }}
+Ticket:<h3 id="ticket-id">{{ ticket.PrimaryKey }}</h3>
 </div>
 
-<table>
+<div>
+<button hx-target="#modal-content" onclick="openModal()">Create Event</button>
+</div>
+
+<div>
+{{if events!=nil && len(events) > 0}}
+<table id="events-list">
   <tr>
+    <th>#</th>
     <th>Timestamp</th>
     <th>Content</th>
   </tr>
-{{ range events }}
+{{ range id, event := events }}
   <tr>
+    <td>{{ id + 1 }}</td>
     <td>{{UnixNanoTo(.TimestampOfAdd)}}</td>
     <td>{{ .Content }}s</td>
   </tr> 
 {{ end }}
 </table>
+{{ end }}
+</div>
+
+{{include "../modals/create_event"}}

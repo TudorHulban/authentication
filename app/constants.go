@@ -8,6 +8,9 @@ const (
 
 	RouteTicket  = "/ticket"
 	RouteTickets = "/tickets"
+
+	RouteEvent  = "/event"
+	RouteEvents = "/events"
 )
 
 const (

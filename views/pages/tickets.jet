@@ -1,6 +1,6 @@
 <h2>HTMX Logged</h2>
 <div>
-Tickets: {{len(tasks)}}
+Tickets: {{len(tickets)}}
 </div>
 
 <div>
@@ -13,7 +13,7 @@ Tickets: {{len(tasks)}}
     <th>Opened by</th>
     <th>Last Update</th>
   </tr>
-{{ range id, ticket := tasks }}
+{{ range id, ticket := tickets }}
 <tr>
 <td>{{ id + 1 }}</td>
 <td>{{ ticket.PrimaryKey }}</td>
