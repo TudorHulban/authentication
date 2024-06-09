@@ -4,18 +4,35 @@ import (
 	"strconv"
 
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
+	"github.com/TudorHulban/authentication/pages"
 	"github.com/TudorHulban/authentication/services/suser"
 	"github.com/gofiber/fiber/v2"
+
+	g "github.com/maragudk/gomponents"
+	co "github.com/maragudk/gomponents/components"
 )
 
 func (a *App) HandlerLoginPage(c *fiber.Ctx) error {
-	return c.Render(
-		"pages/login",
-		fiber.Map{
-			"title": "Login",
+	page := co.HTML5(
+		co.HTML5Props{
+			Title:       "Login",
+			Description: "HTMX Login",
+			Language:    "English",
+			Head: []g.Node{
+				pages.ScriptHTMX,
+				pages.LinkCSSWater,
+			},
+			Body: []g.Node{
+				pages.Header(),
+				pages.FormLogin(),
+				pages.Footer(),
+			},
 		},
-		"layouts/base",
 	)
+
+	c.Set("Content-Type", "text/html")
+
+	return page.Render(c)
 }
 
 func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
