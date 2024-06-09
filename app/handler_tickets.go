@@ -6,8 +6,11 @@ import (
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
+	"github.com/TudorHulban/authentication/pages"
 	"github.com/TudorHulban/authentication/services/sticket"
 	"github.com/gofiber/fiber/v2"
+	g "github.com/maragudk/gomponents"
+	co "github.com/maragudk/gomponents/components"
 )
 
 func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
@@ -79,7 +82,7 @@ func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 }
 
 func (a *App) HandlerTickets(c *fiber.Ctx) error {
-	userLogged, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
+	_, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
 	if errGetUser != nil {
 		return c.Status(fiber.StatusInternalServerError).
 			JSON(
@@ -108,19 +111,40 @@ func (a *App) HandlerTickets(c *fiber.Ctx) error {
 			)
 	}
 
-	return c.Render(
-		"pages"+RouteTickets,
-		fiber.Map{
-			"title":        "Tickets",
-			"name":         userLogged.Name,
-			"tickets":      reconstructedTasks,
-			"baseURL":      a.baseURL(),
-			"route":        a.baseURL() + RouteTicket,
-			"routeAddTask": RouteTicket,
-			"routeTasks":   RouteTickets,
+	page := co.HTML5(
+		co.HTML5Props{
+			Title:       "Login",
+			Description: "HTMX Login",
+			Language:    "English",
+			Head: []g.Node{
+				pages.ScriptHTMX,
+				pages.LinkCSSWater,
+			},
+			Body: []g.Node{
+				pages.Header(),
+				pages.TableTickets(reconstructedTasks),
+				pages.Footer(),
+			},
 		},
-		"layouts/base",
 	)
+
+	c.Set("Content-Type", "text/html")
+
+	return page.Render(c)
+
+	// return c.Render(
+	// 	"pages"+RouteTickets,
+	// 	fiber.Map{
+	// 		"title":        "Tickets",
+	// 		"name":         userLogged.Name,
+	// 		"tickets":      reconstructedTasks,
+	// 		"baseURL":      a.baseURL(),
+	// 		"route":        a.baseURL() + RouteTicket,
+	// 		"routeAddTask": RouteTicket,
+	// 		"routeTasks":   RouteTickets,
+	// 	},
+	// 	"layouts/base",
+	// )
 }
 
 func (a *App) HandlerTicketID(c *fiber.Ctx) error {

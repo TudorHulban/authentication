@@ -41,15 +41,32 @@ func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
-	return c.Render(
-		"pages/logged",
-		fiber.Map{
-			"name":  user.Name,
-			"route": a.baseURL() + RouteTickets,
-			"title": "Home",
+	page := co.HTML5(
+		co.HTML5Props{
+			Title:       "Home",
+			Description: "HTMX Logged",
+			Language:    "English",
+			Head: []g.Node{
+				pages.ScriptHTMX,
+				pages.LinkCSSWater,
+			},
+			Body: []g.Node{
+				pages.Header(),
+				pages.UserSalutation(user),
+				pages.Navigation(
+					&pages.ParamsNavigation{
+						WhereTo:        a.baseURL() + RouteTickets,
+						LabelToDisplay: "Tickets",
+					},
+				),
+				pages.Footer(),
+			},
 		},
-		"layouts/base",
 	)
+
+	c.Set("Content-Type", "text/html")
+
+	return page.Render(c)
 }
 
 func (a *App) HandlerLoginRequest(c *fiber.Ctx) error {
