@@ -6,6 +6,7 @@ import (
 	"github.com/TudorHulban/authentication/helpers"
 	"github.com/TudorHulban/authentication/pages"
 	"github.com/TudorHulban/authentication/services/sticket"
+
 	"github.com/gofiber/fiber/v2"
 	g "github.com/maragudk/gomponents"
 	co "github.com/maragudk/gomponents/components"
@@ -117,20 +118,24 @@ func (a *App) HandlerTickets(c *fiber.Ctx) error {
 			Head: []g.Node{
 				pages.ScriptHTMX,
 				pages.ScriptCommonJS,
-				pages.ScriptCreateTicketJS,
 				pages.LinkCSSWater,
 				pages.LinkCSSCommon,
 			},
 			Body: []g.Node{
 				pages.Header(),
-				pages.TableTickets(&pages.ParamsTableTickets{
-					Tickets:   reconstructedTasks,
-					URLTicket: a.baseURL() + RouteTicket,
-				}),
+				pages.TableTickets(
+					&pages.ParamsTableTickets{
+						Tickets:   reconstructedTasks,
+						URLTicket: a.baseURL() + RouteTicket,
+					},
+				),
 				pages.ButtonCreateTicket("Create Ticket"),
-				pages.ModalCreateTicket(&pages.ParamsModalCreateTicket{
-					URLAddTicket: RouteTicket,
-				}),
+				pages.ModalCreateTicket(
+					&pages.ParamsModalCreateTicket{
+						URLAddTicket: RouteTicket,
+					},
+				),
+				pages.ScriptCreateTicket(),
 				pages.Footer(),
 			},
 		},

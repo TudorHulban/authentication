@@ -1,4 +1,15 @@
-document.body.addEventListener('htmx:afterRequest',
+package pages
+
+import (
+	g "github.com/maragudk/gomponents"
+	"github.com/maragudk/gomponents/html"
+)
+
+func ScriptCreateTicket() g.Node {
+	return html.Script(
+		g.Raw(
+			`
+			document.body.addEventListener('htmx:afterRequest',
     function (evt) {
         const errorTarget = document.getElementById("htmx-alert");
 
@@ -26,7 +37,7 @@ document.body.addEventListener('htmx:afterRequest',
                 console.error("Failed to parse JSON response:", e);
             }
 
-            errorTarget.innerText = `Error from server: ${xhr.status} - ${JSON.stringify(errorMsg)}`;
+            errorTarget.innerText = "Error from server: ${xhr.status} - ${JSON.stringify(errorMsg)}";
             errorTarget.removeAttribute("hidden");
         } else {
             console.error("unexpected server error", evt.detail);
@@ -36,3 +47,7 @@ document.body.addEventListener('htmx:afterRequest',
         }
     }
 );
+			`,
+		),
+	)
+}
