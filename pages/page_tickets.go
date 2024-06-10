@@ -4,14 +4,20 @@ import (
 	"strconv"
 
 	"github.com/TudorHulban/authentication/domain/ticket"
+	"github.com/TudorHulban/authentication/helpers"
 	g "github.com/maragudk/gomponents"
 	html "github.com/maragudk/gomponents/html"
 )
 
 // table tickets
 
-func TableTickets(tickets ticket.Tickets) g.Node {
-	if len(tickets) == 0 {
+type ParamsTableTickets struct {
+	Tickets   ticket.Tickets
+	URLTicket string
+}
+
+func TableTickets(params *ParamsTableTickets) g.Node {
+	if len(params.Tickets) == 0 {
 		return nil
 	}
 
@@ -30,12 +36,37 @@ func TableTickets(tickets ticket.Tickets) g.Node {
 					item.PrimaryKey.String(),
 				),
 			),
+			html.Td(
+				Navigation(
+					&ParamsNavigation{
+						WhereTo:        params.URLTicket + "/" + item.PrimaryKey.String(),
+						LabelToDisplay: item.Name,
+					},
+				),
+			),
+			html.Td(
+				g.Text(
+					item.Status.String(),
+				),
+			),
+			html.Td(
+				g.Text(
+					item.OpenedByUserID.String(),
+				),
+			),
+			html.Td(
+				g.Text(
+					helpers.UnixNanoTo(
+						item.UpdatedAt,
+					),
+				),
+			),
 		)
 	}
 
 	rows := make([]g.Node, 0)
 
-	for ix, currentTicket = range tickets {
+	for ix, currentTicket = range params.Tickets {
 		rows = append(rows,
 			tableTicketsRow(currentTicket),
 		)

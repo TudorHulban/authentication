@@ -122,7 +122,11 @@ func (a *App) HandlerTickets(c *fiber.Ctx) error {
 			},
 			Body: []g.Node{
 				pages.Header(),
-				pages.TableTickets(reconstructedTasks),
+				pages.TableTickets(&pages.ParamsTableTickets{
+					Tickets:   reconstructedTasks,
+					URLTicket: a.baseURL() + RouteTicket,
+				}),
+				pages.ModalContent("Create Ticket"),
 				pages.Footer(),
 			},
 		},

@@ -267,5 +267,35 @@
             "Int64": 0,
             "Valid": false
         }
+    },
+    {
+        "PrimaryKey": 17180064972406920000,
+        "Name": "Ticket 1",
+        "OpenedByUserID": 1,
+        "CreatedAt": 1718006497259704705,
+        "DeletedAt": {
+            "Int64": 0,
+            "Valid": false
+        }
+    },
+    {
+        "PrimaryKey": 17180068779406920000,
+        "Name": "Ticket 1",
+        "OpenedByUserID": 1,
+        "CreatedAt": 1718006877918019528,
+        "DeletedAt": {
+            "Int64": 0,
+            "Valid": false
+        }
+    },
+    {
+        "PrimaryKey": 17180090229406920000,
+        "Name": "Ticket 1",
+        "OpenedByUserID": 1,
+        "CreatedAt": 1718009022960636261,
+        "DeletedAt": {
+            "Int64": 0,
+            "Valid": false
+        }
     }
 ]
