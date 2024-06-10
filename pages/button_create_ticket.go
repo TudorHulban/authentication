@@ -5,7 +5,7 @@ import (
 	html "github.com/maragudk/gomponents/html"
 )
 
-func ModalContent(label string) g.Node {
+func ButtonCreateTicket(label string) g.Node {
 	return html.Div(
 		html.Button(
 			g.Attr(

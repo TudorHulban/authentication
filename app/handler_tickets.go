@@ -1,8 +1,6 @@
 package app
 
 import (
-	"fmt"
-
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
@@ -113,12 +111,15 @@ func (a *App) HandlerTickets(c *fiber.Ctx) error {
 
 	page := co.HTML5(
 		co.HTML5Props{
-			Title:       "Login",
+			Title:       "Tickets",
 			Description: "HTMX Login",
 			Language:    "English",
 			Head: []g.Node{
 				pages.ScriptHTMX,
+				pages.ScriptCommonJS,
+				pages.ScriptCreateTicketJS,
 				pages.LinkCSSWater,
+				pages.LinkCSSCommon,
 			},
 			Body: []g.Node{
 				pages.Header(),
@@ -126,7 +127,10 @@ func (a *App) HandlerTickets(c *fiber.Ctx) error {
 					Tickets:   reconstructedTasks,
 					URLTicket: a.baseURL() + RouteTicket,
 				}),
-				pages.ModalContent("Create Ticket"),
+				pages.ButtonCreateTicket("Create Ticket"),
+				pages.ModalCreateTicket(&pages.ParamsModalCreateTicket{
+					URLAddTicket: RouteTicket,
+				}),
 				pages.Footer(),
 			},
 		},
@@ -135,20 +139,6 @@ func (a *App) HandlerTickets(c *fiber.Ctx) error {
 	c.Set("Content-Type", "text/html")
 
 	return page.Render(c)
-
-	// return c.Render(
-	// 	"pages"+RouteTickets,
-	// 	fiber.Map{
-	// 		"title":        "Tickets",
-	// 		"name":         userLogged.Name,
-	// 		"tickets":      reconstructedTasks,
-	// 		"baseURL":      a.baseURL(),
-	// 		"route":        a.baseURL() + RouteTicket,
-	// 		"routeAddTask": RouteTicket,
-	// 		"routeTasks":   RouteTickets,
-	// 	},
-	// 	"layouts/base",
-	// )
 }
 
 func (a *App) HandlerTicketID(c *fiber.Ctx) error {
@@ -180,12 +170,6 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 				},
 			)
 	}
-
-	fmt.Printf(
-		"task: %s\n %#v",
-		reconstructedTask.PrimaryKey.String(),
-		reconstructedTask,
-	)
 
 	reconstructedEvents, errGetEvents := a.serviceTicket.GetEventsForTicketID(
 		c.Context(),

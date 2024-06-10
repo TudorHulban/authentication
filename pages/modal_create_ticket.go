@@ -7,7 +7,6 @@ import (
 
 type ParamsModalCreateTicket struct {
 	URLAddTicket string
-	Label        string
 }
 
 func ModalCreateTicket(params *ParamsModalCreateTicket) g.Node {

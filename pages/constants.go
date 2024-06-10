@@ -16,7 +16,20 @@ var ScriptHTMX = html.Script(
 	),
 )
 
+var ScriptCommonJS = html.Script(
+	html.Src("/public/common.js"),
+)
+
+var ScriptCreateTicketJS = html.Script(
+	html.Src("/public/create_ticket.js"),
+)
+
 var LinkCSSWater = html.Link(
 	html.Rel("stylesheet"),
 	html.Href("https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css"),
+)
+
+var LinkCSSCommon = html.Link(
+	html.Rel("stylesheet"),
+	html.Href("/public/common.css"),
 )

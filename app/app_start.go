@@ -41,6 +41,8 @@ func (a *App) Start() error {
 		mw,
 	)
 
+	a.Transport.Static("/public", "../public")
+
 	InitializeTransportRoutes(a)
 
 	return a.Transport.Listen(a.root())
