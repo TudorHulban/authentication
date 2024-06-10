@@ -29,3 +29,7 @@ var LinkCSSCommon = html.Link(
 	html.Rel("stylesheet"),
 	html.Href("/public/common.css"),
 )
+
+var hidden = g.Attr(
+	"hidden",
+)

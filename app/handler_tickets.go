@@ -171,7 +171,7 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 				&fiber.Map{
 					"success": false,
 					"error":   errGetTask,
-					"level":   "GetTaskByID",
+					"level":   "GetTicketByID",
 				},
 			)
 	}
@@ -190,20 +190,54 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 			)
 	}
 
-	return c.Render(
-		"pages"+RouteTicket,
-
-		fiber.Map{
-			"title":  "T" + reconstructedTask.PrimaryKey.String(),
-			"name":   userLogged.Name,
-			"ticket": reconstructedTask,
-			"events": reconstructedEvents,
-
-			"routeAddEvent": RouteEvent,
-
-			"UnixNanoTo": helpers.UnixNanoTo,
+	page := co.HTML5(
+		co.HTML5Props{
+			Title:       "T" + reconstructedTask.PrimaryKey.String(),
+			Description: "HTMX Login",
+			Language:    "English",
+			Head: []g.Node{
+				pages.ScriptHTMX,
+				pages.ScriptCommonJS,
+				pages.LinkCSSWater,
+				pages.LinkCSSCommon,
+			},
+			Body: []g.Node{
+				pages.Header(),
+				pages.TableTicketEvents(
+					&pages.ParamsTableTicketEvents{
+						TicketEvents: reconstructedEvents,
+					},
+				),
+				pages.ButtonCreateTicketEvent("Create Ticket Event"),
+				pages.ModalCreateTicketEvent(
+					&pages.ParamsModalCreateTicketEvent{
+						URLAddTicketEvent: RouteEvent,
+					},
+				),
+				pages.ScriptCreateTicketEvent(RouteTicket + "/" + "T" + reconstructedTask.PrimaryKey.String()),
+				pages.Footer(),
+			},
 		},
-
-		"layouts/base",
 	)
+
+	c.Set("Content-Type", "text/html")
+
+	return page.Render(c)
+
+	// return c.Render(
+	// 	"pages"+RouteTicket,
+
+	// 	fiber.Map{
+	// 		"title":  "T" + reconstructedTask.PrimaryKey.String(),
+	// 		"name":   userLogged.Name,
+	// 		"ticket": reconstructedTask,
+	// 		"events": reconstructedEvents,
+
+	// 		"routeAddEvent": RouteEvent,
+
+	// 		"UnixNanoTo": helpers.UnixNanoTo,
+	// 	},
+
+	// 	"layouts/base",
+	// )
 }

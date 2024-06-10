@@ -10,6 +10,7 @@ import (
 )
 
 // table tickets
+// create new ticket button
 
 type ParamsTableTickets struct {
 	Tickets   ticket.Tickets

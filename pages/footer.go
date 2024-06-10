@@ -7,7 +7,7 @@ import (
 
 func Footer() g.Node {
 	return html.Div(
-		html.H1(
+		html.H2(
 			g.Text(
 				"this is footer",
 			),

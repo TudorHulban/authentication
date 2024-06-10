@@ -5,11 +5,11 @@ import (
 	html "github.com/maragudk/gomponents/html"
 )
 
-type ParamsModalCreateTicket struct {
-	URLAddTicket string
+type ParamsModalCreateTicketEvent struct {
+	URLAddTicketEvent string
 }
 
-func ModalCreateTicket(params *ParamsModalCreateTicket) g.Node {
+func ModalCreateTicketEvent(params *ParamsModalCreateTicketEvent) g.Node {
 	return html.Div(
 		html.Div(
 			g.Attr(
@@ -28,19 +28,19 @@ func ModalCreateTicket(params *ParamsModalCreateTicket) g.Node {
 				),
 				g.Attr(
 					"hx-post",
-					params.URLAddTicket,
+					params.URLAddTicketEvent,
 				),
 				g.Attr(
 					"hx-target",
-					"#tickets-list",
+					"#events-list",
 				),
 
 				html.Label(
 					g.Attr(
 						"for",
-						"ticketname",
+						"eventname",
 					),
-					g.Text("Ticket Name"),
+					g.Text("Event Name"),
 				),
 
 				html.Input(
@@ -54,7 +54,7 @@ func ModalCreateTicket(params *ParamsModalCreateTicket) g.Node {
 					),
 					g.Attr(
 						"name",
-						"ticketname",
+						"eventname",
 					),
 				),
 
