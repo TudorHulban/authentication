@@ -1,6 +1,8 @@
 package app
 
 import (
+	"fmt"
+
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/services/suser"
 	"github.com/gofiber/fiber/v2"
@@ -16,11 +18,13 @@ func (a *App) MwPassThrough(withUserCredentials *suser.ParamsGetUser) func(c *fi
 			},
 		)
 		if errGet != nil {
-			return c.Render(
-				"pages/login",
-				nil,
-				"layouts/base",
+			c.Set("Content-Type", "text/html")
+
+			fmt.Println(
+				"MwPassThrough", errGet,
 			)
+
+			return pageLogin("MwPassThrough - a.ServiceUser.GetUser").Render(c)
 		}
 
 		c.Locals(

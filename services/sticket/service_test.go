@@ -10,7 +10,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestTask(t *testing.T) {
+func TestTicket(t *testing.T) {
 	service := NewService(
 		storefile.NewStoreTicket(
 			&storefile.ParamsNewStoreTickets{

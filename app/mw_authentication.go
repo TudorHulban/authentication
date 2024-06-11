@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"strconv"
 
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
@@ -15,7 +16,10 @@ func (a *App) MwAuthentication() func(c *fiber.Ctx) error {
 		if errConvert != nil {
 			c.Set("Content-Type", "text/html")
 
-			return _pageLogin.Render(c)
+			return pageLogin(
+				fmt.Sprintf("MwAuthentication - SessionID: %d", sessionID),
+			).
+				Render(c)
 		}
 
 		cachedUser, errGet := a.serviceSessions.GetUser(
@@ -24,7 +28,10 @@ func (a *App) MwAuthentication() func(c *fiber.Ctx) error {
 		if errGet != nil {
 			c.Set("Content-Type", "text/html")
 
-			return _pageLogin.Render(c)
+			return pageLogin(
+				fmt.Sprintf("MwAuthentication - cachedUser: %s", cachedUser.Name),
+			).
+				Render(c)
 		}
 
 		c.Locals(

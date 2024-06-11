@@ -7,5 +7,5 @@ var configuration = app.ParamsNewApp{
 	TemplateFolder:         "../../views/",
 	TemplateFilesExtension: ".jet",
 
-	// AuthenticationDisabled: true,
+	AuthenticationDisabled: true,
 }

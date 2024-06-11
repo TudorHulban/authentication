@@ -27,7 +27,7 @@ func NewStoreUser(params *ParamsNewStoreUsers) *StoreUsers {
 }
 
 func (s *StoreUsers) CreateUser(ctx context.Context, item *appuser.User) error {
-	return s.storeUsers.CreateItem(item, appuser.GetIDUser)
+	return s.storeUsers.CreateItem(item, appuser.GetIDEmail)
 }
 
 func (s *StoreUsers) GetUserInfo(ctx context.Context, userCredentials *appuser.UserCredentials, result *appuser.UserInfo) error {

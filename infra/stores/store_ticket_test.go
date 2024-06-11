@@ -11,12 +11,12 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestStoreTask(t *testing.T) {
+func TestStoreTicket(t *testing.T) {
 	store := IStoreTicket(
 		storefile.NewStoreTicket(
 			&storefile.ParamsNewStoreTickets{
-				PathCacheTickets: ".local_test_cache_tickets",
-				PathCacheEvent:   ".local_test_cache_events",
+				PathCacheTickets: ".local_test_cache_tickets.json",
+				PathCacheEvent:   ".local_test_cache_events.json",
 			},
 		),
 	)

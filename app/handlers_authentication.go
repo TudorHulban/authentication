@@ -16,7 +16,7 @@ import (
 func (a *App) HandlerLoginPage(c *fiber.Ctx) error {
 	c.Set("Content-Type", "text/html")
 
-	return _pageLogin.Render(c)
+	return pageLogin("HandlerLoginPage").Render(c)
 }
 
 func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
@@ -67,7 +67,7 @@ func (a *App) HandlerLoginRequest(c *fiber.Ctx) error {
 	if errGetItem != nil {
 		c.Set("Content-Type", "text/html")
 
-		return _pageLogin.Render(c)
+		return pageLogin("HandlerLoginRequest - a.ServiceUser.GetUser").Render(c)
 	}
 
 	sessionID, errCacheLoggedUser := a.serviceSessions.PutUserTTL(

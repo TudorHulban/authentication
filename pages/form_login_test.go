@@ -6,7 +6,7 @@ import (
 )
 
 func TestFormLogin(t *testing.T) {
-	form := FormLogin()
+	form := FormLogin(t.Name())
 
 	form.Render(os.Stdout)
 }

@@ -24,6 +24,10 @@ func GetIDUser(item *User) uint64 {
 	return uint64(item.PrimaryKey)
 }
 
+func GetIDEmail(item *User) uint64 {
+	return helpers.NewWordFrom(item.Email).Hash()
+}
+
 var CriteriaCredentials = func(userCredentials *UserCredentials) func(item *User) bool {
 	return func(item *User) bool {
 		return item.UserCredentials == *userCredentials

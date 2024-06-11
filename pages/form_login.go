@@ -1,16 +1,16 @@
 package pages
 
 import (
-	"github.com/TudorHulban/authentication/fixtures"
+	testuser "github.com/TudorHulban/authentication/fixtures/test-user"
 	g "github.com/maragudk/gomponents"
 	html "github.com/maragudk/gomponents/html"
 )
 
-func FormLogin() g.Node {
+func FormLogin(caller string) g.Node {
 	return html.Div(
 		html.H2(
 			g.Text(
-				"HTMX Login",
+				"HTMX Login - "+caller,
 			),
 		),
 
@@ -27,7 +27,7 @@ func FormLogin() g.Node {
 				g.Attr("type", "email"),
 				g.Attr("id", "email"),
 				g.Attr("name", "email"),
-				g.Attr("value", fixtures.TestUser.Email),
+				g.Attr("value", testuser.TestUser.Email),
 			),
 
 			html.Label(
@@ -39,7 +39,7 @@ func FormLogin() g.Node {
 				g.Attr("type", "password"),
 				g.Attr("id", "password"),
 				g.Attr("name", "password"),
-				g.Attr("value", fixtures.TestUser.Password),
+				g.Attr("value", testuser.TestUser.Password),
 			),
 
 			html.Input(

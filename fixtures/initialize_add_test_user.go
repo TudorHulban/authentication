@@ -3,6 +3,7 @@ package fixtures
 import (
 	"context"
 
+	testuser "github.com/TudorHulban/authentication/fixtures/test-user"
 	"github.com/TudorHulban/authentication/services/suser"
 )
 
@@ -14,9 +15,9 @@ func FixtureAddTestUser(ctx context.Context, piers *PiersFixtureAddTestUser) err
 	return piers.ServiceUser.CreateUser(
 		ctx,
 		&suser.ParamsCreateUser{
-			Email:    TestUser.Email,
-			Password: TestUser.Password,
-			Name:     TestUser.Name,
+			Email:    testuser.TestUser.Email,
+			Password: testuser.TestUser.Password,
+			Name:     testuser.TestUser.Name,
 		},
 	)
 }

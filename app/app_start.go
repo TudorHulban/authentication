@@ -1,7 +1,7 @@
 package app
 
 import (
-	"github.com/TudorHulban/authentication/fixtures"
+	testuser "github.com/TudorHulban/authentication/fixtures/test-user"
 	"github.com/TudorHulban/authentication/services/suser"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
@@ -21,8 +21,8 @@ func (a *App) Start() error {
 	if a.authenticationDisabled {
 		mw = a.MwPassThrough(
 			&suser.ParamsGetUser{
-				Email:    fixtures.TestUser.Email,
-				Password: fixtures.TestUser.Password,
+				Email:    testuser.TestUser.Email,
+				Password: testuser.TestUser.Password,
 			},
 		)
 	} else {

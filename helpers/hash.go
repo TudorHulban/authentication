@@ -28,10 +28,10 @@ func (w Words) sum() uint64 {
 	return result
 }
 
-func Hash(name []byte, salts ...Word) uint64 {
+func (w Word) Hash(salts ...Word) uint64 {
 	var result uint64
 
-	for _, b := range name {
+	for _, b := range w {
 		result = (result << 5) + uint64(b) + Words(salts).sum()
 	}
 

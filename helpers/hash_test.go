@@ -7,9 +7,9 @@ import (
 
 func TestHash(t *testing.T) {
 	fmt.Println(
-		Hash(
-			[]byte("xxx"),
-			NewWordFrom("1"),
-		),
+		NewWordFrom("xxx").
+			Hash(
+				NewWordFrom("1"),
+			),
 	)
 }
