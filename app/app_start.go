@@ -36,6 +36,7 @@ func (a *App) Start() error {
 			RouteLogged,
 			RouteTicket,
 			RouteTickets,
+			RouteEvent,
 		},
 
 		mw,

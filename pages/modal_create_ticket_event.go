@@ -1,12 +1,14 @@
 package pages
 
 import (
+	"github.com/TudorHulban/authentication/helpers"
 	g "github.com/maragudk/gomponents"
 	html "github.com/maragudk/gomponents/html"
 )
 
 type ParamsModalCreateTicketEvent struct {
 	URLAddTicketEvent string
+	TicketID          helpers.PrimaryKey
 }
 
 func ModalCreateTicketEvent(params *ParamsModalCreateTicketEvent) g.Node {
@@ -30,17 +32,21 @@ func ModalCreateTicketEvent(params *ParamsModalCreateTicketEvent) g.Node {
 					"hx-post",
 					params.URLAddTicketEvent,
 				),
+				// g.Attr(
+				// 	"hx-target",
+				// 	"#events-list",
+				// ),
 				g.Attr(
-					"hx-target",
-					"#events-list",
+					"hx-swap",
+					"none",
 				),
 
 				html.Label(
 					g.Attr(
 						"for",
-						"eventname",
+						"eventcontent",
 					),
-					g.Text("Event Name"),
+					g.Text("Event Content"),
 				),
 
 				html.Input(
@@ -54,8 +60,20 @@ func ModalCreateTicketEvent(params *ParamsModalCreateTicketEvent) g.Node {
 					),
 					g.Attr(
 						"name",
-						"eventname",
+						"eventcontent",
 					),
+				),
+
+				html.Input(
+					g.Attr(
+						"type",
+						"hidden",
+					),
+					g.Attr(
+						"name",
+						"ticketid",
+					),
+					g.Attr("value", params.TicketID.String()),
 				),
 
 				html.Button(

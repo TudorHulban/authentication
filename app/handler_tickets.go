@@ -212,6 +212,7 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 				pages.ModalCreateTicketEvent(
 					&pages.ParamsModalCreateTicketEvent{
 						URLAddTicketEvent: RouteEvent,
+						TicketID:          reconstructedTask.PrimaryKey,
 					},
 				),
 				pages.ScriptCreateTicketEvent(RouteTicket + "/" + "T" + reconstructedTask.PrimaryKey.String()),
@@ -223,21 +224,4 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 	c.Set("Content-Type", "text/html")
 
 	return page.Render(c)
-
-	// return c.Render(
-	// 	"pages"+RouteTicket,
-
-	// 	fiber.Map{
-	// 		"title":  "T" + reconstructedTask.PrimaryKey.String(),
-	// 		"name":   userLogged.Name,
-	// 		"ticket": reconstructedTask,
-	// 		"events": reconstructedEvents,
-
-	// 		"routeAddEvent": RouteEvent,
-
-	// 		"UnixNanoTo": helpers.UnixNanoTo,
-	// 	},
-
-	// 	"layouts/base",
-	// )
 }

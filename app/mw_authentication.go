@@ -13,22 +13,18 @@ func (a *App) MwAuthentication() func(c *fiber.Ctx) error {
 			c.Cookies(CookieLoggedUser),
 		)
 		if errConvert != nil {
-			return c.Render(
-				"pages/login",
-				nil,
-				"layouts/base",
-			)
+			c.Set("Content-Type", "text/html")
+
+			return _pageLogin.Render(c)
 		}
 
 		cachedUser, errGet := a.serviceSessions.GetUser(
 			int64(sessionID),
 		)
 		if errGet != nil {
-			return c.Render(
-				"pages/login",
-				nil,
-				"layouts/base",
-			)
+			c.Set("Content-Type", "text/html")
+
+			return _pageLogin.Render(c)
 		}
 
 		c.Locals(

@@ -2,7 +2,7 @@
     {
         "Email": "x@x.co",
         "Password": "123",
-        "PrimaryKey": 0,
+        "PrimaryKey": 17181117802406920011,
         "Name": "John Doe",
         "DeletedAt": {
             "Int64": 0,

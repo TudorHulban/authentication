@@ -1,87 +1,9 @@
 [
     {
-        "PrimaryKey": 17180192924406920000,
+        "PrimaryKey": 17181117802406920000,
         "Name": "Ticket 1",
         "OpenedByUserID": 1,
-        "CreatedAt": 1718019292487542552,
-        "DeletedAt": {
-            "Int64": 0,
-            "Valid": false
-        }
-    },
-    {
-        "PrimaryKey": 17180193226406920011,
-        "Name": "xxxxxxx",
-        "CreatedAt": 1718019322679821199,
-        "DeletedAt": {
-            "Int64": 0,
-            "Valid": false
-        }
-    },
-    {
-        "PrimaryKey": 17180203552406920000,
-        "Name": "Ticket 1",
-        "OpenedByUserID": 1,
-        "CreatedAt": 1718020355206766654,
-        "DeletedAt": {
-            "Int64": 0,
-            "Valid": false
-        }
-    },
-    {
-        "PrimaryKey": 17180203681406920011,
-        "Name": "create code",
-        "CreatedAt": 1718020368132212447,
-        "DeletedAt": {
-            "Int64": 0,
-            "Valid": false
-        }
-    },
-    {
-        "PrimaryKey": 17180247838406920000,
-        "Name": "Ticket 1",
-        "OpenedByUserID": 1,
-        "CreatedAt": 1718024783812752697,
-        "DeletedAt": {
-            "Int64": 0,
-            "Valid": false
-        }
-    },
-    {
-        "PrimaryKey": 17180256456406920000,
-        "Name": "Ticket 1",
-        "OpenedByUserID": 1,
-        "CreatedAt": 1718025645693313414,
-        "DeletedAt": {
-            "Int64": 0,
-            "Valid": false
-        }
-    },
-    {
-        "PrimaryKey": 17180258210406920000,
-        "Name": "Ticket 1",
-        "OpenedByUserID": 1,
-        "CreatedAt": 1718025821074510511,
-        "DeletedAt": {
-            "Int64": 0,
-            "Valid": false
-        }
-    },
-    {
-        "PrimaryKey": 17180260451406920000,
-        "Name": "Ticket 1",
-        "OpenedByUserID": 1,
-        "CreatedAt": 1718026045170071834,
-        "DeletedAt": {
-            "Int64": 0,
-            "Valid": false
-        }
-    },
-    {
-        "PrimaryKey": 17180264922406920000,
-        "Name": "Ticket 1",
-        "OpenedByUserID": 1,
-        "CreatedAt": 1718026492263815309,
+        "CreatedAt": 1718111780258497569,
         "DeletedAt": {
             "Int64": 0,
             "Valid": false

@@ -2,6 +2,7 @@ package app
 
 import (
 	"strconv"
+	"time"
 
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/pages"
@@ -13,30 +14,13 @@ import (
 )
 
 func (a *App) HandlerLoginPage(c *fiber.Ctx) error {
-	page := co.HTML5(
-		co.HTML5Props{
-			Title:       "Login",
-			Description: "HTMX Login",
-			Language:    "English",
-			Head: []g.Node{
-				pages.ScriptHTMX,
-				pages.LinkCSSWater,
-			},
-			Body: []g.Node{
-				pages.Header(),
-				pages.FormLogin(),
-				pages.Footer(),
-			},
-		},
-	)
-
 	c.Set("Content-Type", "text/html")
 
-	return page.Render(c)
+	return _pageLogin.Render(c)
 }
 
 func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
-	user, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
+	userLogged, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
 	if errGetUser != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
@@ -52,7 +36,7 @@ func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
 			},
 			Body: []g.Node{
 				pages.Header(),
-				pages.UserSalutation(user),
+				pages.UserSalutation(userLogged),
 				pages.Navigation(
 					&pages.ParamsNavigation{
 						WhereTo:        a.baseURL() + RouteTickets,
@@ -81,17 +65,9 @@ func (a *App) HandlerLoginRequest(c *fiber.Ctx) error {
 		&params,
 	)
 	if errGetItem != nil {
-		return c.Render(
-			"components/form_input_error",
-			fiber.Map{
-				"Email":    "Username or email incorrect",
-				"Password": "Username or email incorrect",
+		c.Set("Content-Type", "text/html")
 
-				"errors": errGetItem,
-
-				"title": "Login",
-			},
-		)
+		return _pageLogin.Render(c)
 	}
 
 	sessionID, errCacheLoggedUser := a.serviceSessions.PutUserTTL(
@@ -108,7 +84,7 @@ func (a *App) HandlerLoginRequest(c *fiber.Ctx) error {
 				int(
 					sessionID,
 				),
-			),
+			) + "|" + time.Now().String(),
 		},
 	)
 

@@ -5,7 +5,9 @@ import (
 
 	"github.com/TudorHulban/authentication/apperrors"
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
+	"github.com/TudorHulban/authentication/helpers"
 	"github.com/TudorHulban/authentication/infra/stores"
+	"github.com/TudorHulban/epochid"
 	"github.com/asaskevich/govalidator"
 )
 
@@ -43,6 +45,10 @@ func (s *Service) CreateUser(ctx context.Context, params *ParamsCreateUser) erro
 			},
 			UserInfo: appuser.UserInfo{
 				Name: params.Name,
+
+				PrimaryKey: helpers.PrimaryKey(
+					epochid.NewIDIncremental10KWCoCorrection(),
+				),
 			},
 		},
 	)

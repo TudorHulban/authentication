@@ -119,13 +119,20 @@ func (s *Service) CloseTask(ctx context.Context, taskID helpers.PrimaryKey, stat
 }
 
 type ParamsAddEvent struct {
-	EventContent string
+	EventContent string `json:"eventcontent" valid:"required"`
 
-	TicketID       helpers.PrimaryKey
-	OpenedByUserID helpers.PrimaryKey
+	TicketID       helpers.PrimaryKey `json:"ticketid" valid:"required"`
+	OpenedByUserID helpers.PrimaryKey `valid:"required"`
 }
 
 func (s *Service) AddEvent(ctx context.Context, params *ParamsAddEvent) error {
+	if _, errValidation := govalidator.ValidateStruct(params); errValidation != nil {
+		return apperrors.ErrValidation{
+			Caller: "AddEvent",
+			Issue:  errValidation,
+		}
+	}
+
 	return s.store.AddEvent(
 		ctx,
 		helpers.PrimaryKey(params.TicketID),

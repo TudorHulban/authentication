@@ -16,7 +16,7 @@ func NewService() *Service {
 	return &Service{
 		cacheAppUser: lru.NewCacheLRU[int64, appuser.User](
 			&lru.ParamsNewCacheLRU{
-				TTL:      5 * time.Minute,
+				TTL:      30 * time.Minute,
 				Capacity: 16,
 			},
 		),
