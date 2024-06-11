@@ -63,7 +63,10 @@ func (s *Service) CreateTicket(ctx context.Context, params *ParamsCreateTicket) 
 		},
 	); errCr != nil {
 		return helpers.PrimaryKeyZero,
-			errCr
+			apperrors.ErrService{
+				Issue:  errCr,
+				Caller: "CreateTicket",
+			}
 	}
 
 	return helpers.PrimaryKey(pk),
@@ -93,7 +96,10 @@ func (s *Service) GetTicketByID(ctx context.Context, params *ParamsGetTicketByID
 		&result,
 	); errGet != nil {
 		return nil,
-			errGet
+			apperrors.ErrService{
+				Issue:  errGet,
+				Caller: "GetTicketByID - s.store.GetTicketByID",
+			}
 	}
 
 	return &ticket.Ticket{

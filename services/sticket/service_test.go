@@ -3,6 +3,7 @@ package sticket
 import (
 	"context"
 	"fmt"
+	"os"
 	"testing"
 
 	"github.com/TudorHulban/authentication/domain/ticket"
@@ -11,11 +12,14 @@ import (
 )
 
 func TestTicket(t *testing.T) {
+	nameFileTickets := ".local_test_tickets.json"
+	nameFileEvents := ".local_test_tickets.json"
+
 	service := NewService(
 		storefile.NewStoreTicket(
 			&storefile.ParamsNewStoreTickets{
-				PathCacheTickets: ".local_test_tickets.json",
-				PathCacheEvent:   ".local_test_events.json",
+				PathCacheTickets: nameFileTickets,
+				PathCacheEvents:  nameFileEvents,
 			},
 		),
 	)
@@ -27,6 +31,15 @@ func TestTicket(t *testing.T) {
 	}
 
 	ctx := context.Background()
+
+	_, errGetNonExistentTicketID := service.GetTicketByID(
+		ctx,
+		&ParamsGetTicketByID{
+			TicketID:     "1",
+			UserLoggedID: 1,
+		},
+	)
+	require.Error(t, errGetNonExistentTicketID)
 
 	pkTask1, errCr := service.CreateTicket(ctx, &paramTicket)
 	require.NoError(t, errCr)
@@ -121,5 +134,13 @@ func TestTicket(t *testing.T) {
 		e2.Content,
 		events[1].Content,
 		"content event 2",
+	)
+
+	require.NoError(t,
+		os.Remove(nameFileTickets),
+	)
+
+	require.NoError(t,
+		os.Remove(nameFileEvents),
 	)
 }

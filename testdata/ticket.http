@@ -1,6 +1,9 @@
 @domain = http://localhost:9000
 @endpointTicket=/ticket
 @endpointTickets=/tickets
+
+@endpointEvent=/event
+
 @id=1
 
 
@@ -25,4 +28,13 @@ content-type: application/json
 
 {
     "ticketname": "T1"
+}
+
+### add event
+POST {{domain}}{{endpointEvent}}
+content-type: application/json
+
+{
+    "eventcontent": "T1",
+    "ticketid":"T1"
 }

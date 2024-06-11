@@ -4,28 +4,38 @@ import (
 	"encoding/json"
 	"io"
 	"os"
+
+	"github.com/TudorHulban/authentication/apperrors"
 )
 
 func (store *GenericStoreFile[T]) readAll() ([]*T, error) {
-	file, err := os.Open(store.pathFile)
-	if err != nil {
-		if os.IsNotExist(err) {
+	file, errRead := os.Open(store.pathFile)
+	if errRead != nil {
+		if os.IsNotExist(errRead) {
 			return nil,
 				os.WriteFile(store.pathFile, nil, 0644)
 		}
-		return nil, err
+		return nil, errRead
 	}
 	defer file.Close()
 
 	var result []*T
 
-	byteValue, err := io.ReadAll(file)
-	if err != nil {
-		return nil, err
+	byteValue, errRead := io.ReadAll(file)
+	if errRead != nil {
+		return nil, errRead
 	}
-	err = json.Unmarshal(byteValue, &result)
-	if err != nil {
-		return nil, err
+
+	if len(byteValue) == 0 {
+		return nil,
+			apperrors.ErrNilInput{
+				InputName: store.pathFile,
+			}
+	}
+
+	errUnmarshal := json.Unmarshal(byteValue, &result)
+	if errUnmarshal != nil {
+		return nil, errUnmarshal
 	}
 
 	return result, nil

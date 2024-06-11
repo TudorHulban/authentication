@@ -1,5 +1,0 @@
-{{ range k, v := errors }}
-    <label id="error-label" class="label" hx-swap-oob="outerHTML:#{{lower(k)}}-field-error">
-        <span class="text-error">{{ v }}</span>
-    </label>
-{{ end }}

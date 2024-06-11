@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"sync"
+
+	"github.com/TudorHulban/authentication/apperrors"
 )
 
 type GenericStoreFile[T any] struct {
@@ -33,9 +35,9 @@ func (store *GenericStoreFile[T]) CreateItem(item *T, getID func(*T) uint64, for
 	store.mu.Lock()
 	defer store.mu.Unlock()
 
-	items, err := store.readAll()
-	if err != nil {
-		return err
+	items, errRead := store.readAll()
+	if errRead != nil && !errors.Is(errRead, apperrors.ErrNilInput{}) {
+		return errRead
 	}
 
 	for _, reconstructedItem := range items {
@@ -99,10 +101,14 @@ func (store *GenericStoreFile[T]) SearchItems(criteria func(*T) bool) ([]*T, err
 	store.mu.Lock()
 	defer store.mu.Unlock()
 
-	items, err := store.readAll()
-	if err != nil {
+	items, errRead := store.readAll()
+	if errRead != nil {
 		return nil,
-			err
+			apperrors.ErrInfrastructure{
+				Issue:              errRead,
+				Caller:             "SearchItems",
+				NameInfrastructure: "GenericStoreFile",
+			}
 	}
 
 	var result []*T
@@ -113,13 +119,25 @@ func (store *GenericStoreFile[T]) SearchItems(criteria func(*T) bool) ([]*T, err
 		}
 	}
 
+	if len(result) == 0 {
+		return nil,
+			apperrors.ErrEntryNotFound{
+				Key: "SearchItems", // TODO: review error
+			}
+	}
+
 	return result, nil
 }
 
 func (store *GenericStoreFile[T]) SearchItem(criteriaPK func(*T) bool) (*T, error) {
 	reconstructedItems, errGet := store.SearchItems(criteriaPK)
 	if errGet != nil {
-		return nil, errGet
+		return nil,
+			apperrors.ErrInfrastructure{
+				Issue:              errGet,
+				NameInfrastructure: "GenericStoreFile",
+				Caller:             "SearchItem",
+			}
 	}
 
 	if len(reconstructedItems) > 1 {

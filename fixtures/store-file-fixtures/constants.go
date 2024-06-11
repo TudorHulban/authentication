@@ -4,7 +4,7 @@ import storefile "github.com/TudorHulban/authentication/infra/stores/store-file"
 
 var ParamsStoreFileTickets storefile.ParamsNewStoreTickets = storefile.ParamsNewStoreTickets{
 	PathCacheTickets: "local_cache_ticket.json",
-	PathCacheEvent:   "local_cache_event.json",
+	PathCacheEvents:  "local_cache_event.json",
 }
 
 var ParamsStoreFileUsers storefile.ParamsNewStoreUsers = storefile.ParamsNewStoreUsers{

@@ -3,6 +3,7 @@ package storefile
 import (
 	"context"
 
+	"github.com/TudorHulban/authentication/apperrors"
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
 	genericfile "github.com/TudorHulban/authentication/infra/generic-file"
@@ -15,7 +16,7 @@ type StoreTickets struct {
 
 type ParamsNewStoreTickets struct {
 	PathCacheTickets string
-	PathCacheEvent   string
+	PathCacheEvents  string
 }
 
 func NewStoreTicket(params *ParamsNewStoreTickets) *StoreTickets {
@@ -30,7 +31,7 @@ func NewStoreTicket(params *ParamsNewStoreTickets) *StoreTickets {
 		storeTicketEvents: genericfile.
 			NewGenericStoreFile[ticket.Event](
 			&genericfile.ParamsNewGenericStoreFile{
-				PathStoreFile: params.PathCacheEvent,
+				PathStoreFile: params.PathCacheEvents,
 			},
 		),
 	}
@@ -43,7 +44,11 @@ func (s *StoreTickets) CreateTicket(ctx context.Context, item *ticket.Ticket, fo
 func (s *StoreTickets) GetTicketByID(ctx context.Context, ticketID helpers.PrimaryKey, result *ticket.TicketInfo) error {
 	reconstructedItem, errGet := s.storeTickets.SearchItem(ticket.CriteriaPK(ticketID))
 	if errGet != nil {
-		return errGet
+		return apperrors.ErrInfrastructure{
+			Issue:              errGet,
+			NameInfrastructure: "StoreTickets",
+			Caller:             "GetTicketByID",
+		}
 	}
 
 	*result = reconstructedItem.TicketInfo

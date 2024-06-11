@@ -16,7 +16,7 @@ func TestStoreTicket(t *testing.T) {
 		storefile.NewStoreTicket(
 			&storefile.ParamsNewStoreTickets{
 				PathCacheTickets: ".local_test_cache_tickets.json",
-				PathCacheEvent:   ".local_test_cache_events.json",
+				PathCacheEvents:  ".local_test_cache_events.json",
 			},
 		),
 	)
