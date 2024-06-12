@@ -4,6 +4,7 @@ import (
 	"context"
 
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
+	"github.com/TudorHulban/authentication/helpers"
 	genericfile "github.com/TudorHulban/authentication/infra/generic-file"
 )
 
@@ -30,8 +31,19 @@ func (s *StoreUsers) CreateUser(ctx context.Context, item *appuser.User) error {
 	return s.storeUsers.CreateItem(item, appuser.GetIDEmail)
 }
 
-func (s *StoreUsers) GetUserInfo(ctx context.Context, userCredentials *appuser.UserCredentials, result *appuser.UserInfo) error {
+func (s *StoreUsers) GetUserInfoByCredentials(ctx context.Context, userCredentials *appuser.UserCredentials, result *appuser.UserInfo) error {
 	reconstructedItem, errGet := s.storeUsers.SearchItem(appuser.CriteriaCredentials(userCredentials))
+	if errGet != nil {
+		return errGet
+	}
+
+	*result = reconstructedItem.UserInfo
+
+	return nil
+}
+
+func (s *StoreUsers) GetUserInfoByID(ctx context.Context, pk helpers.PrimaryKey, result *appuser.UserInfo) error {
+	reconstructedItem, errGet := s.storeUsers.SearchItem(appuser.CriteriaID(pk))
 	if errGet != nil {
 		return errGet
 	}
@@ -44,7 +56,7 @@ func (s *StoreUsers) GetUserInfo(ctx context.Context, userCredentials *appuser.U
 func (s *StoreUsers) UpdateUserInfo(ctx context.Context, userCredentials *appuser.UserCredentials, userInfo *appuser.UserInfo) error {
 	var reconstructedItem appuser.UserInfo
 
-	if errGet := s.GetUserInfo(ctx, userCredentials, &reconstructedItem); errGet != nil {
+	if errGet := s.GetUserInfoByCredentials(ctx, userCredentials, &reconstructedItem); errGet != nil {
 		return errGet
 	}
 
@@ -61,7 +73,7 @@ func (s *StoreUsers) UpdateUserInfo(ctx context.Context, userCredentials *appuse
 func (s *StoreUsers) DeleteUser(ctx context.Context, userCredentials *appuser.UserCredentials) error {
 	var reconstructedItem appuser.UserInfo
 
-	if errGet := s.GetUserInfo(ctx, userCredentials, &reconstructedItem); errGet != nil {
+	if errGet := s.GetUserInfoByCredentials(ctx, userCredentials, &reconstructedItem); errGet != nil {
 		return errGet
 	}
 

@@ -12,7 +12,10 @@ type Timestamp struct {
 }
 
 func (t *Timestamp) WithCreateNow() Timestamp {
-	t.CreatedAt = time.Now().UnixNano()
+	now := time.Now().UnixNano()
+
+	t.CreatedAt = now
+	t.UpdatedAt = now
 
 	return *t
 }

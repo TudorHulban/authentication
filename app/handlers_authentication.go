@@ -60,7 +60,7 @@ func (a *App) HandlerLoginRequest(c *fiber.Ctx) error {
 		return err
 	}
 
-	reconstructedUser, errGetItem := a.ServiceUser.GetUser(
+	reconstructedUser, errGetItem := a.ServiceUser.GetUserByCredentials(
 		c.Context(),
 		&params,
 	)

@@ -59,7 +59,7 @@ type ParamsGetUser struct {
 	Password string `valid:"required"`
 }
 
-func (s *Service) GetUser(ctx context.Context, params *ParamsGetUser) (*appuser.User, error) {
+func (s *Service) GetUserByCredentials(ctx context.Context, params *ParamsGetUser) (*appuser.User, error) {
 	if _, errValidation := govalidator.ValidateStruct(params); errValidation != nil {
 		return nil,
 			apperrors.ErrValidation{
@@ -70,7 +70,7 @@ func (s *Service) GetUser(ctx context.Context, params *ParamsGetUser) (*appuser.
 
 	var result appuser.UserInfo
 
-	if errGetUserInfo := s.store.GetUserInfo(
+	if errGetUserInfo := s.store.GetUserInfoByCredentials(
 		ctx,
 		&appuser.UserCredentials{
 			Email:    params.Email,
@@ -87,6 +87,21 @@ func (s *Service) GetUser(ctx context.Context, params *ParamsGetUser) (*appuser.
 			},
 			UserInfo: result,
 		},
+		nil
+}
+
+func (s *Service) GetUserInfoByID(ctx context.Context, pk helpers.PrimaryKey) (*appuser.UserInfo, error) {
+	var result appuser.UserInfo
+
+	if errGetUserInfo := s.store.GetUserInfoByID(
+		ctx,
+		pk,
+		&result,
+	); errGetUserInfo != nil {
+		return nil, errGetUserInfo
+	}
+
+	return &result,
 		nil
 }
 

@@ -2,8 +2,10 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
+	"time"
 
 	"github.com/TudorHulban/authentication/apperrors"
 	"github.com/TudorHulban/authentication/domain/ticket"
@@ -47,7 +49,12 @@ func InitializeApp(config *ParamsNewApp) *App {
 			ServiceTicket: app.serviceTicket,
 		},
 		&fixtures.ParamsFixtureTaskWEvents{
-			TicketName:           "Ticket 1",
+			TicketName: fmt.Sprintf(
+				"Ticket %d%d",
+				time.Now().Minute(),
+				time.Now().Second(),
+			),
+
 			TicketKind:           ticket.KindUndefined,
 			TicketOpenedByUserID: 1,
 			NumberEvents:         10,

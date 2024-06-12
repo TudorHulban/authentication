@@ -2,7 +2,7 @@ package stores
 
 import (
 	"context"
-	"fmt"
+	"os"
 	"testing"
 
 	"github.com/TudorHulban/authentication/domain/ticket"
@@ -11,12 +11,16 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const (
+	_nameFileTickets = ".local_test_cache_tickets.json"
+	_nameFileEvents  = ".local_test_cache_events.json"
+)
+
 func TestStoreTicket(t *testing.T) {
 	store := IStoreTicket(
 		storefile.NewStoreTicket(
 			&storefile.ParamsNewStoreTickets{
 				PathCacheTickets: ".local_test_cache_tickets.json",
-				PathCacheEvents:  ".local_test_cache_events.json",
 			},
 		),
 	)
@@ -41,6 +45,10 @@ func TestStoreTicket(t *testing.T) {
 
 	require.NoError(t,
 		store.CreateTicket(ctx, &t1, true),
+	)
+
+	require.Error(t,
+		store.CreateTicket(ctx, &t1),
 	)
 
 	require.NoError(t,
@@ -74,5 +82,7 @@ func TestStoreTicket(t *testing.T) {
 		tasks[1].Name,
 	)
 
-	fmt.Println(tasks)
+	require.NoError(t,
+		os.Remove(_nameFileTickets),
+	)
 }

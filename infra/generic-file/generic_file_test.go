@@ -1,6 +1,7 @@
 package genericfile
 
 import (
+	"os"
 	"testing"
 
 	"github.com/TudorHulban/authentication/domain/ticket"
@@ -9,9 +10,11 @@ import (
 )
 
 func TestGenericStore(t *testing.T) {
+	nameFileUsers := ".local_test_users.json"
+
 	store := NewGenericStoreFile[ticket.Ticket](
 		&ParamsNewGenericStoreFile{
-			PathStoreFile: ".local_ticket.json",
+			PathStoreFile: nameFileUsers,
 		},
 	)
 	require.NotNil(t, store)
@@ -24,7 +27,13 @@ func TestGenericStore(t *testing.T) {
 		},
 	}
 
-	store.CreateFirstItem(&t1)
+	require.NoError(t,
+		store.CreateFirstItem(&t1),
+	)
+
+	require.Error(t,
+		store.CreateItem(&t1, ticket.GetIDTicket),
+	)
 
 	criteria := func(item *ticket.Ticket) bool {
 		return ticket.GetIDTicket(item) == uint64(t1.PrimaryKey)
@@ -65,4 +74,8 @@ func TestGenericStore(t *testing.T) {
 	recontructedItems3, errGet3 := store.SearchItems(criteria)
 	require.Error(t, errGet3)
 	require.Empty(t, recontructedItems3)
+
+	require.NoError(t,
+		os.Remove(nameFileUsers),
+	)
 }

@@ -33,3 +33,9 @@ var CriteriaCredentials = func(userCredentials *UserCredentials) func(item *User
 		return item.UserCredentials == *userCredentials
 	}
 }
+
+var CriteriaID = func(pk helpers.PrimaryKey) func(item *User) bool {
+	return func(item *User) bool {
+		return item.PrimaryKey == pk
+	}
+}

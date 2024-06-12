@@ -10,7 +10,7 @@ import (
 
 func (a *App) MwPassThrough(withUserCredentials *suser.ParamsGetUser) func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
-		reconstructedUser, errGet := a.ServiceUser.GetUser(
+		reconstructedUser, errGet := a.ServiceUser.GetUserByCredentials(
 			c.Context(),
 			&suser.ParamsGetUser{
 				Email:    withUserCredentials.Email,

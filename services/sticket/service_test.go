@@ -73,14 +73,19 @@ func TestTicket(t *testing.T) {
 
 	ctx := context.Background()
 
-	pkTask1, errCr := service.CreateTicket(ctx, &paramTicket)
-	require.NoError(t, errCr)
-	require.NotZero(t, pkTask1)
+	pkInitialTask, errCrInitial := service.CreateTicket(ctx, &paramTicket)
+	require.NoError(t, errCrInitial)
+	require.NotZero(t, pkInitialTask)
+
+	pkAgainTask, errCrSameTicket := service.CreateTicket(ctx, &paramTicket)
+	require.NoError(t, errCrSameTicket)
+	require.NotZero(t, pkAgainTask)
+	require.NotEqual(t, pkInitialTask, pkAgainTask)
 
 	reconstructedTicket, errGet := service.GetTicketByID(
 		ctx,
 		&ParamsGetTicketByID{
-			TicketID:     pkTask1.String(),
+			TicketID:     pkInitialTask.String(),
 			UserLoggedID: 1,
 		},
 	)
@@ -91,6 +96,7 @@ func TestTicket(t *testing.T) {
 		reconstructedTicket.Name,
 	)
 	require.NotZero(t, reconstructedTicket.CreatedAt, "created at timestamp")
+	require.NotZero(t, reconstructedTicket.UpdatedAt, "updated at timestamp")
 	require.NotZero(t, reconstructedTicket.OpenedByUserID)
 	require.EqualValues(t,
 		ticket.StatusNew,
@@ -119,7 +125,7 @@ func TestTicket(t *testing.T) {
 				EventContent:   e1.Content,
 				OpenedByUserID: 1,
 
-				TicketID: pkTask1,
+				TicketID: pkInitialTask,
 			},
 		),
 	)
@@ -136,14 +142,14 @@ func TestTicket(t *testing.T) {
 				EventContent:   e2.Content,
 				OpenedByUserID: 1,
 
-				TicketID: pkTask1,
+				TicketID: pkInitialTask,
 			},
 		),
 	)
 
 	events, errGetEvents := service.GetEventsForTicketID(
 		ctx,
-		pkTask1,
+		pkInitialTask,
 	)
 	require.NoError(t, errGetEvents)
 	require.GreaterOrEqual(t,

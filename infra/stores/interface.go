@@ -11,7 +11,8 @@ import (
 
 type IStoreUser interface {
 	CreateUser(ctx context.Context, user *appuser.User) error
-	GetUserInfo(ctx context.Context, userCredentials *appuser.UserCredentials, result *appuser.UserInfo) error
+	GetUserInfoByCredentials(ctx context.Context, userCredentials *appuser.UserCredentials, result *appuser.UserInfo) error
+	GetUserInfoByID(ctx context.Context, pk helpers.PrimaryKey, result *appuser.UserInfo) error
 	UpdateUserInfo(ctx context.Context, userCredentials *appuser.UserCredentials, userInfo *appuser.UserInfo) error
 	DeleteUser(ctx context.Context, userCredentials *appuser.UserCredentials) error
 }
