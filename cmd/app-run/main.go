@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"os"
 	"time"
@@ -32,7 +33,7 @@ func main() {
 			ServiceUser: app.ServiceUser,
 		},
 	)
-	if errCr != nil {
+	if errCr != nil && !errors.As(errCr, &apperrors.ErrEntryAlreadyExists{}) {
 		fmt.Println(errCr)
 
 		os.Exit(

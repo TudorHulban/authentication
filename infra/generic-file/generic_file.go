@@ -43,12 +43,15 @@ func (store *GenericStoreFile[T]) CreateItem(item *T, getID func(*T) uint64, for
 	for _, reconstructedItem := range items {
 		idNewItem := getID(item)
 
-		if idNewItem == getID(reconstructedItem) {
+		if getID(reconstructedItem) == idNewItem {
 			if len(force) == 1 && force[0] {
 				return nil
 			}
 
-			return fmt.Errorf("item with PK: %d already exists", idNewItem)
+			return apperrors.ErrEntryAlreadyExists{
+				Caller: "CreateItem",
+				Entry:  item,
+			}
 		}
 	}
 
