@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/TudorHulban/authentication/apperrors"
 	"github.com/TudorHulban/authentication/helpers"
+	"github.com/TudorHulban/authentication/services/srender"
 	"github.com/TudorHulban/authentication/services/ssessions"
 	"github.com/TudorHulban/authentication/services/sticket"
 	"github.com/TudorHulban/authentication/services/suser"
@@ -15,6 +16,7 @@ type App struct {
 	ServiceUser     *suser.Service
 	serviceSessions *ssessions.Service
 	serviceTicket   *sticket.Service
+	serviceRender   *srender.Service
 
 	host string
 	port string
@@ -38,6 +40,7 @@ type PiersApp struct {
 	ServiceSessions *ssessions.Service
 
 	ServiceTicket *sticket.Service
+	ServiceRender *srender.Service
 }
 
 func NewApp(params *ParamsNewApp, piers *PiersApp) (*App, error) {
@@ -58,6 +61,7 @@ func NewApp(params *ParamsNewApp, piers *PiersApp) (*App, error) {
 			ServiceUser:     piers.ServiceUser,
 			serviceSessions: piers.ServiceSessions,
 			serviceTicket:   piers.ServiceTicket,
+			serviceRender:   piers.ServiceRender,
 
 			Transport: fiber.New(
 				fiber.Config{

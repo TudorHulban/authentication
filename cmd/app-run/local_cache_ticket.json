@@ -29,5 +29,16 @@
             "Int64": 0,
             "Valid": false
         }
+    },
+    {
+        "PrimaryKey": 17182004287406920000,
+        "Name": "Ticket 5348",
+        "OpenedByUserID": 1,
+        "CreatedAt": 1718200428781000274,
+        "UpdatedAt": 1718200428781000274,
+        "DeletedAt": {
+            "Int64": 0,
+            "Valid": false
+        }
     }
 ]

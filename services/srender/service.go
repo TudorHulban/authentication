@@ -1,20 +1,25 @@
 package srender
 
-import "github.com/TudorHulban/authentication/services/suser"
+import (
+	"github.com/TudorHulban/authentication/helpers"
+	"github.com/TudorHulban/authentication/services/suser"
+)
 
-type ServiceRender struct {
+type Service struct {
 	serviceUser *suser.Service
 }
 
 type PiersServiceRender struct {
-	ServiceUser suser.Service
+	ServiceUser *suser.Service
 }
 
-func NewServiceRender(piers *PiersServiceRender) (*ServiceRender, error) {
-	// TODO: input validation
+func NewServiceRender(piers *PiersServiceRender) (*Service, error) {
+	if errVa := helpers.ValidatePiers(piers); errVa != nil {
+		return nil, errVa
+	}
 
-	return &ServiceRender{
-			serviceUser: &piers.ServiceUser,
+	return &Service{
+			serviceUser: piers.ServiceUser,
 		},
 		nil
 }
