@@ -63,6 +63,6 @@ func TestGenericStore(t *testing.T) {
 	)
 
 	recontructedItems3, errGet3 := store.SearchItems(criteria)
-	require.NoError(t, errGet3)
+	require.Error(t, errGet3)
 	require.Empty(t, recontructedItems3)
 }

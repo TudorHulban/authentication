@@ -7,28 +7,25 @@ import (
 	"testing"
 
 	"github.com/TudorHulban/authentication/domain/ticket"
+	"github.com/TudorHulban/authentication/helpers"
 	storefile "github.com/TudorHulban/authentication/infra/stores/store-file"
 	"github.com/stretchr/testify/require"
 )
 
-func TestTicket(t *testing.T) {
-	nameFileTickets := ".local_test_tickets.json"
-	nameFileEvents := ".local_test_events.json"
+const (
+	_nameFileTickets = ".local_test_tickets.json"
+	_nameFileEvents  = ".local_test_events.json"
+)
 
+func TestErrorsTicket(t *testing.T) {
 	service := NewService(
 		storefile.NewStoreTicket(
 			&storefile.ParamsNewStoreTickets{
-				PathCacheTickets: nameFileTickets,
-				PathCacheEvents:  nameFileEvents,
+				PathCacheTickets: _nameFileTickets,
+				PathCacheEvents:  _nameFileEvents,
 			},
 		),
 	)
-
-	paramTicket := ParamsCreateTicket{
-		TicketName:     "xxx",
-		OpenedByUserID: 1,
-		TicketKind:     ticket.KindUndefined,
-	}
 
 	ctx := context.Background()
 
@@ -40,6 +37,40 @@ func TestTicket(t *testing.T) {
 		},
 	)
 	require.Error(t, errGetNonExistentTicketID)
+
+	events, errGetEventsNonExistentTicketID := service.GetEventsForTicketID(
+		ctx,
+		helpers.PrimaryKeyZero,
+	)
+	require.NoError(t, errGetEventsNonExistentTicketID)
+	require.Empty(t, events)
+
+	require.NoError(t,
+		os.Remove(_nameFileTickets),
+	)
+
+	require.NoError(t,
+		os.Remove(_nameFileEvents),
+	)
+}
+
+func TestTicket(t *testing.T) {
+	service := NewService(
+		storefile.NewStoreTicket(
+			&storefile.ParamsNewStoreTickets{
+				PathCacheTickets: _nameFileTickets,
+				PathCacheEvents:  _nameFileEvents,
+			},
+		),
+	)
+
+	paramTicket := ParamsCreateTicket{
+		TicketName:     "xxx",
+		OpenedByUserID: 1,
+		TicketKind:     ticket.KindUndefined,
+	}
+
+	ctx := context.Background()
 
 	pkTask1, errCr := service.CreateTicket(ctx, &paramTicket)
 	require.NoError(t, errCr)
@@ -65,14 +96,14 @@ func TestTicket(t *testing.T) {
 		reconstructedTicket.Status,
 	)
 
-	reconstructedTasks, errGetTasks := service.SearchTasks(ctx, &ticket.ParamsSearchTasks{})
+	reconstructedTickets, errGetTasks := service.SearchTickets(ctx, &ticket.ParamsSearchTickets{})
 	require.NoError(t, errGetTasks)
-	require.NotZero(t, reconstructedTasks)
+	require.NotZero(t, reconstructedTickets)
 
 	fmt.Println(
-		reconstructedTasks[0].PrimaryKey,
+		reconstructedTickets[0].PrimaryKey,
 		"\n",
-		reconstructedTasks[0].TicketInfo,
+		reconstructedTickets[0].TicketInfo,
 	)
 
 	e1 := ticket.EventInfo{
@@ -138,10 +169,10 @@ func TestTicket(t *testing.T) {
 	)
 
 	require.NoError(t,
-		os.Remove(nameFileTickets),
+		os.Remove(_nameFileTickets),
 	)
 
 	require.NoError(t,
-		os.Remove(nameFileEvents),
+		os.Remove(_nameFileEvents),
 	)
 }

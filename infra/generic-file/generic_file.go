@@ -121,8 +121,8 @@ func (store *GenericStoreFile[T]) SearchItems(criteria func(*T) bool) ([]*T, err
 
 	if len(result) == 0 {
 		return nil,
-			apperrors.ErrEntryNotFound{
-				Key: "SearchItems", // TODO: review error
+			apperrors.ErrNoEntriesFound{
+				Caller: "SearchItems",
 			}
 	}
 

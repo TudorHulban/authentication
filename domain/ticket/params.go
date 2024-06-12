@@ -2,7 +2,7 @@ package ticket
 
 import "github.com/TudorHulban/authentication/helpers"
 
-type ParamsSearchTasks struct {
+type ParamsSearchTickets struct {
 	helpers.ParamsPagination
 
 	WithStatus TicketStatus

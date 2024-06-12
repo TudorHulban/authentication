@@ -69,7 +69,7 @@ func (s *StoreUsers) DeleteUser(ctx context.Context, userCredentials *appuser.Us
 		uint64(reconstructedItem.PrimaryKey),
 		&appuser.User{
 			UserCredentials: *userCredentials,
-			UserInfo: *&appuser.UserInfo{
+			UserInfo: appuser.UserInfo{
 				PrimaryKey: reconstructedItem.PrimaryKey,
 				Name:       reconstructedItem.Name,
 				Timestamp:  reconstructedItem.Timestamp.WithDeleteNow(),

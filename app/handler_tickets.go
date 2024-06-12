@@ -1,6 +1,8 @@
 package app
 
 import (
+	"fmt"
+
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
@@ -92,9 +94,9 @@ func (a *App) HandlerTickets(c *fiber.Ctx) error {
 			)
 	}
 
-	reconstructedTasks, errGetTasks := a.serviceTicket.SearchTasks(
+	reconstructedTasks, errGetTasks := a.serviceTicket.SearchTickets(
 		c.Context(),
-		&ticket.ParamsSearchTasks{
+		&ticket.ParamsSearchTickets{
 			ParamsPagination: helpers.ParamsPagination{
 				First: 10,
 			},
@@ -158,6 +160,10 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 			)
 	}
 
+	fmt.Println(
+		"HandlerTicketID",
+	)
+
 	reconstructedTask, errGetTask := a.serviceTicket.GetTicketByID(
 		c.Context(),
 		&sticket.ParamsGetTicketByID{
@@ -175,6 +181,11 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 				},
 			)
 	}
+
+	fmt.Println(
+		"HandlerTicketID",
+		reconstructedTask.PrimaryKey,
+	)
 
 	reconstructedEvents, errGetEvents := a.serviceTicket.GetEventsForTicketID(
 		c.Context(),

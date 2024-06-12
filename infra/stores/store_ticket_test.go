@@ -58,9 +58,9 @@ func TestStoreTicket(t *testing.T) {
 	)
 	require.NotZero(t, reconstructedTaskInfo1)
 
-	tasks, erGetTasks := store.SearchTasks(
+	tasks, erGetTasks := store.SearchTickets(
 		ctx,
-		&ticket.ParamsSearchTasks{
+		&ticket.ParamsSearchTickets{
 			ParamsPagination: helpers.ParamsPagination{
 				First: 10,
 			},

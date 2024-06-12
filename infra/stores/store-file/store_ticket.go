@@ -56,15 +56,15 @@ func (s *StoreTickets) GetTicketByID(ctx context.Context, ticketID helpers.Prima
 	return nil
 }
 
-func (s *StoreTickets) SearchTasks(ctx context.Context, params *ticket.ParamsSearchTasks) (ticket.Tickets, error) {
+func (s *StoreTickets) SearchTickets(ctx context.Context, params *ticket.ParamsSearchTickets) (ticket.Tickets, error) {
 	return s.storeTickets.SearchItems(helpers.CriteriaTrue)
 }
 
-func (s *StoreTickets) UpdateTask(ctx context.Context, item *ticket.Ticket) error {
+func (s *StoreTickets) UpdateTicket(ctx context.Context, item *ticket.Ticket) error {
 	return s.storeTickets.UpdateItem(uint64(item.PrimaryKey), item, ticket.GetIDTicket)
 }
 
-func (s *StoreTickets) CloseTask(ctx context.Context, ticketID helpers.PrimaryKey, status ticket.TicketStatus) error {
+func (s *StoreTickets) CloseTicket(ctx context.Context, ticketID helpers.PrimaryKey, status ticket.TicketStatus) error {
 	return nil
 }
 

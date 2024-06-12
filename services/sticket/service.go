@@ -109,15 +109,15 @@ func (s *Service) GetTicketByID(ctx context.Context, params *ParamsGetTicketByID
 		nil
 }
 
-func (s *Service) SearchTasks(ctx context.Context, params *ticket.ParamsSearchTasks) (ticket.Tickets, error) {
-	return s.store.SearchTasks(
+func (s *Service) SearchTickets(ctx context.Context, params *ticket.ParamsSearchTickets) (ticket.Tickets, error) {
+	return s.store.SearchTickets(
 		ctx,
 		params,
 	)
 }
 
-func (s *Service) CloseTask(ctx context.Context, taskID helpers.PrimaryKey, status ticket.TicketStatus) error {
-	return s.store.CloseTask(
+func (s *Service) CloseTicket(ctx context.Context, taskID helpers.PrimaryKey, status ticket.TicketStatus) error {
+	return s.store.CloseTicket(
 		ctx,
 		helpers.PrimaryKey(taskID),
 		status,
