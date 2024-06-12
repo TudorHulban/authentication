@@ -36,7 +36,7 @@ func (store *GenericStoreFile[T]) CreateItem(item *T, getID func(*T) uint64, for
 	defer store.mu.Unlock()
 
 	items, errRead := store.readAll()
-	if errRead != nil && !errors.Is(errRead, apperrors.ErrNilInput{}) {
+	if errRead != nil {
 		return errRead
 	}
 

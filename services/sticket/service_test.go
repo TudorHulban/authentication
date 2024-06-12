@@ -13,7 +13,7 @@ import (
 
 func TestTicket(t *testing.T) {
 	nameFileTickets := ".local_test_tickets.json"
-	nameFileEvents := ".local_test_tickets.json"
+	nameFileEvents := ".local_test_events.json"
 
 	service := NewService(
 		storefile.NewStoreTicket(
@@ -71,6 +71,7 @@ func TestTicket(t *testing.T) {
 
 	fmt.Println(
 		reconstructedTasks[0].PrimaryKey,
+		"\n",
 		reconstructedTasks[0].TicketInfo,
 	)
 
