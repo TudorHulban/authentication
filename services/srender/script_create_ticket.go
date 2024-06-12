@@ -17,7 +17,7 @@ func ScriptCreateTicket(urlPage string) g.Node {
             errorTarget.setAttribute("hidden", "true");
             errorTarget.innerText = "";
 
-            window.alert("Succes - Item created!")
+            window.alert("Succes - Ticket created!")
 
             window.location.replace("` + urlPage + `");
         } else if (evt.detail.failed && evt.detail.xhr) {
