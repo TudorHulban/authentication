@@ -48,5 +48,25 @@
             "Int64": 0,
             "Valid": false
         }
+    },
+    {
+        "PrimaryKey": 17181811156406920000,
+        "Name": "Ticket 1",
+        "OpenedByUserID": 1,
+        "CreatedAt": 1718181115608479896,
+        "DeletedAt": {
+            "Int64": 0,
+            "Valid": false
+        }
+    },
+    {
+        "PrimaryKey": 17181811882406920000,
+        "Name": "Ticket 1",
+        "OpenedByUserID": 1,
+        "CreatedAt": 1718181188206982337,
+        "DeletedAt": {
+            "Int64": 0,
+            "Valid": false
+        }
     }
 ]

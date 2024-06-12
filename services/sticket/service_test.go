@@ -6,6 +6,7 @@ import (
 	"os"
 	"testing"
 
+	"github.com/TudorHulban/authentication/apperrors"
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
 	storefile "github.com/TudorHulban/authentication/infra/stores/store-file"
@@ -42,7 +43,7 @@ func TestErrorsTicket(t *testing.T) {
 		ctx,
 		helpers.PrimaryKeyZero,
 	)
-	require.NoError(t, errGetEventsNonExistentTicketID)
+	require.ErrorAs(t, errGetEventsNonExistentTicketID, &apperrors.ErrNoEntriesFound{})
 	require.Empty(t, events)
 
 	require.NoError(t,

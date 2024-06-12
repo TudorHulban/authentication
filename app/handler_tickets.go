@@ -1,8 +1,10 @@
 package app
 
 import (
+	"errors"
 	"fmt"
 
+	"github.com/TudorHulban/authentication/apperrors"
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
@@ -191,7 +193,7 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 		c.Context(),
 		helpers.PrimaryKey(reconstructedTask.PrimaryKey),
 	)
-	if errGetEvents != nil {
+	if errGetEvents != nil && !errors.As(errGetEvents, &apperrors.ErrNoEntriesFound{}) {
 		return c.Status(fiber.StatusInternalServerError).
 			JSON(
 				&fiber.Map{
