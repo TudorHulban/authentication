@@ -29,12 +29,31 @@ func TestCreateUser(t *testing.T) {
 		Name:     testuser.TestUser.Name,
 	}
 
-	require.NoError(t,
-		service.CreateUser(ctx, &p1),
-	)
+	_, errCr := service.CreateUser(ctx, &p1)
+	require.NoError(t, errCr)
 
-	require.Error(t,
-		service.CreateUser(ctx, &p1),
+	_, errCrAgain := service.CreateUser(ctx, &p1)
+	require.Error(t, errCrAgain)
+
+	reconstructedUser, errGetByCredentials := service.GetUserByCredentials(
+		ctx,
+		&ParamsGetUser{
+			Email:    testuser.TestUser.Email,
+			Password: testuser.TestUser.Password,
+		},
+	)
+	require.NoError(t, errGetByCredentials)
+	require.NotZero(t, reconstructedUser)
+
+	reconstructedUserInfo, errGetByID := service.GetUserInfoByID(
+		ctx,
+		reconstructedUser.PrimaryKey,
+	)
+	require.NoError(t, errGetByID)
+	require.NotZero(t, reconstructedUserInfo)
+	require.Equal(t,
+		reconstructedUser.Name,
+		reconstructedUserInfo.Name,
 	)
 
 	require.NoError(t,

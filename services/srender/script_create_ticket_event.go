@@ -1,11 +1,11 @@
-package pages
+package srender
 
 import (
 	g "github.com/maragudk/gomponents"
-	"github.com/maragudk/gomponents/html"
+	html "github.com/maragudk/gomponents/html"
 )
 
-func ScriptCreateTicket(urlPage string) g.Node {
+func ScriptCreateTicketEvent(urlPage string) g.Node {
 	return html.Script(
 		g.Raw(
 			`

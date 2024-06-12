@@ -7,7 +7,7 @@ import (
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
-	"github.com/TudorHulban/authentication/pages"
+	"github.com/TudorHulban/authentication/services/srender"
 	"github.com/TudorHulban/authentication/services/sticket"
 
 	"github.com/gofiber/fiber/v2"
@@ -41,7 +41,7 @@ func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 			)
 	}
 
-	pkConstructedTicket, errGetTicket := a.serviceTicket.CreateTicket(
+	pkConstructedTicket, errGetTicket := a.ServiceTicket.CreateTicket(
 		c.Context(),
 		&sticket.ParamsCreateTicket{
 			OpenedByUserID: userLogged.PrimaryKey,
@@ -60,7 +60,7 @@ func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 			)
 	}
 
-	reconstructedTicket, errGet := a.serviceTicket.GetTicketByID(
+	reconstructedTicket, errGet := a.ServiceTicket.GetTicketByID(
 		c.Context(),
 		&sticket.ParamsGetTicketByID{
 			TicketID:     pkConstructedTicket.String(),
@@ -95,7 +95,7 @@ func (a *App) HandlerTickets(c *fiber.Ctx) error {
 			)
 	}
 
-	reconstructedTasks, errGetTasks := a.serviceTicket.SearchTickets(
+	reconstructedTasks, errGetTasks := a.ServiceTicket.SearchTickets(
 		c.Context(),
 		&ticket.ParamsSearchTickets{
 			ParamsPagination: helpers.ParamsPagination{
@@ -119,27 +119,28 @@ func (a *App) HandlerTickets(c *fiber.Ctx) error {
 			Description: "HTMX Login",
 			Language:    "English",
 			Head: []g.Node{
-				pages.ScriptHTMX,
-				pages.ScriptCommonJS,
-				pages.LinkCSSWater,
-				pages.LinkCSSCommon,
+				srender.ScriptHTMX,
+				srender.ScriptCommonJS,
+				srender.LinkCSSWater,
+				srender.LinkCSSCommon,
 			},
 			Body: []g.Node{
-				pages.Header(),
-				pages.TableTickets(
-					&pages.ParamsTableTickets{
+				srender.Header(),
+				a.serviceRender.TableTickets(
+					c.Context(),
+					&srender.ParamsTableTickets{
 						Tickets:   reconstructedTasks,
 						URLTicket: a.baseURL() + RouteTicket,
 					},
 				),
-				pages.ButtonCreateTicket("Create Ticket"),
-				pages.ModalCreateTicket(
-					&pages.ParamsModalCreateTicket{
+				srender.ButtonCreateTicket("Create Ticket"),
+				srender.ModalCreateTicket(
+					&srender.ParamsModalCreateTicket{
 						URLAddTicket: RouteTicket,
 					},
 				),
-				pages.ScriptCreateTicket(RouteTickets),
-				pages.Footer(),
+				srender.ScriptCreateTicket(RouteTickets),
+				srender.Footer(),
 			},
 		},
 	)
@@ -161,7 +162,7 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 			)
 	}
 
-	reconstructedTask, errGetTask := a.serviceTicket.GetTicketByID(
+	reconstructedTask, errGetTask := a.ServiceTicket.GetTicketByID(
 		c.Context(),
 		&sticket.ParamsGetTicketByID{
 			TicketID:     c.Params("id"),
@@ -179,7 +180,7 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 			)
 	}
 
-	reconstructedEvents, errGetEvents := a.serviceTicket.GetEventsForTicketID(
+	reconstructedEvents, errGetEvents := a.ServiceTicket.GetEventsForTicketID(
 		c.Context(),
 		helpers.PrimaryKey(reconstructedTask.PrimaryKey),
 	)
@@ -199,27 +200,27 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 			Description: "Ticket Information",
 			Language:    "English",
 			Head: []g.Node{
-				pages.ScriptHTMX,
-				pages.ScriptCommonJS,
-				pages.LinkCSSWater,
-				pages.LinkCSSCommon,
+				srender.ScriptHTMX,
+				srender.ScriptCommonJS,
+				srender.LinkCSSWater,
+				srender.LinkCSSCommon,
 			},
 			Body: []g.Node{
-				pages.Header(),
-				pages.TableTicketEvents(
-					&pages.ParamsTableTicketEvents{
+				srender.Header(),
+				srender.TableTicketEvents(
+					&srender.ParamsTableTicketEvents{
 						TicketEvents: reconstructedEvents,
 					},
 				),
-				pages.ButtonCreateTicketEvent("Create Ticket Event"),
-				pages.ModalCreateTicketEvent(
-					&pages.ParamsModalCreateTicketEvent{
+				srender.ButtonCreateTicketEvent("Create Ticket Event"),
+				srender.ModalCreateTicketEvent(
+					&srender.ParamsModalCreateTicketEvent{
 						URLAddTicketEvent: RouteEvent,
 						TicketID:          reconstructedTask.PrimaryKey,
 					},
 				),
-				pages.ScriptCreateTicketEvent(RouteTicket + "/" + reconstructedTask.PrimaryKey.String()),
-				pages.Footer(),
+				srender.ScriptCreateTicketEvent(RouteTicket + "/" + reconstructedTask.PrimaryKey.String()),
+				srender.Footer(),
 			},
 		},
 	)

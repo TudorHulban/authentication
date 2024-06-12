@@ -7,6 +7,7 @@ type ErrNoEntriesFound struct {
 }
 
 const areaErrNoEntriesFound = "Datasets"
+const msgErrNoEntriesFound = "no entries found"
 
 func (e ErrNoEntriesFound) Error() string {
 	var res [2]string
@@ -14,5 +15,5 @@ func (e ErrNoEntriesFound) Error() string {
 	res[0] = fmt.Sprintf("Area: %s", areaErrNoEntriesFound)
 	res[1] = fmt.Sprintf("Caller: %s", e.Caller)
 
-	return res[0] + _space + res[1]
+	return res[0] + _space + res[1] + ": " + msgErrNoEntriesFound
 }

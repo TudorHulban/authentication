@@ -1,4 +1,4 @@
-package pages
+package srender
 
 import (
 	testuser "github.com/TudorHulban/authentication/fixtures/test-user"

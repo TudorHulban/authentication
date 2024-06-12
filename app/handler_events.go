@@ -34,7 +34,7 @@ func (a *App) HandlerAddEvent(c *fiber.Ctx) error {
 
 	params.OpenedByUserID = userLogged.PrimaryKey
 
-	errAddEvent := a.serviceTicket.AddEvent(
+	errAddEvent := a.ServiceTicket.AddEvent(
 		c.Context(),
 		&params,
 	)

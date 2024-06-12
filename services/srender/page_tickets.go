@@ -1,6 +1,8 @@
-package pages
+package srender
 
 import (
+	"context"
+	"fmt"
 	"strconv"
 
 	"github.com/TudorHulban/authentication/domain/ticket"
@@ -17,7 +19,7 @@ type ParamsTableTickets struct {
 	URLTicket string
 }
 
-func TableTickets(params *ParamsTableTickets) g.Node {
+func (s *Service) TableTickets(ctx context.Context, params *ParamsTableTickets) g.Node {
 	if len(params.Tickets) == 0 {
 		return nil
 	}
@@ -26,6 +28,11 @@ func TableTickets(params *ParamsTableTickets) g.Node {
 	var currentTicket *ticket.Ticket
 
 	tableTicketsRow := func(item *ticket.Ticket) g.Node {
+		userInfo, errGetUserInfo := s.serviceUser.GetUserInfoByID(ctx, item.OpenedByUserID)
+		if errGetUserInfo != nil {
+			fmt.Println(errGetUserInfo) //TODO: proper log
+		}
+
 		return html.Tr(
 			html.Td(
 				g.Text(
@@ -52,7 +59,7 @@ func TableTickets(params *ParamsTableTickets) g.Node {
 			),
 			html.Td(
 				g.Text(
-					item.OpenedByUserID.String(),
+					helpers.Sanitize(userInfo).Name,
 				),
 			),
 			html.Td(

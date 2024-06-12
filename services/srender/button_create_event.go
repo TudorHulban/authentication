@@ -1,4 +1,4 @@
-package pages
+package srender
 
 import (
 	g "github.com/maragudk/gomponents"

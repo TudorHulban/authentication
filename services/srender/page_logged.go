@@ -1,4 +1,4 @@
-package pages
+package srender
 
 // user salutation
 // last login

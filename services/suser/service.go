@@ -28,15 +28,20 @@ type ParamsCreateUser struct {
 	Name string `valid:"required"`
 }
 
-func (s *Service) CreateUser(ctx context.Context, params *ParamsCreateUser) error {
+func (s *Service) CreateUser(ctx context.Context, params *ParamsCreateUser) (helpers.PrimaryKey, error) {
 	if _, errValidation := govalidator.ValidateStruct(params); errValidation != nil {
-		return apperrors.ErrValidation{
-			Caller: "CreateUser",
-			Issue:  errValidation,
-		}
+		return helpers.PrimaryKeyZero,
+			apperrors.ErrValidation{
+				Caller: "CreateUser",
+				Issue:  errValidation,
+			}
 	}
 
-	return s.store.CreateUser(
+	result := helpers.PrimaryKey(
+		epochid.NewIDIncremental10KWCoCorrection(),
+	)
+
+	if errCr := s.store.CreateUser(
 		ctx,
 		&appuser.User{
 			UserCredentials: appuser.UserCredentials{
@@ -46,12 +51,16 @@ func (s *Service) CreateUser(ctx context.Context, params *ParamsCreateUser) erro
 			UserInfo: appuser.UserInfo{
 				Name: params.Name,
 
-				PrimaryKey: helpers.PrimaryKey(
-					epochid.NewIDIncremental10KWCoCorrection(),
-				),
+				PrimaryKey: result,
 			},
 		},
-	)
+	); errCr != nil {
+		return helpers.PrimaryKeyZero,
+			errCr
+	}
+
+	return result,
+		nil
 }
 
 type ParamsGetUser struct {
@@ -91,6 +100,13 @@ func (s *Service) GetUserByCredentials(ctx context.Context, params *ParamsGetUse
 }
 
 func (s *Service) GetUserInfoByID(ctx context.Context, pk helpers.PrimaryKey) (*appuser.UserInfo, error) {
+	if pk == helpers.PrimaryKeyZero {
+		return nil,
+			apperrors.ErrNilInput{
+				InputName: "pk",
+			}
+	}
+
 	var result appuser.UserInfo
 
 	if errGetUserInfo := s.store.GetUserInfoByID(

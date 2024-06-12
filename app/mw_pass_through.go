@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
+	"github.com/TudorHulban/authentication/services/srender"
 	"github.com/TudorHulban/authentication/services/suser"
 	"github.com/gofiber/fiber/v2"
 )
@@ -24,7 +25,7 @@ func (a *App) MwPassThrough(withUserCredentials *suser.ParamsGetUser) func(c *fi
 				"MwPassThrough", errGet,
 			)
 
-			return pageLogin("MwPassThrough - a.ServiceUser.GetUser").Render(c)
+			return srender.PageLogin("MwPassThrough - a.ServiceUser.GetUser").Render(c)
 		}
 
 		c.Locals(

@@ -43,7 +43,9 @@ func (s *StoreUsers) GetUserInfoByCredentials(ctx context.Context, userCredentia
 }
 
 func (s *StoreUsers) GetUserInfoByID(ctx context.Context, pk helpers.PrimaryKey, result *appuser.UserInfo) error {
-	reconstructedItem, errGet := s.storeUsers.SearchItem(appuser.CriteriaID(pk))
+	reconstructedItem, errGet := s.storeUsers.SearchItem(
+		appuser.CriteriaID(pk),
+	)
 	if errGet != nil {
 		return errGet
 	}

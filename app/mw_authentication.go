@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
+	"github.com/TudorHulban/authentication/services/srender"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -16,7 +17,7 @@ func (a *App) MwAuthentication() func(c *fiber.Ctx) error {
 		if errConvert != nil {
 			c.Set("Content-Type", "text/html")
 
-			return pageLogin(
+			return srender.PageLogin(
 				fmt.Sprintf("MwAuthentication - SessionID: %d", sessionID),
 			).
 				Render(c)
@@ -28,7 +29,7 @@ func (a *App) MwAuthentication() func(c *fiber.Ctx) error {
 		if errGet != nil {
 			c.Set("Content-Type", "text/html")
 
-			return pageLogin(
+			return srender.PageLogin(
 				fmt.Sprintf("MwAuthentication - cachedUser: %s", cachedUser.Name),
 			).
 				Render(c)

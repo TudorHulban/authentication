@@ -21,7 +21,7 @@ type ParamsFixtureTaskWEvents struct {
 	NumberEvents uint
 }
 
-func FixtureTaskWEvents(ctx context.Context, piers *PiersFixtureTicketWEvents, params *ParamsFixtureTaskWEvents) (helpers.PrimaryKey, error) {
+func FixtureTicketWEvents(ctx context.Context, piers *PiersFixtureTicketWEvents, params *ParamsFixtureTaskWEvents) (helpers.PrimaryKey, error) {
 	idTicket, errCr := piers.ServiceTicket.CreateTicket(
 		ctx,
 		&sticket.ParamsCreateTicket{

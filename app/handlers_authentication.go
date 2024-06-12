@@ -5,7 +5,7 @@ import (
 	"time"
 
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
-	"github.com/TudorHulban/authentication/pages"
+	"github.com/TudorHulban/authentication/services/srender"
 	"github.com/TudorHulban/authentication/services/suser"
 	"github.com/gofiber/fiber/v2"
 
@@ -16,7 +16,8 @@ import (
 func (a *App) HandlerLoginPage(c *fiber.Ctx) error {
 	c.Set("Content-Type", "text/html")
 
-	return pageLogin("HandlerLoginPage").Render(c)
+	return srender.PageLogin("HandlerLoginPage").
+		Render(c)
 }
 
 func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
@@ -31,19 +32,19 @@ func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
 			Description: "HTMX Logged",
 			Language:    "English",
 			Head: []g.Node{
-				pages.ScriptHTMX,
-				pages.LinkCSSWater,
+				srender.ScriptHTMX,
+				srender.LinkCSSWater,
 			},
 			Body: []g.Node{
-				pages.Header(),
-				pages.UserSalutation(userLogged),
-				pages.Navigation(
-					&pages.ParamsNavigation{
+				srender.Header(),
+				srender.UserSalutation(userLogged),
+				srender.Navigation(
+					&srender.ParamsNavigation{
 						WhereTo:        a.baseURL() + RouteTickets,
 						LabelToDisplay: "Tickets",
 					},
 				),
-				pages.Footer(),
+				srender.Footer(),
 			},
 		},
 	)
@@ -67,7 +68,8 @@ func (a *App) HandlerLoginRequest(c *fiber.Ctx) error {
 	if errGetItem != nil {
 		c.Set("Content-Type", "text/html")
 
-		return pageLogin("HandlerLoginRequest - a.ServiceUser.GetUser").Render(c)
+		return srender.PageLogin("HandlerLoginRequest - a.ServiceUser.GetUser").
+			Render(c)
 	}
 
 	sessionID, errCacheLoggedUser := a.serviceSessions.PutUserTTL(

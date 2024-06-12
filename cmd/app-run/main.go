@@ -4,9 +4,11 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/TudorHulban/authentication/app"
 	"github.com/TudorHulban/authentication/apperrors"
+	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/fixtures"
 )
 
@@ -24,10 +26,35 @@ func main() {
 
 	ctx := context.Background()
 
-	fixtures.FixtureAddTestUser(
+	pkUser, errCr := fixtures.FixtureAddTestUser(
 		ctx,
 		&fixtures.PiersFixtureAddTestUser{
 			ServiceUser: app.ServiceUser,
+		},
+	)
+	if errCr != nil {
+		fmt.Println(errCr)
+
+		os.Exit(
+			apperrors.OSExitForApplicationIssues,
+		)
+	}
+
+	fixtures.FixtureTicketWEvents(
+		context.Background(),
+		&fixtures.PiersFixtureTicketWEvents{
+			ServiceTicket: app.ServiceTicket,
+		},
+		&fixtures.ParamsFixtureTaskWEvents{
+			TicketName: fmt.Sprintf(
+				"Ticket %d%d",
+				time.Now().Minute(),
+				time.Now().Second(),
+			),
+
+			TicketKind:           ticket.KindUndefined,
+			TicketOpenedByUserID: pkUser,
+			NumberEvents:         10,
 		},
 	)
 

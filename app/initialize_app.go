@@ -1,15 +1,10 @@
 package app
 
 import (
-	"context"
-	"fmt"
 	"log"
 	"os"
-	"time"
 
 	"github.com/TudorHulban/authentication/apperrors"
-	"github.com/TudorHulban/authentication/domain/ticket"
-	"github.com/TudorHulban/authentication/fixtures"
 	storefilefixtures "github.com/TudorHulban/authentication/fixtures/store-file-fixtures"
 	storefile "github.com/TudorHulban/authentication/infra/stores/store-file"
 	"github.com/TudorHulban/authentication/services/srender"
@@ -56,24 +51,6 @@ func InitializeApp(config *ParamsNewApp) (*App, error) {
 			apperrors.OSExitForApplicationIssues,
 		)
 	}
-
-	fixtures.FixtureTaskWEvents(
-		context.Background(),
-		&fixtures.PiersFixtureTicketWEvents{
-			ServiceTicket: app.serviceTicket,
-		},
-		&fixtures.ParamsFixtureTaskWEvents{
-			TicketName: fmt.Sprintf(
-				"Ticket %d%d",
-				time.Now().Minute(),
-				time.Now().Second(),
-			),
-
-			TicketKind:           ticket.KindUndefined,
-			TicketOpenedByUserID: 1,
-			NumberEvents:         10,
-		},
-	)
 
 	return app,
 		nil

@@ -1,4 +1,4 @@
-package pages
+package srender
 
 import (
 	"github.com/TudorHulban/authentication/helpers"

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	testuser "github.com/TudorHulban/authentication/fixtures/test-user"
+	"github.com/TudorHulban/authentication/helpers"
 	"github.com/TudorHulban/authentication/services/suser"
 )
 
@@ -11,7 +12,7 @@ type PiersFixtureAddTestUser struct {
 	ServiceUser *suser.Service
 }
 
-func FixtureAddTestUser(ctx context.Context, piers *PiersFixtureAddTestUser) error {
+func FixtureAddTestUser(ctx context.Context, piers *PiersFixtureAddTestUser) (helpers.PrimaryKey, error) {
 	return piers.ServiceUser.CreateUser(
 		ctx,
 		&suser.ParamsCreateUser{

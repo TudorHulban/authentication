@@ -15,7 +15,7 @@ import (
 type App struct {
 	ServiceUser     *suser.Service
 	serviceSessions *ssessions.Service
-	serviceTicket   *sticket.Service
+	ServiceTicket   *sticket.Service
 	serviceRender   *srender.Service
 
 	host string
@@ -60,7 +60,7 @@ func NewApp(params *ParamsNewApp, piers *PiersApp) (*App, error) {
 	return &App{
 			ServiceUser:     piers.ServiceUser,
 			serviceSessions: piers.ServiceSessions,
-			serviceTicket:   piers.ServiceTicket,
+			ServiceTicket:   piers.ServiceTicket,
 			serviceRender:   piers.ServiceRender,
 
 			Transport: fiber.New(
