@@ -2,7 +2,7 @@ package pages
 
 import (
 	g "github.com/maragudk/gomponents"
-	"github.com/maragudk/gomponents/html"
+	html "github.com/maragudk/gomponents/html"
 )
 
 func ScriptCreateTicketEvent(urlPage string) g.Node {
@@ -19,7 +19,7 @@ func ScriptCreateTicketEvent(urlPage string) g.Node {
 
             window.alert("Succes - Item created!")
 
-            window.location.replace(` + urlPage + `);
+            window.location.replace("` + urlPage + `");
         } else if (evt.detail.failed && evt.detail.xhr) {
             console.warn("server error", evt.detail);
 

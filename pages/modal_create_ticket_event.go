@@ -32,6 +32,10 @@ func ModalCreateTicketEvent(params *ParamsModalCreateTicketEvent) g.Node {
 					"hx-post",
 					params.URLAddTicketEvent,
 				),
+				g.Attr(
+					"hx-target",
+					"#events-list",
+				),
 
 				html.Label(
 					g.Attr(

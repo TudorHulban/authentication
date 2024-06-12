@@ -2,7 +2,6 @@ package app
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/TudorHulban/authentication/apperrors"
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
@@ -139,7 +138,7 @@ func (a *App) HandlerTickets(c *fiber.Ctx) error {
 						URLAddTicket: RouteTicket,
 					},
 				),
-				pages.ScriptCreateTicket(),
+				pages.ScriptCreateTicket(RouteTickets),
 				pages.Footer(),
 			},
 		},
@@ -162,10 +161,6 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 			)
 	}
 
-	fmt.Println(
-		"HandlerTicketID",
-	)
-
 	reconstructedTask, errGetTask := a.serviceTicket.GetTicketByID(
 		c.Context(),
 		&sticket.ParamsGetTicketByID{
@@ -184,11 +179,6 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 			)
 	}
 
-	fmt.Println(
-		"HandlerTicketID",
-		reconstructedTask.PrimaryKey,
-	)
-
 	reconstructedEvents, errGetEvents := a.serviceTicket.GetEventsForTicketID(
 		c.Context(),
 		helpers.PrimaryKey(reconstructedTask.PrimaryKey),
@@ -206,7 +196,7 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 	page := co.HTML5(
 		co.HTML5Props{
 			Title:       "T" + reconstructedTask.PrimaryKey.String(),
-			Description: "HTMX Login",
+			Description: "Ticket Information",
 			Language:    "English",
 			Head: []g.Node{
 				pages.ScriptHTMX,
@@ -228,7 +218,7 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 						TicketID:          reconstructedTask.PrimaryKey,
 					},
 				),
-				pages.ScriptCreateTicketEvent(RouteTicket + "/" + "T" + reconstructedTask.PrimaryKey.String()),
+				pages.ScriptCreateTicketEvent(RouteTicket + "/" + reconstructedTask.PrimaryKey.String()),
 				pages.Footer(),
 			},
 		},

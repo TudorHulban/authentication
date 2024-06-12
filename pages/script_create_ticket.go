@@ -5,7 +5,7 @@ import (
 	"github.com/maragudk/gomponents/html"
 )
 
-func ScriptCreateTicket() g.Node {
+func ScriptCreateTicket(urlPage string) g.Node {
 	return html.Script(
 		g.Raw(
 			`
@@ -19,7 +19,7 @@ func ScriptCreateTicket() g.Node {
 
             window.alert("Succes - Item created!")
 
-            window.location.replace("/tickets");
+            window.location.replace("` + urlPage + `");
         } else if (evt.detail.failed && evt.detail.xhr) {
             console.warn("server error", evt.detail);
 
