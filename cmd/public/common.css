@@ -77,8 +77,8 @@ body {
 }
 
 .sidebar .sidebar-header img {
-    width: 42px;
-    border-radius: 50%;
+    width: 82px;
+    /* border-radius: 50%; */
 }
 
 .sidebar .sidebar-header h2 {

@@ -126,6 +126,11 @@ func (menu MenuSidebar) Render() g.Node {
 					"alt",
 					"logo",
 				),
+
+				g.Attr(
+					"src",
+					menu.PathImageLogo,
+				),
 			),
 
 			html.H2(

@@ -24,7 +24,8 @@ func main() {
 		func(c *fiber.Ctx) error {
 			menu, errMenu := srender.NewMenuSidebar(
 				&srender.ParamsMenuSidebar{
-					TextLogo: "Logo",
+					TextLogo:      "Logo",
+					PathImageLogo: "../public/images/logo.png",
 
 					Sections: []*srender.MenuSidebarSection{
 						{
@@ -51,11 +52,14 @@ func main() {
 				co.HTML5Props{
 					Title: "Menu Sidebar",
 
-					Head: []g.Node{
-						srender.LinkCSSMaterialSymbolOutlined,
-						srender.LinkCSSWater,
-						srender.LinkCSSCommon,
-					},
+					Head: append(
+						srender.LinksFavicon,
+						[]g.Node{
+							srender.LinkCSSMaterialSymbolOutlined,
+							srender.LinkCSSWater,
+							srender.LinkCSSCommon,
+						}...,
+					),
 
 					Body: []g.Node{
 						menu.Render(),
