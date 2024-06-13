@@ -118,12 +118,14 @@ func (a *App) HandlerTickets(c *fiber.Ctx) error {
 			Title:       "Tickets",
 			Description: "HTMX Login",
 			Language:    "English",
+
 			Head: []g.Node{
 				srender.ScriptHTMX,
 				srender.ScriptCommonJS,
 				srender.LinkCSSWater,
 				srender.LinkCSSCommon,
 			},
+
 			Body: []g.Node{
 				srender.Header(),
 				a.serviceRender.TableTickets(

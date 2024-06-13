@@ -1,19 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	"os"
 
-	"github.com/CloudyKit/jet/v6"
-	"github.com/TudorHulban/authentication/domain/ticket"
+	"github.com/TudorHulban/authentication/services/srender"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-)
 
-var views = jet.NewSet(
-	jet.NewOSFileSystemLoader("../../views"),
-	jet.InDevelopmentMode(),
+	g "github.com/maragudk/gomponents"
+	co "github.com/maragudk/gomponents/components"
 )
 
 func main() {
@@ -23,55 +18,54 @@ func main() {
 		logger.New(),
 	)
 
+	app.Static("/public", "../public")
+
 	app.Get("/",
 		func(c *fiber.Ctx) error {
-			view, err := views.GetTemplate("pages/ticket.jet")
-			if err != nil {
-				log.Println("Unexpected template err:", err.Error())
+			menu, errMenu := srender.NewMenuSidebar(
+				&srender.ParamsMenuSidebar{
+					TextLogo: "Logo",
+
+					Sections: []*srender.MenuSidebarSection{
+						{
+							TextSection: "Section 1",
+
+							Entries: []*srender.MenuSidebarSectionEntry{
+								{
+									TextSectionEntry: "Entry 1",
+									SymbolEntry:      "dashboard",
+								},
+								{
+									TextSectionEntry: "Entry 2",
+								},
+							},
+						},
+					},
+				},
+			)
+			if errMenu != nil {
+				return errMenu
 			}
 
-			vars := jet.VarMap{}
+			page := co.HTML5(
+				co.HTML5Props{
+					Title: "Menu Sidebar",
 
-			item, errCr := ticket.NewTicketFrom(
-				`
-				{
-					"PrimaryKey": 17177738116406920000,
-					"Name": "Ticket 1",
-					"OpenedByUserID": 1,
-					"CreatedAt": 1717773811682774586,
-					"DeletedAt": {
-						"Int64": 0,
-						"Valid": false
-					}
-				}
-				`,
-			)
-			if errCr != nil {
-				fmt.Println(errCr)
+					Head: []g.Node{
+						srender.LinkCSSMaterialSymbolOutlined,
+						srender.LinkCSSWater,
+						srender.LinkCSSCommon,
+					},
 
-				os.Exit(5)
-			}
-
-			vars.Set(
-				"ticket",
-				item,
+					Body: []g.Node{
+						menu.Render(),
+					},
+				},
 			)
 
-			vars.Set(
-				"events",
-				nil,
-			)
+			c.Set("Content-Type", "text/html")
 
-			vars.Set(
-				"routeAddEvent",
-				"",
-			)
-
-			return view.Execute(
-				c,
-				vars,
-				nil,
-			)
+			return page.Render(c)
 		},
 	)
 
