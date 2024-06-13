@@ -62,7 +62,7 @@ func main() {
 					),
 
 					Body: []g.Node{
-						menu.Render(),
+						srender.Body(menu),
 					},
 				},
 			)
