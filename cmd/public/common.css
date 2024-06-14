@@ -1,9 +1,14 @@
+:root {
+  --sidebar-width: 215px;
+  --sidebar-width-collapsed: 85px;
+}
+
 /* CSS Grid */
 body {
   height: 100vh;
   margin: 0;
   display: grid;
-  grid-template-columns: 85px 175px 1fr;
+  grid-template-columns: var(--sidebar-width-collapsed) 130px 1fr;
   grid-template-rows: 70px 1fr;
   grid-template-areas:
     "side side header"
@@ -105,7 +110,7 @@ body {
   top: 0;
   left: 0;
   height: 100%;
-  width: 260px;
+  width: var(--sidebar-width);
   display: flex;
   overflow-x: hidden;
   flex-direction: column;
@@ -122,7 +127,7 @@ body {
 }
 
 .sidebar.expanded {
-  width: 260px;
+  width: var(--sidebar-width);
 }
 
 .sidebar .sidebar-header {
