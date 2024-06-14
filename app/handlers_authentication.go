@@ -100,6 +100,7 @@ func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
 					SidebarMenu: menu,
 
 					EntriesMain: []g.Node{
+						srender.ButtonCreateTicket("Create Ticket"),
 						a.serviceRender.TableTickets(
 							c.Context(),
 							&srender.ParamsTableTickets{
@@ -107,6 +108,13 @@ func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
 								URLTicket: a.baseURL() + RouteTicket,
 							},
 						),
+
+						srender.ModalCreateTicket(
+							&srender.ParamsModalCreateTicket{
+								URLAddTicket: RouteTicket,
+							},
+						),
+						srender.ScriptCreateTicket(RouteLogged),
 					},
 				},
 			),

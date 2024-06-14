@@ -1,6 +1,12 @@
 :root {
   --sidebar-width: 215px;
   --sidebar-width-collapsed: 85px;
+
+  --color-primary: #d5af7b;
+  --color-secondary-1: #e2b213;
+  --color-secondary-2: #19191e;
+  --color-complementary-1: #0777DB;
+  --color-complementary-2: #074984;
 }
 
 /* CSS Grid */
@@ -16,17 +22,17 @@ body {
 }
 
 .header {
-  background-color: #bee599;
+  background-color: var(--color-primary);
   grid-area: header;
 }
 
 .sidebar {
-  background-color: #8ebf5f;
+  background-color: var(--color-secondary-1);
   grid-area: side;
 }
 
 .main {
-  background-color: #254c00;
+  background-color: var(--color-secondary-2);
   grid-area: main;
 
   padding: 10px;
@@ -41,7 +47,7 @@ body {
   }
 
   .main {
-    background-color: #c27e7e;
+    background-color: var(--color-complementary-1);
   }
 }
 
@@ -95,7 +101,6 @@ body {
 
 body {
   min-height: 100vh;
-  background: #292f4c;
 }
 
 .container {
@@ -119,7 +124,7 @@ body {
 }
 
 .sidebar.collapsed {
-  width: 85px;
+  width: var(--sidebar-width-collapsed);
 }
 
 .sidebar.collapsed .sidebar-header h2 {
@@ -144,7 +149,7 @@ body {
 
 .sidebar .sidebar-header img {
   width: 55px;
-  height: auto; /* Ensure the image retains its aspect ratio */
+  height: auto; 
 }
 
 .sidebar-links h4 {
@@ -247,6 +252,7 @@ body {
 .table-items {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 20px;
 }
 
 .table-items th, .table-items td {
@@ -255,13 +261,20 @@ body {
 }
 
 .table-items th {
-  background-color: #f2f2f2;
+  background-color: var(--color-complementary-1);
   text-align: left;
 }
 
 .table-items tr {
-  background-color: #f2f2f2;
   text-align: left;
+}
+
+.table-items tr:nth-child(odd) {
+  background-color: var(--color-primary);
+}
+
+.table-items tr:nth-child(even) {
+  background-color: #e6e6e6;
 }
 
 .table-items th:nth-child(2), .table-items td:nth-child(2) {

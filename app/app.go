@@ -9,7 +9,6 @@ import (
 	"github.com/TudorHulban/authentication/services/suser"
 	"github.com/asaskevich/govalidator"
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/template/jet/v2"
 )
 
 type App struct {
@@ -27,9 +26,6 @@ type App struct {
 }
 
 type ParamsNewApp struct {
-	TemplateFolder         string `valid:"required"`
-	TemplateFilesExtension string `valid:"required"`
-
 	Port string `valid:"required"`
 
 	AuthenticationDisabled bool
@@ -67,10 +63,10 @@ func NewApp(params *ParamsNewApp, piers *PiersApp) (*App, error) {
 				fiber.Config{
 					Prefork: false,
 
-					Views: jet.New(
-						params.TemplateFolder,
-						params.TemplateFilesExtension,
-					),
+					// Views: jet.New(
+					// 	params.TemplateFolder,
+					// 	params.TemplateFilesExtension,
+					// ),
 				},
 			),
 
