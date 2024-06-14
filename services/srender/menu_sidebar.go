@@ -121,20 +121,22 @@ func (menu MenuSidebar) Render() g.Node {
 				"sidebar-header",
 			),
 
-			html.Img(
-				g.Attr(
-					"alt",
-					"logo",
+			html.Span(
+				html.Img(
+					g.Attr(
+						"alt",
+						"logo",
+					),
+
+					g.Attr(
+						"src",
+						menu.PathImageLogo,
+					),
 				),
 
-				g.Attr(
-					"src",
-					menu.PathImageLogo,
+				html.H2(
+					g.Text(menu.TextLogo),
 				),
-			),
-
-			html.H2(
-				g.Text(menu.TextLogo),
 			),
 		),
 

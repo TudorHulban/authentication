@@ -56,14 +56,12 @@ func main() {
 						srender.LinksFavicon,
 						[]g.Node{
 							srender.LinkCSSMaterialSymbolOutlined,
-							srender.LinkCSSWater,
+							// srender.LinkCSSWater,
 							srender.LinkCSSCommon,
 						}...,
 					),
 
-					Body: []g.Node{
-						srender.Body(menu),
-					},
+					Body: srender.Body(menu),
 				},
 			)
 

@@ -5,11 +5,13 @@ import (
 	html "github.com/maragudk/gomponents/html"
 )
 
-func Body(menu *MenuSidebar) g.Node {
-	return html.Div(
-		g.Attr(
-			"class",
-			"container",
+func Body(menu *MenuSidebar) []g.Node {
+	return []g.Node{
+		html.Div(
+			g.Attr(
+				"class",
+				"header",
+			),
 		),
 
 		html.Div(
@@ -24,8 +26,8 @@ func Body(menu *MenuSidebar) g.Node {
 		html.Div(
 			g.Attr(
 				"class",
-				"article",
+				"main",
 			),
 		),
-	)
+	}
 }
