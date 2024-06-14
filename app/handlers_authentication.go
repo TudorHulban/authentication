@@ -28,23 +28,7 @@ func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
-	menu, errMenu := srender.NewMenuSidebar(
-		srender.ParamsMenuSidebarToUse(
-			&srender.ParamsCurrentMenuSidebar{
-				TextLogo:      CompanyName,
-				PathImageLogo: PathImageLogo,
-
-				TextSection1: "Work",
-
-				TextSection1Entry1:   "Tickets",
-				SymbolSection1Entry1: "call",
-				URLSection1Entry1:    a.baseURL() + RouteTickets,
-
-				TextSection1Entry2:   "Ticket Events",
-				SymbolSection1Entry2: "comment",
-			},
-		),
-	)
+	menu, errMenu := a.newMenuSidebar()
 	if errMenu != nil {
 		return c.Status(fiber.StatusInternalServerError).
 			JSON(
