@@ -5,6 +5,8 @@ import (
 	"time"
 
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
+	"github.com/TudorHulban/authentication/domain/ticket"
+	"github.com/TudorHulban/authentication/helpers"
 	"github.com/TudorHulban/authentication/services/srender"
 	"github.com/TudorHulban/authentication/services/suser"
 	"github.com/gofiber/fiber/v2"
@@ -54,6 +56,24 @@ func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
 			)
 	}
 
+	reconstructedTasks, errGetTasks := a.ServiceTicket.SearchTickets(
+		c.Context(),
+		&ticket.ParamsSearchTickets{
+			ParamsPagination: helpers.ParamsPagination{
+				First: 10,
+			},
+		},
+	)
+	if errGetTasks != nil {
+		return c.Status(fiber.StatusInternalServerError).
+			JSON(
+				&fiber.Map{
+					"success": false,
+					"error":   errGetTasks,
+				},
+			)
+	}
+
 	page := co.HTML5(
 		co.HTML5Props{
 			Title:       "Home",
@@ -64,6 +84,7 @@ func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
 				srender.LinksFavicon,
 				[]g.Node{
 					srender.ScriptHTMX,
+					srender.ScriptCommonJS,
 					srender.LinkCSSMaterialSymbolOutlined,
 					srender.LinkCSSCommon,
 				}...,
@@ -73,12 +94,19 @@ func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
 				&srender.ParamsBody{
 					EntriesHeader: []g.Node{
 						srender.Header(),
+						srender.UserSalutation(userLogged),
 					},
 
 					SidebarMenu: menu,
 
 					EntriesMain: []g.Node{
-						srender.UserSalutation(userLogged),
+						a.serviceRender.TableTickets(
+							c.Context(),
+							&srender.ParamsTableTickets{
+								Tickets:   reconstructedTasks,
+								URLTicket: a.baseURL() + RouteTicket,
+							},
+						),
 					},
 				},
 			),

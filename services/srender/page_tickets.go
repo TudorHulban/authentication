@@ -87,6 +87,11 @@ func (s *Service) TableTickets(ctx context.Context, params *ParamsTableTickets) 
 				"tickets-list",
 			),
 
+			g.Attr(
+				"class",
+				"table-items",
+			),
+
 			html.THead(
 				html.Th(
 					g.Text("#"),
