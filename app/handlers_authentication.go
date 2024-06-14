@@ -26,26 +26,62 @@ func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
+	menu, errMenu := srender.NewMenuSidebar(
+		srender.ParamsMenuSidebarToUse(
+			&srender.ParamsCurrentMenuSidebar{
+				TextLogo:      CompanyName,
+				PathImageLogo: PathImageLogo,
+
+				TextSection1: "Work",
+
+				TextSection1Entry1:   "Tickets",
+				SymbolSection1Entry1: "call",
+				URLSection1Entry1:    a.baseURL() + RouteTickets,
+
+				TextSection1Entry2:   "Ticket Events",
+				SymbolSection1Entry2: "comment",
+			},
+		),
+	)
+	if errMenu != nil {
+		return c.Status(fiber.StatusInternalServerError).
+			JSON(
+				&fiber.Map{
+					"success": false,
+					"error":   errMenu,
+					"handler": "HandlerLoggedInPage - srender.NewMenuSidebar", // development only
+				},
+			)
+	}
+
 	page := co.HTML5(
 		co.HTML5Props{
 			Title:       "Home",
 			Description: "HTMX Logged",
 			Language:    "English",
-			Head: []g.Node{
-				srender.ScriptHTMX,
-				srender.LinkCSSWater,
-			},
-			Body: []g.Node{
-				srender.Header(),
-				srender.UserSalutation(userLogged),
-				srender.Navigation(
-					&srender.ParamsNavigation{
-						WhereTo:        a.baseURL() + RouteTickets,
-						LabelToDisplay: "Tickets",
+
+			Head: append(
+				srender.LinksFavicon,
+				[]g.Node{
+					srender.ScriptHTMX,
+					srender.LinkCSSMaterialSymbolOutlined,
+					srender.LinkCSSCommon,
+				}...,
+			),
+
+			Body: srender.Body(
+				&srender.ParamsBody{
+					EntriesHeader: []g.Node{
+						srender.Header(),
 					},
-				),
-				srender.Footer(),
-			},
+
+					SidebarMenu: menu,
+
+					EntriesMain: []g.Node{
+						srender.UserSalutation(userLogged),
+					},
+				},
+			),
 		},
 	)
 

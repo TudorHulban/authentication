@@ -1,0 +1,13 @@
+[
+    {
+        "PrimaryKey": 17183655314406920001,
+        "Name": "Ticket 4531",
+        "OpenedByUserID": 17183655314406920000,
+        "CreatedAt": 1718365531467562419,
+        "UpdatedAt": 1718365531467562419,
+        "DeletedAt": {
+            "Int64": 0,
+            "Valid": false
+        }
+    }
+]

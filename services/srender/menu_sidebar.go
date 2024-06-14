@@ -84,7 +84,7 @@ type ParamsMenuSidebar struct {
 	Sections []*MenuSidebarSection
 }
 
-func NewMenuSidebar(params *ParamsMenuSidebar) (*MenuSidebar, error) {
+func NewMenuSidebar(params ParamsMenuSidebar) (*MenuSidebar, error) {
 	// TODO inputvalidation
 
 	return &MenuSidebar{

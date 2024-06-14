@@ -5,13 +5,22 @@ import (
 	html "github.com/maragudk/gomponents/html"
 )
 
-func Body(menu *MenuSidebar) []g.Node {
+type ParamsBody struct {
+	EntriesHeader []g.Node
+	SidebarMenu   *MenuSidebar
+	EntriesMain   []g.Node
+}
+
+func Body(params *ParamsBody) []g.Node {
 	return []g.Node{
 		html.Div(
-			g.Attr(
-				"class",
-				"header",
-			),
+			append(
+				params.EntriesHeader,
+				g.Attr(
+					"class",
+					"header",
+				),
+			)...,
 		),
 
 		html.Div(
@@ -20,14 +29,17 @@ func Body(menu *MenuSidebar) []g.Node {
 				"sidebar",
 			),
 
-			menu.Render(),
+			params.SidebarMenu.Render(),
 		),
 
 		html.Div(
-			g.Attr(
-				"class",
-				"main",
-			),
+			append(
+				params.EntriesMain,
+				g.Attr(
+					"class",
+					"main",
+				),
+			)...,
 		),
 	}
 }

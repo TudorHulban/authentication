@@ -23,7 +23,7 @@ func main() {
 	app.Get("/",
 		func(c *fiber.Ctx) error {
 			menu, errMenu := srender.NewMenuSidebar(
-				&srender.ParamsMenuSidebar{
+				srender.ParamsMenuSidebar{
 					TextLogo:      "Logo",
 					PathImageLogo: "../public/images/logo.png",
 
@@ -61,7 +61,11 @@ func main() {
 						}...,
 					),
 
-					Body: srender.Body(menu),
+					Body: srender.Body(
+						&srender.ParamsBody{
+							SidebarMenu: menu,
+						},
+					),
 				},
 			)
 
