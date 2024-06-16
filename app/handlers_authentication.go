@@ -22,7 +22,7 @@ func (a *App) HandlerLoginPage(c *fiber.Ctx) error {
 		Render(c)
 }
 
-func (a *App) HandlerLoggedInPage(c *fiber.Ctx) error {
+func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 	userLogged, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
 	if errGetUser != nil {
 		return c.SendStatus(fiber.StatusInternalServerError)

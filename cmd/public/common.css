@@ -2,11 +2,17 @@
   --sidebar-width: 215px;
   --sidebar-width-collapsed: 85px;
 
-  --color-primary: #d5af7b;
-  --color-secondary-1: #e2b213;
-  --color-secondary-2: #19191e;
-  --color-complementary-1: #0777DB;
-  --color-complementary-2: #074984;
+  /* pastel warm theme colors */
+  --color-primary: hsl(34, 75%, 41%);
+  /* for main backgrounds */
+  --color-secondary-1: hsl(48, 85%, 26%);
+  /* for highlights and accent elements */
+  --color-secondary-2: hsl(34, 10%, 2%);
+  /* for text and less dominant elements */
+  --color-complementary-1: hsl(202, 65%, 39%);
+  /* for complementary highlights */
+  --color-complementary-2: hsl(213, 38%, 21%);
+  /* for complementary elements */
 }
 
 /* CSS Grid */
@@ -22,33 +28,22 @@ body {
 }
 
 .header {
-  background-color: var(--color-primary);
+  background-color: var(--color-secondary-1);
   grid-area: header;
+  padding-left: 20px;
+  padding-top: 10px;
 }
 
 .sidebar {
-  background-color: var(--color-secondary-1);
+  background-color: var(--color-primary);
   grid-area: side;
 }
 
 .main {
-  background-color: var(--color-secondary-2);
+  background-color: var(--color-primary);
   grid-area: main;
 
   padding: 10px;
-}
-
-@media (max-width: 925px) {
-  body {
-    grid-template-columns: 80px 1fr;
-    grid-template-areas:
-      "side header"
-      "side main";
-  }
-
-  .main {
-    background-color: var(--color-complementary-1);
-  }
 }
 
 /* Modal */
@@ -149,7 +144,7 @@ body {
 
 .sidebar .sidebar-header img {
   width: 55px;
-  height: auto; 
+  height: auto;
 }
 
 .sidebar-links h4 {
@@ -235,19 +230,6 @@ body {
   display: block;
 }
 
-@media (max-width: 925px) {
-  .sidebar {
-    width: 85px;
-  }
-
-  .sidebar .sidebar-header h2,
-  .sidebar .sidebar-links h4 span,
-  .sidebar .user-detail {
-    display: none;
-  }
-}
-
-
 /* Table Items */
 .table-items {
   width: 100%;
@@ -255,13 +237,15 @@ body {
   margin-top: 20px;
 }
 
-.table-items th, .table-items td {
+.table-items th,
+.table-items td {
   border: 1px solid #062b15;
   padding: 8px;
 }
 
 .table-items th {
-  background-color: var(--color-complementary-1);
+  background-color: var(--color-secondary-1);
+  color: var(--color-secondary-2);
   text-align: left;
 }
 
@@ -277,35 +261,80 @@ body {
   background-color: #e6e6e6;
 }
 
-.table-items th:nth-child(2), .table-items td:nth-child(2) {
+.table-items th:nth-child(2),
+.table-items td:nth-child(2) {
   max-width: 130px;
   word-wrap: break-word;
   white-space: nowrap;
 }
 
-.table-items th:nth-child(3), .table-items td:nth-child(3) {
-  width: 100px; 
+.table-items th:nth-child(3),
+.table-items td:nth-child(3) {
+  width: 100px;
   max-width: 120px;
   word-wrap: break-word;
   white-space: nowrap;
 }
 
-.table-items th:nth-child(4), .table-items td:nth-child(4) {
-  width: 100px; 
+.table-items th:nth-child(4),
+.table-items td:nth-child(4) {
+  width: 100px;
   max-width: 120px;
   word-wrap: break-word;
   white-space: nowrap;
 }
 
-.table-items th:nth-child(5), .table-items td:nth-child(5) {
-  width: 100px; 
+.table-items th:nth-child(5),
+.table-items td:nth-child(5) {
+  width: 100px;
   max-width: 150px;
   word-wrap: break-word;
   white-space: nowrap;
 }
 
-.table-items th:nth-child(6), .table-items td:nth-child(6) {
+.table-items th:nth-child(6),
+.table-items td:nth-child(6) {
   max-width: 160px;
   word-wrap: break-word;
   white-space: nowrap;
 }
+
+button {
+  background-color: var(--color-secondary-1);
+  color: var(--color-secondary-2);
+  font-weight: 600;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+button:hover {
+  background-color: var(--color-complementary-2);
+  color: var(--color-primary);
+}
+
+
+@media (max-width: 970px) {
+  body {
+    grid-template-columns: 80px 1fr;
+    grid-template-areas:
+      "side header"
+      "side main";
+  }
+
+  .main {
+    background-color: var(--color-complementary-1);
+  }
+
+  .sidebar {
+    width: 85px;
+  }
+
+  .sidebar .sidebar-header h2,
+  .sidebar .sidebar-links h4 span,
+  .sidebar .user-detail {
+    display: none;
+  }
+}
+

@@ -15,7 +15,7 @@ func InitializeTransportRoutes(application *App) {
 
 	application.Transport.Get(
 		RouteLogged,
-		application.HandlerLoggedInPage,
+		application.HandlerHomePage,
 	)
 
 	application.Transport.Post(
