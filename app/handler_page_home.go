@@ -77,6 +77,8 @@ func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 								TextForm:          "Search Tickets",
 								ActionForm:        RouteTickets,
 								LabelButtonSubmit: "Submit",
+
+								IDEnclosingDiv: "container-search",
 							},
 						),
 						srender.ButtonCreateTicket("Create Ticket"),

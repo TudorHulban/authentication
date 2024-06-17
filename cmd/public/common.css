@@ -299,18 +299,19 @@ body {
   white-space: nowrap;
 }
 
+#container-search {
+  background-color: var(--color-primary);
+  padding: 10px;
+}
+
 #searchForm {
   display: flex;
   align-items: center;
-
-  background-color: var(--color-primary);
-  padding-bottom: 10px;
 }
 
 .form-group {
   display: flex;
 
-  margin-left: 10px;
   margin-top: 10px;
   margin-right: 10px;
 }

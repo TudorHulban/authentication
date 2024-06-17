@@ -9,7 +9,7 @@ import (
 type ParamsNewFormSearchTickets struct {
 	TextForm          string
 	ActionForm        string
-	ClassEnclosingDiv string
+	IDEnclosingDiv    string
 	ClassButtonSubmit string
 	LabelButtonSubmit string
 }
@@ -19,10 +19,10 @@ func NewFormSearchTickets(params *ParamsNewFormSearchTickets) g.Node {
 		&paramsNewFormGeneric{
 			TextForm: params.TextForm,
 
-			IDForm:            "searchForm",
-			ActionForm:        params.ActionForm,
-			HTTPMethodForm:    fiber.MethodGet,
-			ClassEnclosingDiv: params.ClassEnclosingDiv,
+			IDForm:         "searchForm",
+			ActionForm:     params.ActionForm,
+			HTTPMethodForm: fiber.MethodGet,
+			IDEnclosingDiv: params.IDEnclosingDiv,
 
 			ButtonSubmit: html.Div(
 				g.Attr(

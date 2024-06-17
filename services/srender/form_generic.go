@@ -63,10 +63,10 @@ func (els FormElements) Raw(buttonSubmit g.Node) []g.Node {
 type paramsNewFormGeneric struct {
 	TextForm string
 
-	IDForm            string
-	ActionForm        string
-	HTTPMethodForm    string
-	ClassEnclosingDiv string
+	IDForm         string
+	ActionForm     string
+	HTTPMethodForm string
+	IDEnclosingDiv string
 
 	Elements     FormElements
 	ButtonSubmit g.Node
@@ -75,16 +75,16 @@ type paramsNewFormGeneric struct {
 func newFormGeneric(params *paramsNewFormGeneric) g.Node {
 	return html.Div(
 		g.If(
-			len(params.ClassEnclosingDiv) > 0,
+			len(params.IDEnclosingDiv) > 0,
 			g.Attr(
-				"class",
-				params.ClassEnclosingDiv,
+				"id",
+				params.IDEnclosingDiv,
 			),
 		),
 
 		g.If(
 			len(params.TextForm) > 0,
-			html.P(
+			html.H3(
 				g.Text(
 					params.TextForm,
 				),
