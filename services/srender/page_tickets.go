@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/TudorHulban/authentication/app/constants"
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
 	g "github.com/maragudk/gomponents"
@@ -73,6 +74,9 @@ func (s *Service) TableTickets(ctx context.Context, params *ParamsTableTickets) 
 	}
 
 	rows := make([]g.Node, 0)
+	// rows := []g.Node{
+	// 	html.TBody(),
+	// }
 
 	for ix, currentTicket = range params.Tickets {
 		rows = append(rows,
@@ -84,12 +88,12 @@ func (s *Service) TableTickets(ctx context.Context, params *ParamsTableTickets) 
 		html.Table(
 			g.Attr(
 				"id",
-				"tickets-list",
+				constants.IDItems,
 			),
 
 			g.Attr(
 				"class",
-				"table-items",
+				constants.ClassTableItems,
 			),
 
 			html.THead(
@@ -113,7 +117,16 @@ func (s *Service) TableTickets(ctx context.Context, params *ParamsTableTickets) 
 				),
 			),
 
-			g.Group(rows),
+			html.TBody(
+				append(
+					rows,
+
+					g.Attr(
+						"id",
+						constants.IDItemsTableBody,
+					),
+				)...,
+			),
 		),
 	)
 }

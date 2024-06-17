@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/TudorHulban/authentication/app/constants"
 	testuser "github.com/TudorHulban/authentication/fixtures/test-user"
 	"github.com/TudorHulban/authentication/services/suser"
 	"github.com/gofiber/fiber/v2"
@@ -33,10 +34,10 @@ func (a *App) Start() error {
 		logger.New(),
 
 		[]string{
-			RouteLogged,
-			RouteTicket,
-			RouteTickets,
-			RouteEvent,
+			constants.RouteLogged,
+			constants.RouteTicket,
+			constants.RouteTickets,
+			constants.RouteEvent,
 		},
 
 		mw,

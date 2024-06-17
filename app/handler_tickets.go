@@ -3,6 +3,7 @@ package app
 import (
 	"errors"
 
+	"github.com/TudorHulban/authentication/app/constants"
 	"github.com/TudorHulban/authentication/apperrors"
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/domain/ticket"
@@ -83,7 +84,7 @@ func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 	)
 }
 
-func (a *App) HandlerTickets(c *fiber.Ctx) error {
+func (a *App) HandlerPageTickets(c *fiber.Ctx) error {
 	_, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
 	if errGetUser != nil {
 		return c.Status(fiber.StatusInternalServerError).
@@ -132,16 +133,18 @@ func (a *App) HandlerTickets(c *fiber.Ctx) error {
 					c.Context(),
 					&srender.ParamsTableTickets{
 						Tickets:   reconstructedTasks,
-						URLTicket: a.baseURL() + RouteTicket,
+						URLTicket: a.baseURL() + constants.RouteTicket,
 					},
 				),
 				srender.ButtonCreateTicket("Create Ticket"),
 				srender.ModalCreateTicket(
 					&srender.ParamsModalCreateTicket{
-						URLAddTicket: RouteTicket,
+						URLAddTicket: constants.RouteTicket,
 					},
 				),
-				srender.ScriptCreateTicket(RouteTickets),
+				srender.ScriptCreateTicket(
+					constants.RouteTickets,
+				),
 				srender.Footer(),
 			},
 		},
@@ -217,11 +220,13 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 				srender.ButtonCreateTicketEvent("Create Ticket Event"),
 				srender.ModalCreateTicketEvent(
 					&srender.ParamsModalCreateTicketEvent{
-						URLAddTicketEvent: RouteEvent,
+						URLAddTicketEvent: constants.RouteEvent,
 						TicketID:          reconstructedTask.PrimaryKey,
 					},
 				),
-				srender.ScriptCreateTicketEvent(RouteTicket + "/" + reconstructedTask.PrimaryKey.String()),
+				srender.ScriptCreateTicketEvent(
+					constants.RouteTicket + "/" + reconstructedTask.PrimaryKey.String(),
+				),
 				srender.Footer(),
 			},
 		},

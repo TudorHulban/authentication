@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/TudorHulban/authentication/helpers"
+	"github.com/gofiber/fiber/v2"
 	g "github.com/maragudk/gomponents"
 	html "github.com/maragudk/gomponents/html"
 )
@@ -28,11 +30,20 @@ func (el ElementForm) Raw() g.Node {
 		)
 	}
 
-	result[1] = fmt.Sprintf(
-		`<label for="%s">%s:</label>`,
-		toLowerElementName,
-		strings.ToUpper(toLowerElementName[:1])+toLowerElementName[1:],
-	)
+	if toLowerElementName == "id" {
+		result[1] = fmt.Sprintf(
+			`<label for="%s">%s:</label>`,
+			toLowerElementName,
+			"ID",
+		)
+	} else {
+		result[1] = fmt.Sprintf(
+			`<label for="%s">%s:</label>`,
+			toLowerElementName,
+			strings.ToUpper(toLowerElementName[:1])+toLowerElementName[1:],
+		)
+	}
+
 	result[2] = fmt.Sprintf(
 		`<input type="%s" id="%s" name="%s"></div>`,
 		el.TypeInput,
@@ -68,6 +79,8 @@ type paramsNewFormGeneric struct {
 	HTTPMethodForm string
 	IDEnclosingDiv string
 
+	IDTarget string
+
 	Elements     FormElements
 	ButtonSubmit g.Node
 }
@@ -99,14 +112,38 @@ func newFormGeneric(params *paramsNewFormGeneric) g.Node {
 						params.IDForm,
 					),
 
-					g.Attr(
-						"action",
-						params.ActionForm,
+					g.If(
+						params.HTTPMethodForm == fiber.MethodGet,
+
+						g.Attr(
+							"hx-get",
+							params.ActionForm,
+						),
+					),
+
+					g.If(
+						params.HTTPMethodForm == fiber.MethodPost,
+
+						g.Attr(
+							"hx-post",
+							params.ActionForm,
+						),
+					),
+
+					g.If(
+						len(params.IDTarget) > 0,
+
+						g.Attr(
+							"hx-target",
+							helpers.SanitizeCSSId(
+								params.IDTarget,
+							),
+						),
 					),
 
 					g.Attr(
-						"method",
-						params.HTTPMethodForm,
+						"hx-swap",
+						"outerHTML",
 					),
 				},
 				params.Elements.Raw(params.ButtonSubmit)...,

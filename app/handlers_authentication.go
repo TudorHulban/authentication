@@ -4,6 +4,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/TudorHulban/authentication/app/constants"
 	"github.com/TudorHulban/authentication/services/srender"
 	"github.com/TudorHulban/authentication/services/suser"
 	"github.com/gofiber/fiber/v2"
@@ -52,7 +53,7 @@ func (a *App) HandlerLoginRequest(c *fiber.Ctx) error {
 		},
 	)
 
-	c.Set("HX-Redirect", RouteLogged)
+	c.Set("HX-Redirect", constants.RouteLogged)
 
 	return c.SendStatus(fiber.StatusOK)
 }

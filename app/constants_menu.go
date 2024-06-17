@@ -1,6 +1,9 @@
 package app
 
-import "github.com/TudorHulban/authentication/services/srender"
+import (
+	"github.com/TudorHulban/authentication/app/constants"
+	"github.com/TudorHulban/authentication/services/srender"
+)
 
 func (a *App) newMenuSidebar() (*srender.MenuSidebar, error) {
 	return srender.NewMenuSidebar(
@@ -13,7 +16,7 @@ func (a *App) newMenuSidebar() (*srender.MenuSidebar, error) {
 
 				TextSection1Entry1:   "Tickets",
 				SymbolSection1Entry1: "call",
-				URLSection1Entry1:    a.baseURL() + RouteTickets,
+				URLSection1Entry1:    a.baseURL() + constants.RouteTickets,
 
 				TextSection1Entry2:   "Ticket Events",
 				SymbolSection1Entry2: "comment",

@@ -27,12 +27,12 @@ func (t Tickets) String() string {
 		fmt.Sprintf("Tasks: %d", len(t)),
 	}
 
-	for _, task := range t {
+	for _, ticket := range t {
 		result = append(result,
 			fmt.Sprintf(
 				"ID: %v, Name: %s",
-				task.PrimaryKey,
-				task.Name,
+				ticket.PrimaryKey,
+				ticket.Name,
 			),
 		)
 	}
@@ -41,4 +41,34 @@ func (t Tickets) String() string {
 		result,
 		"\n",
 	)
+}
+
+type ParamsAsHTMLTBody struct {
+	RouteTicket     string
+	CSSIDTicketBody string
+}
+
+func (t Tickets) AsHTMLTBody(params ParamsAsHTMLTBody) string {
+	result := []string{
+		fmt.Sprintf(
+			"<tbody class=%s>",
+			params.CSSIDTicketBody,
+		),
+	}
+
+	for ix, ticket := range t {
+		result = append(
+			result,
+			ticket.AsHTMLTRow(
+				&ParamsTicketAsHTML{
+					RouteTicket: params.RouteTicket,
+					Index:       ix + 1,
+				},
+			),
+		)
+	}
+
+	result = append(result, "</tbody>")
+
+	return strings.Join(result, "")
 }

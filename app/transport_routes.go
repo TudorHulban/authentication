@@ -1,49 +1,51 @@
 package app
 
+import "github.com/TudorHulban/authentication/app/constants"
+
 func InitializeTransportRoutes(application *App) {
 	// Authentication
 
 	application.Transport.Get(
-		RoutesAll,
+		constants.RoutesAll,
 		application.HandlerLoginPage,
 	)
 
 	application.Transport.Get(
-		RouteLogin,
+		constants.RouteLogin,
 		application.HandlerLoginPage,
 	)
 
 	application.Transport.Get(
-		RouteLogged,
+		constants.RouteLogged,
 		application.HandlerHomePage,
 	)
 
 	application.Transport.Post(
-		RouteLogin,
+		constants.RouteLogin,
 		application.HandlerLoginRequest,
 	)
 
 	// Ticket
 
 	application.Transport.Post(
-		RouteTicket,
+		constants.RouteTicket,
 		application.HandlerAddTicket,
 	)
 
 	application.Transport.Get(
-		RouteTickets,
-		application.HandlerTickets,
+		constants.RouteTickets,
+		application.HandlerHTMLTickets,
 	)
 
 	application.Transport.Get(
-		RouteTicket+"/:id",
+		constants.RouteTicket+"/:id",
 		application.HandlerTicketID,
 	)
 
 	// Event
 
 	application.Transport.Post(
-		RouteEvent,
+		constants.RouteEvent,
 		application.HandlerAddEvent,
 	)
 }

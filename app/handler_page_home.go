@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/TudorHulban/authentication/app/constants"
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
@@ -75,27 +76,28 @@ func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 						srender.NewFormSearchTickets(
 							&srender.ParamsNewFormSearchTickets{
 								TextForm:          "Search Tickets",
-								ActionForm:        RouteTickets,
+								ActionForm:        constants.RouteTickets,
 								LabelButtonSubmit: "Submit",
 
 								IDEnclosingDiv: "container-search",
 							},
 						),
+
 						srender.ButtonCreateTicket("Create Ticket"),
+
 						a.serviceRender.TableTickets(
 							c.Context(),
 							&srender.ParamsTableTickets{
 								Tickets:   reconstructedTasks,
-								URLTicket: a.baseURL() + RouteTicket,
+								URLTicket: a.baseURL() + constants.RouteTicket,
 							},
 						),
 
 						srender.ModalCreateTicket(
 							&srender.ParamsModalCreateTicket{
-								URLAddTicket: RouteTicket,
+								URLAddTicket: constants.RouteTicket,
 							},
 						),
-						srender.ScriptCreateTicket(RouteLogged),
 					},
 				},
 			),
