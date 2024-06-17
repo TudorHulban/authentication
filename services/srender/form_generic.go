@@ -19,17 +19,22 @@ func (el ElementForm) Raw() g.Node {
 
 	toLowerElementName := strings.ToLower(el.ElementName)
 
-	result[0] = fmt.Sprintf(
-		`<div class="%s">`,
-		el.CSSClass,
-	)
+	if len(el.CSSClass) == 0 {
+		result[0] = `<div>`
+	} else {
+		result[0] = fmt.Sprintf(
+			`<div class="%s">`,
+			el.CSSClass,
+		)
+	}
+
 	result[1] = fmt.Sprintf(
 		`<label for="%s">%s:</label>`,
 		toLowerElementName,
 		strings.ToUpper(toLowerElementName[:1])+toLowerElementName[1:],
 	)
 	result[2] = fmt.Sprintf(
-		`<input type="%s" id="%s" name="%s">`,
+		`<input type="%s" id="%s" name="%s"></div>`,
 		el.TypeInput,
 		toLowerElementName,
 		toLowerElementName,
@@ -67,9 +72,12 @@ type paramsNewFormGeneric struct {
 
 func newFormGeneric(params *paramsNewFormGeneric) g.Node {
 	return html.Div(
-		g.Attr(
-			"class",
-			params.ClassEnclosingDiv,
+		g.If(
+			len(params.ClassEnclosingDiv) > 0,
+			g.Attr(
+				"class",
+				params.ClassEnclosingDiv,
+			),
 		),
 
 		html.Form(
