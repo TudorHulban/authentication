@@ -7,6 +7,7 @@ import (
 )
 
 type ParamsNewFormSearchTickets struct {
+	TextForm          string
 	ActionForm        string
 	ClassEnclosingDiv string
 	ClassButtonSubmit string
@@ -16,7 +17,9 @@ type ParamsNewFormSearchTickets struct {
 func NewFormSearchTickets(params *ParamsNewFormSearchTickets) g.Node {
 	return newFormGeneric(
 		&paramsNewFormGeneric{
-			IDForm:            "searchTickets",
+			TextForm: params.TextForm,
+
+			IDForm:            "searchForm",
 			ActionForm:        params.ActionForm,
 			HTTPMethodForm:    fiber.MethodGet,
 			ClassEnclosingDiv: params.ClassEnclosingDiv,

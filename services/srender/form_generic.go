@@ -61,6 +61,8 @@ func (els FormElements) Raw(buttonSubmit g.Node) []g.Node {
 }
 
 type paramsNewFormGeneric struct {
+	TextForm string
+
 	IDForm            string
 	ActionForm        string
 	HTTPMethodForm    string
@@ -77,6 +79,15 @@ func newFormGeneric(params *paramsNewFormGeneric) g.Node {
 			g.Attr(
 				"class",
 				params.ClassEnclosingDiv,
+			),
+		),
+
+		g.If(
+			len(params.TextForm) > 0,
+			html.P(
+				g.Text(
+					params.TextForm,
+				),
 			),
 		),
 
