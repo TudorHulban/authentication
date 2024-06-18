@@ -8,15 +8,18 @@ import (
 )
 
 type ParamsNewFormSearchTickets struct {
-	TextForm       string
-	ActionForm     string
-	IDEnclosingDiv string
+	TextForm string
 
-	ClassButtonSubmit string
-	LabelButtonSubmit string
+	ActionButtonCreate string
+	ActionButtonSearch string
+
+	IDEnclosingDiv string
 
 	ClassButtonSearch string
 	LabelButtonSearch string
+
+	ClassButtonCreate string
+	LabelButtonCreate string
 }
 
 func NewFormSearchTickets(params *ParamsNewFormSearchTickets) g.Node {
@@ -25,7 +28,6 @@ func NewFormSearchTickets(params *ParamsNewFormSearchTickets) g.Node {
 			TextForm: params.TextForm,
 
 			IDForm:         constants.IDSearchItems,
-			ActionForm:     params.ActionForm,
 			HTTPMethodForm: fiber.MethodGet,
 			IDEnclosingDiv: params.IDEnclosingDiv,
 
@@ -38,16 +40,21 @@ func NewFormSearchTickets(params *ParamsNewFormSearchTickets) g.Node {
 						"submit",
 					),
 
+					g.Attr(
+						"hx-post",
+						params.ActionButtonCreate,
+					),
+
 					g.If(
-						len(params.ClassButtonSubmit) > 0,
+						len(params.ClassButtonCreate) > 0,
 						g.Attr(
 							"class",
-							params.ClassButtonSubmit,
+							params.ClassButtonCreate,
 						),
 					),
 
 					g.Text(
-						params.LabelButtonSubmit,
+						params.LabelButtonCreate,
 					),
 				),
 
@@ -55,6 +62,11 @@ func NewFormSearchTickets(params *ParamsNewFormSearchTickets) g.Node {
 					g.Attr(
 						"type",
 						"submit",
+					),
+
+					g.Attr(
+						"hx-post",
+						params.ActionButtonSearch,
 					),
 
 					g.If(
@@ -80,6 +92,11 @@ func NewFormSearchTickets(params *ParamsNewFormSearchTickets) g.Node {
 				{
 					CSSClass:    "form-group",
 					ElementName: "Status",
+					TypeInput:   "text",
+				},
+				{
+					CSSClass:    "form-group",
+					ElementName: "Name",
 					TypeInput:   "text",
 				},
 			},

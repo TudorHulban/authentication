@@ -7,6 +7,7 @@ import (
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
 	genericfile "github.com/TudorHulban/authentication/infra/generic-file"
+	paramsstores "github.com/TudorHulban/authentication/infra/stores/params-stores"
 )
 
 type StoreTickets struct {
@@ -56,8 +57,18 @@ func (s *StoreTickets) GetTicketByID(ctx context.Context, ticketID helpers.Prima
 	return nil
 }
 
-func (s *StoreTickets) SearchTickets(ctx context.Context, params *ticket.ParamsSearchTickets) (ticket.Tickets, error) {
-	return s.storeTickets.SearchItems(helpers.CriteriaTrue)
+func (s *StoreTickets) SearchTickets(ctx context.Context, params *paramsstores.ParamsSearchTickets) (ticket.Tickets, error) {
+	if params.WithID == helpers.PrimaryKeyZero {
+		return s.storeTickets.SearchItems(
+			helpers.CriteriaTrue,
+		)
+	}
+
+	return s.storeTickets.SearchItems(
+		ticket.CriteriaPK(
+			params.WithID,
+		),
+	)
 }
 
 func (s *StoreTickets) UpdateTicket(ctx context.Context, item *ticket.Ticket) error {

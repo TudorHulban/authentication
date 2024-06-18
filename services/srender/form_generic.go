@@ -2,7 +2,6 @@ package srender
 
 import (
 	"github.com/TudorHulban/authentication/helpers"
-	"github.com/gofiber/fiber/v2"
 	g "github.com/maragudk/gomponents"
 	html "github.com/maragudk/gomponents/html"
 )
@@ -47,24 +46,6 @@ func newFormGeneric(params *paramsNewFormGeneric) g.Node {
 					g.Attr(
 						"id",
 						params.IDForm,
-					),
-
-					g.If(
-						params.HTTPMethodForm == fiber.MethodGet,
-
-						g.Attr(
-							"hx-get",
-							params.ActionForm,
-						),
-					),
-
-					g.If(
-						params.HTTPMethodForm == fiber.MethodPost,
-
-						g.Attr(
-							"hx-post",
-							params.ActionForm,
-						),
 					),
 
 					g.If(

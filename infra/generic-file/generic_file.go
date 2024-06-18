@@ -31,6 +31,7 @@ func (store *GenericStoreFile[T]) CreateFirstItem(item *T) error {
 	return store.saveAll([]*T{item})
 }
 
+// TODO: change getID to return primary key
 func (store *GenericStoreFile[T]) CreateItem(item *T, getID func(*T) uint64, force ...bool) error {
 	store.mu.Lock()
 	defer store.mu.Unlock()
@@ -100,7 +101,7 @@ func (store *GenericStoreFile[T]) DeleteItem(pk uint64, getID func(*T) uint64) e
 	return fmt.Errorf("item with ID %d not found", pk)
 }
 
-func (store *GenericStoreFile[T]) SearchItems(criteria func(*T) bool) ([]*T, error) {
+func (store *GenericStoreFile[T]) SearchItems(criterias ...func(*T) bool) ([]*T, error) {
 	store.mu.Lock()
 	defer store.mu.Unlock()
 
@@ -116,10 +117,21 @@ func (store *GenericStoreFile[T]) SearchItems(criteria func(*T) bool) ([]*T, err
 
 	var result []*T
 
+rangeItems:
 	for _, item := range items {
-		if criteria(item) {
-			result = append(result, item)
+		passesAllCriterias := true
+
+		for _, criteria := range criterias {
+			if !criteria(item) {
+				passesAllCriterias = false
+			}
+
+			if !passesAllCriterias {
+				continue rangeItems
+			}
 		}
+
+		result = append(result, item)
 	}
 
 	if len(result) == 0 {

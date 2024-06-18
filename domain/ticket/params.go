@@ -1,15 +1,18 @@
 package ticket
 
-import "github.com/TudorHulban/authentication/helpers"
+import (
+	"github.com/TudorHulban/authentication/helpers"
+)
 
 type ParamsSearchTickets struct {
 	helpers.ParamsPagination
 
-	WithStatus TicketStatus
-	WithKind   TicketKind
+	WithID     string `json:"id,omitempty"`
+	WithStatus string
+	WithKind   string
 
-	WithLastUpdateBefore int64
-	WithLastUpdatedAfter int64
+	WithLastUpdateBefore string
+	WithLastUpdatedAfter string
 
 	WithOpenedByUserID uint
 }

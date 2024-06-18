@@ -9,6 +9,7 @@ import (
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
 	"github.com/TudorHulban/authentication/infra/stores"
+	paramsstores "github.com/TudorHulban/authentication/infra/stores/params-stores"
 	"github.com/TudorHulban/epochid"
 	"github.com/asaskevich/govalidator"
 )
@@ -110,9 +111,24 @@ func (s *Service) GetTicketByID(ctx context.Context, params *ParamsGetTicketByID
 }
 
 func (s *Service) SearchTickets(ctx context.Context, params *ticket.ParamsSearchTickets) (ticket.Tickets, error) {
+	var withID int
+
+	if len(params.WithID) > 0 {
+		var errConv error
+
+		withID, errConv = strconv.Atoi(
+			params.WithID,
+		)
+		if errConv != nil {
+			return nil, errConv
+		}
+	}
+
 	return s.store.SearchTickets(
 		ctx,
-		params,
+		&paramsstores.ParamsSearchTickets{
+			WithID: helpers.PrimaryKey(withID),
+		},
 	)
 }
 

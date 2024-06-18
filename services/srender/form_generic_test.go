@@ -7,8 +7,10 @@ import (
 
 func TestNewFormSearchTickets(t *testing.T) {
 	p := ParamsNewFormSearchTickets{
-		ActionForm:        "/tickets",
-		LabelButtonSubmit: "Submit",
+		ActionButtonSearch: "/tickets",
+		ActionButtonCreate: "/ticket",
+
+		LabelButtonCreate: "Submit",
 	}
 
 	NewFormSearchTickets(&p).Render(os.Stdout)

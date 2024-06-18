@@ -117,7 +117,7 @@ func NewSearchCreateTickets(params *ParamsNewSearchCreateTickets) g.Node {
 			html.Button(
 				g.Attr(
 					"hx-post",
-					constants.RouteTickets,
+					constants.RouteTicket,
 				),
 
 				g.If(

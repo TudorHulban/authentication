@@ -73,13 +73,17 @@ func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 					SidebarMenu: menu,
 
 					EntriesMain: []g.Node{
-						srender.NewSearchCreateTickets(
-							&srender.ParamsNewSearchCreateTickets{
+						srender.NewFormSearchTickets(
+							&srender.ParamsNewFormSearchTickets{
+								TextForm: "Search / Crteate Tickets",
+
+								ActionButtonCreate: constants.RouteTicket,
+								ActionButtonSearch: constants.RouteTickets,
+
 								LabelButtonSearch: "Search",
 								LabelButtonCreate: "Create",
 
 								IDEnclosingDiv: "container-search",
-								IDTargetHTMX:   constants.IDItemsTableBody,
 							},
 						),
 

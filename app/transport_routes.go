@@ -32,7 +32,7 @@ func InitializeTransportRoutes(application *App) {
 		application.HandlerAddTicket,
 	)
 
-	application.Transport.Get(
+	application.Transport.Post(
 		constants.RouteTickets,
 		application.HandlerHTMLTickets,
 	)

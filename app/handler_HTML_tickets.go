@@ -1,10 +1,12 @@
 package app
 
 import (
+	"fmt"
+	"net/http"
+
 	"github.com/TudorHulban/authentication/app/constants"
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/domain/ticket"
-	"github.com/TudorHulban/authentication/helpers"
 	"github.com/TudorHulban/authentication/services/srender"
 	"github.com/gofiber/fiber/v2"
 )
@@ -21,13 +23,29 @@ func (a *App) HandlerHTMLTickets(c *fiber.Ctx) error {
 			)
 	}
 
+	var params ticket.ParamsSearchTickets
+
+	fmt.Println(
+		string(c.BodyRaw()), // id=&status=&name=aaaaaaaaaa
+	)
+
+	if errBody := c.BodyParser(&params); errBody != nil {
+		return c.Status(http.StatusBadRequest).JSON(
+			&fiber.Map{
+				"success": false,
+				"error":   errBody.Error(),
+			},
+		)
+	}
+
+	// fmt.Printf(
+	// 	"%#v",
+	// 	params,
+	// )
+
 	reconstructedTickets, errGetTickets := a.ServiceTicket.SearchTickets(
 		c.Context(),
-		&ticket.ParamsSearchTickets{
-			ParamsPagination: helpers.ParamsPagination{
-				First: 10,
-			},
-		},
+		&params,
 	)
 	if errGetTickets != nil {
 		return c.Status(

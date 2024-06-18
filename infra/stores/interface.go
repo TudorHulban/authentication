@@ -6,6 +6,7 @@ import (
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
+	paramsstores "github.com/TudorHulban/authentication/infra/stores/params-stores"
 	storefile "github.com/TudorHulban/authentication/infra/stores/store-file"
 )
 
@@ -22,7 +23,7 @@ var _ IStoreUser = &storefile.StoreUsers{}
 type IStoreTicket interface {
 	CreateTicket(ctx context.Context, ticket *ticket.Ticket, force ...bool) error
 	GetTicketByID(ctx context.Context, ticketID helpers.PrimaryKey, result *ticket.TicketInfo) error
-	SearchTickets(ctx context.Context, params *ticket.ParamsSearchTickets) (ticket.Tickets, error)
+	SearchTickets(ctx context.Context, params *paramsstores.ParamsSearchTickets) (ticket.Tickets, error)
 	CloseTicket(ctx context.Context, ticketID helpers.PrimaryKey, status ticket.TicketStatus) error
 
 	AddEvent(ctx context.Context, ticketID helpers.PrimaryKey, event *ticket.Event) error

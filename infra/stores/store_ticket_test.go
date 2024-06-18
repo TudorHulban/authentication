@@ -7,6 +7,7 @@ import (
 
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
+	paramsstores "github.com/TudorHulban/authentication/infra/stores/params-stores"
 	storefile "github.com/TudorHulban/authentication/infra/stores/store-file"
 	"github.com/stretchr/testify/require"
 )
@@ -68,7 +69,7 @@ func TestStoreTicket(t *testing.T) {
 
 	tasks, erGetTasks := store.SearchTickets(
 		ctx,
-		&ticket.ParamsSearchTickets{
+		&paramsstores.ParamsSearchTickets{
 			ParamsPagination: helpers.ParamsPagination{
 				First: 10,
 			},
