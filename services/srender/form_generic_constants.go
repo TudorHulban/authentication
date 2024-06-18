@@ -8,11 +8,15 @@ import (
 )
 
 type ParamsNewFormSearchTickets struct {
-	TextForm          string
-	ActionForm        string
-	IDEnclosingDiv    string
+	TextForm       string
+	ActionForm     string
+	IDEnclosingDiv string
+
 	ClassButtonSubmit string
 	LabelButtonSubmit string
+
+	ClassButtonSearch string
+	LabelButtonSearch string
 }
 
 func NewFormSearchTickets(params *ParamsNewFormSearchTickets) g.Node {
@@ -27,10 +31,24 @@ func NewFormSearchTickets(params *ParamsNewFormSearchTickets) g.Node {
 
 			IDTarget: constants.IDItemsTableBody,
 
-			ButtonSubmit: html.Div(
-				g.Attr(
-					"class",
-					params.ClassButtonSubmit,
+			Buttons: []g.Node{
+				html.Button(
+					g.Attr(
+						"type",
+						"submit",
+					),
+
+					g.If(
+						len(params.ClassButtonSubmit) > 0,
+						g.Attr(
+							"class",
+							params.ClassButtonSubmit,
+						),
+					),
+
+					g.Text(
+						params.LabelButtonSubmit,
+					),
 				),
 
 				html.Button(
@@ -39,13 +57,21 @@ func NewFormSearchTickets(params *ParamsNewFormSearchTickets) g.Node {
 						"submit",
 					),
 
+					g.If(
+						len(params.ClassButtonSearch) > 0,
+						g.Attr(
+							"class",
+							params.ClassButtonSearch,
+						),
+					),
+
 					g.Text(
-						params.LabelButtonSubmit,
+						params.LabelButtonSearch,
 					),
 				),
-			),
+			},
 
-			Elements: []*ElementForm{
+			Elements: []*ElementInput{
 				{
 					CSSClass:    "form-group",
 					ElementName: "ID",

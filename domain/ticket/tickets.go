@@ -42,33 +42,3 @@ func (t Tickets) String() string {
 		"\n",
 	)
 }
-
-type ParamsAsHTMLTBody struct {
-	RouteTicket     string
-	CSSIDTicketBody string
-}
-
-func (t Tickets) AsHTMLTBody(params ParamsAsHTMLTBody) string {
-	result := []string{
-		fmt.Sprintf(
-			"<tbody class=%s>",
-			params.CSSIDTicketBody,
-		),
-	}
-
-	for ix, ticket := range t {
-		result = append(
-			result,
-			ticket.AsHTMLTRow(
-				&ParamsTicketAsHTML{
-					RouteTicket: params.RouteTicket,
-					Index:       ix + 1,
-				},
-			),
-		)
-	}
-
-	result = append(result, "</tbody>")
-
-	return strings.Join(result, "")
-}

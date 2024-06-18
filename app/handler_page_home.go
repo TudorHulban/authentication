@@ -17,7 +17,7 @@ func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 		return c.SendStatus(fiber.StatusInternalServerError)
 	}
 
-	reconstructedTasks, errGetTasks := a.ServiceTicket.SearchTickets(
+	reconstructedTickets, errGetTickets := a.ServiceTicket.SearchTickets(
 		c.Context(),
 		&ticket.ParamsSearchTickets{
 			ParamsPagination: helpers.ParamsPagination{
@@ -25,12 +25,12 @@ func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 			},
 		},
 	)
-	if errGetTasks != nil {
+	if errGetTickets != nil {
 		return c.Status(fiber.StatusInternalServerError).
 			JSON(
 				&fiber.Map{
 					"success": false,
-					"error":   errGetTasks,
+					"error":   errGetTickets,
 				},
 			)
 	}
@@ -73,22 +73,20 @@ func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 					SidebarMenu: menu,
 
 					EntriesMain: []g.Node{
-						srender.NewFormSearchTickets(
-							&srender.ParamsNewFormSearchTickets{
-								TextForm:          "Search Tickets",
-								ActionForm:        constants.RouteTickets,
-								LabelButtonSubmit: "Submit",
+						srender.NewSearchCreateTickets(
+							&srender.ParamsNewSearchCreateTickets{
+								LabelButtonSearch: "Search",
+								LabelButtonCreate: "Create",
 
 								IDEnclosingDiv: "container-search",
+								IDTargetHTMX:   constants.IDItemsTableBody,
 							},
 						),
-
-						srender.ButtonCreateTicket("Create Ticket"),
 
 						a.serviceRender.TableTickets(
 							c.Context(),
 							&srender.ParamsTableTickets{
-								Tickets:   reconstructedTasks,
+								Tickets:   reconstructedTickets,
 								URLTicket: a.baseURL() + constants.RouteTicket,
 							},
 						),

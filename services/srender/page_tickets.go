@@ -74,9 +74,6 @@ func (s *Service) TableTickets(ctx context.Context, params *ParamsTableTickets) 
 	}
 
 	rows := make([]g.Node, 0)
-	// rows := []g.Node{
-	// 	html.TBody(),
-	// }
 
 	for ix, currentTicket = range params.Tickets {
 		rows = append(rows,
