@@ -16,8 +16,8 @@ type Event struct {
 	*EventInfo
 }
 
-func GetIDEvent(item *Event) uint64 {
-	return uint64(item.PrimaryKey)
+func GetIDEvent(item *Event) helpers.PrimaryKey {
+	return item.PrimaryKey
 }
 
 func GetIDEventTicket(item *Event) uint64 {
@@ -26,7 +26,7 @@ func GetIDEventTicket(item *Event) uint64 {
 
 var CriteriaIDOfTicket = func(pk helpers.PrimaryKey) func(item *Event) bool {
 	return func(item *Event) bool {
-		return GetIDEvent(item) == uint64(pk)
+		return GetIDEvent(item) == pk
 	}
 }
 

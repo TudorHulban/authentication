@@ -7,8 +7,8 @@ import (
 type ParamsSearchTickets struct {
 	helpers.ParamsPagination
 
-	WithID     string `json:"id,omitempty"`
-	WithStatus string
+	WithID     *string `json:",omitempty" form:"id"`
+	WithStatus string  `json:",omitempty" form:"status"`
 	WithKind   string
 
 	WithLastUpdateBefore string

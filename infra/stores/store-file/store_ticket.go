@@ -72,7 +72,7 @@ func (s *StoreTickets) SearchTickets(ctx context.Context, params *paramsstores.P
 }
 
 func (s *StoreTickets) UpdateTicket(ctx context.Context, item *ticket.Ticket) error {
-	return s.storeTickets.UpdateItem(uint64(item.PrimaryKey), item, ticket.GetIDTicket)
+	return s.storeTickets.UpdateItem(item.PrimaryKey, item, ticket.GetIDTicket)
 }
 
 func (s *StoreTickets) CloseTicket(ctx context.Context, ticketID helpers.PrimaryKey, status ticket.TicketStatus) error {

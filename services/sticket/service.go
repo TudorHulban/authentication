@@ -2,6 +2,7 @@ package sticket
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 	"time"
 
@@ -111,13 +112,15 @@ func (s *Service) GetTicketByID(ctx context.Context, params *ParamsGetTicketByID
 }
 
 func (s *Service) SearchTickets(ctx context.Context, params *ticket.ParamsSearchTickets) (ticket.Tickets, error) {
-	var withID int
+	var withID helpers.PrimaryKey
 
-	if len(params.WithID) > 0 {
+	fmt.Println("with ID", params.WithID)
+
+	if params.WithID != nil {
 		var errConv error
 
-		withID, errConv = strconv.Atoi(
-			params.WithID,
+		withID, errConv = helpers.NewPrimaryKey(
+			*params.WithID,
 		)
 		if errConv != nil {
 			return nil, errConv
@@ -127,7 +130,7 @@ func (s *Service) SearchTickets(ctx context.Context, params *ticket.ParamsSearch
 	return s.store.SearchTickets(
 		ctx,
 		&paramsstores.ParamsSearchTickets{
-			WithID: helpers.PrimaryKey(withID),
+			WithID: withID,
 		},
 	)
 }

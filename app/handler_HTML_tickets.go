@@ -1,10 +1,11 @@
 package app
 
 import (
-	"fmt"
+	"errors"
 	"net/http"
 
 	"github.com/TudorHulban/authentication/app/constants"
+	"github.com/TudorHulban/authentication/apperrors"
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/services/srender"
@@ -25,10 +26,6 @@ func (a *App) HandlerHTMLTickets(c *fiber.Ctx) error {
 
 	var params ticket.ParamsSearchTickets
 
-	fmt.Println(
-		string(c.BodyRaw()), // id=&status=&name=aaaaaaaaaa
-	)
-
 	if errBody := c.BodyParser(&params); errBody != nil {
 		return c.Status(http.StatusBadRequest).JSON(
 			&fiber.Map{
@@ -38,22 +35,34 @@ func (a *App) HandlerHTMLTickets(c *fiber.Ctx) error {
 		)
 	}
 
-	// fmt.Printf(
-	// 	"%#v",
-	// 	params,
-	// )
-
 	reconstructedTickets, errGetTickets := a.ServiceTicket.SearchTickets(
 		c.Context(),
 		&params,
 	)
 	if errGetTickets != nil {
+		if errors.As(
+			errGetTickets,
+			&apperrors.ErrNoEntriesFound{},
+		) {
+			return a.serviceRender.
+				RenderTickets(
+					c.Context(),
+					&srender.ParamsRenderTickets{
+						Tickets: reconstructedTickets,
+
+						RouteTicket:     a.baseURL() + constants.RouteTickets,
+						CSSIDTicketBody: constants.IDItemsTableBody,
+					},
+				).
+				Render(c)
+		}
+
 		return c.Status(
 			fiber.StatusInternalServerError).
 			JSON(
 				&fiber.Map{
 					"success": false,
-					"error":   errGetTickets,
+					"error":   errGetTickets.Error(),
 				},
 			)
 	}

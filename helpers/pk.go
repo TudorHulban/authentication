@@ -1,64 +1,34 @@
 package helpers
 
 import (
-	"fmt"
 	"strconv"
 
 	"github.com/TudorHulban/authentication/apperrors"
 )
 
-type ParamsValidationStringPK struct {
-	Value string
+type PrimaryKey uint64
 
-	Name   string
-	Caller string
+func NewPrimaryKey(value string) (PrimaryKey, error) {
+	numericPK, errConv := strconv.ParseUint(value, 10, 64)
+	if errConv != nil {
+		return PrimaryKeyZero,
+			apperrors.ErrServiceValidation{
+				Issue:  errConv,
+				Caller: "NewPrimaryKey",
+			}
+	}
+
+	return PrimaryKey(
+			numericPK,
+		),
+		nil
 }
 
-func ValidationStringID(params *ParamsValidationStringPK, result *uint) error {
-	if len(params.Value) == 0 {
-		return apperrors.ErrValidation{
-			Caller: params.Caller,
-
-			Issue: apperrors.ErrNilInput{
-				InputName: params.Name,
-			},
-		}
-	}
-
-	numericValue, errConvToNumeric := strconv.Atoi(params.Value)
-	if errConvToNumeric != nil {
-		return apperrors.ErrValidation{
-			Caller: params.Caller,
-
-			Issue: fmt.Errorf(
-				"%s: %w",
-				params.Name,
-				errConvToNumeric,
-			),
-		}
-	}
-
-	if numericValue < 0 {
-		return apperrors.ErrValidation{
-			Caller: params.Caller,
-
-			Issue: apperrors.ErrNegativeInput{
-				InputName: params.Name,
-			},
-		}
-	}
-
-	if numericValue == 0 {
-		return apperrors.ErrValidation{
-			Caller: params.Caller,
-
-			Issue: apperrors.ErrZeroInput{
-				InputName: params.Name,
-			},
-		}
-	}
-
-	*result = uint(numericValue)
-
-	return nil
+func (pk PrimaryKey) String() string {
+	return strconv.FormatUint(
+		uint64(pk),
+		10,
+	)
 }
+
+const PrimaryKeyZero = PrimaryKey(0)

@@ -63,11 +63,13 @@ func (s *StoreUsers) UpdateUserInfo(ctx context.Context, userCredentials *appuse
 	}
 
 	return s.storeUsers.UpdateItem(
-		uint64(reconstructedItem.PrimaryKey),
+		reconstructedItem.PrimaryKey,
+
 		&appuser.User{
 			UserCredentials: *userCredentials,
 			UserInfo:        *userInfo,
 		},
+
 		appuser.GetIDUser,
 	)
 }
@@ -80,7 +82,7 @@ func (s *StoreUsers) DeleteUser(ctx context.Context, userCredentials *appuser.Us
 	}
 
 	return s.storeUsers.UpdateItem(
-		uint64(reconstructedItem.PrimaryKey),
+		reconstructedItem.PrimaryKey,
 		&appuser.User{
 			UserCredentials: *userCredentials,
 			UserInfo: appuser.UserInfo{

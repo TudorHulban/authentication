@@ -6,6 +6,7 @@ import (
 	"sync"
 
 	"github.com/TudorHulban/authentication/apperrors"
+	"github.com/TudorHulban/authentication/helpers"
 )
 
 type GenericStoreFile[T any] struct {
@@ -32,7 +33,7 @@ func (store *GenericStoreFile[T]) CreateFirstItem(item *T) error {
 }
 
 // TODO: change getID to return primary key
-func (store *GenericStoreFile[T]) CreateItem(item *T, getID func(*T) uint64, force ...bool) error {
+func (store *GenericStoreFile[T]) CreateItem(item *T, getID func(*T) helpers.PrimaryKey, force ...bool) error {
 	store.mu.Lock()
 	defer store.mu.Unlock()
 
@@ -61,7 +62,7 @@ func (store *GenericStoreFile[T]) CreateItem(item *T, getID func(*T) uint64, for
 	return store.saveAll(items)
 }
 
-func (store *GenericStoreFile[T]) UpdateItem(pk uint64, itemNew *T, getID func(*T) uint64) error {
+func (store *GenericStoreFile[T]) UpdateItem(pk helpers.PrimaryKey, itemNew *T, getID func(*T) helpers.PrimaryKey) error {
 	store.mu.Lock()
 	defer store.mu.Unlock()
 
@@ -81,7 +82,7 @@ func (store *GenericStoreFile[T]) UpdateItem(pk uint64, itemNew *T, getID func(*
 	return fmt.Errorf("item with ID %d not found", pk)
 }
 
-func (store *GenericStoreFile[T]) DeleteItem(pk uint64, getID func(*T) uint64) error {
+func (store *GenericStoreFile[T]) DeleteItem(pk helpers.PrimaryKey, getID func(*T) helpers.PrimaryKey) error {
 	store.mu.Lock()
 	defer store.mu.Unlock()
 
@@ -119,14 +120,8 @@ func (store *GenericStoreFile[T]) SearchItems(criterias ...func(*T) bool) ([]*T,
 
 rangeItems:
 	for _, item := range items {
-		passesAllCriterias := true
-
 		for _, criteria := range criterias {
 			if !criteria(item) {
-				passesAllCriterias = false
-			}
-
-			if !passesAllCriterias {
 				continue rangeItems
 			}
 		}

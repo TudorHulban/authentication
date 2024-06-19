@@ -20,12 +20,14 @@ type User struct {
 	UserInfo
 }
 
-func GetIDUser(item *User) uint64 {
-	return uint64(item.PrimaryKey)
+func GetIDUser(item *User) helpers.PrimaryKey {
+	return item.PrimaryKey
 }
 
-func GetIDEmail(item *User) uint64 {
-	return helpers.NewWordFrom(item.Email).Hash()
+func GetIDEmail(item *User) helpers.PrimaryKey {
+	return helpers.PrimaryKey(
+		helpers.NewWordFrom(item.Email).Hash(),
+	)
 }
 
 var CriteriaCredentials = func(userCredentials *UserCredentials) func(item *User) bool {
