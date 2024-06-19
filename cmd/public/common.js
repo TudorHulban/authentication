@@ -31,4 +31,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     window.openModal = openModal;
     window.closeModal = closeModal;
+
+    const searchItems = document.getElementById('items-search');
+    searchItems.addEventListener(
+        'dblclick', event => {
+            const inputID = document.getElementById('items-search-id');
+            inputID.value = "";
+
+            const inputStatus = document.getElementById('items-search-status');
+            inputStatus.value = "";
+
+            const inputName = document.getElementById('items-search-name');
+            inputName.value = "";
+        }
+    )
 });

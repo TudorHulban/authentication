@@ -8,7 +8,8 @@ import (
 )
 
 type ElementInput struct {
-	CSSClass    string
+	CSSClassDiv string
+	CSSIDInput  string
 	ElementName string
 	TypeInput   string
 }
@@ -18,12 +19,12 @@ func (el ElementInput) Raw() g.Node {
 
 	toLowerElementName := strings.ToLower(el.ElementName)
 
-	if len(el.CSSClass) == 0 {
+	if len(el.CSSClassDiv) == 0 {
 		result[0] = `<div>`
 	} else {
 		result[0] = fmt.Sprintf(
 			`<div class="%s">`,
-			el.CSSClass,
+			el.CSSClassDiv,
 		)
 	}
 
@@ -44,7 +45,7 @@ func (el ElementInput) Raw() g.Node {
 	result[2] = fmt.Sprintf(
 		`<input type="%s" id="%s" name="%s"></div>`,
 		el.TypeInput,
-		toLowerElementName,
+		el.CSSIDInput,
 		toLowerElementName,
 	)
 

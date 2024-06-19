@@ -10,7 +10,7 @@ type ParamsSearchTickets struct {
 	helpers.ParamsPagination
 
 	WithID     sql.NullString `json:",omitempty" form:"id"`
-	WithStatus string         `json:",omitempty" form:"status"`
+	WithStatus sql.NullString `json:",omitempty" form:"status"`
 	WithKind   string
 
 	WithLastUpdateBefore string
@@ -31,7 +31,17 @@ func NewParamsSearchTickets(responseForm []byte) *ParamsSearchTickets {
 		}
 	}
 
+	var withStatus sql.NullString
+
+	if value, exists := responseParams["status"]; exists {
+		withStatus = sql.NullString{
+			Valid:  true,
+			String: value,
+		}
+	}
+
 	return &ParamsSearchTickets{
-		WithID: withID,
+		WithID:     withID,
+		WithStatus: withStatus,
 	}
 }

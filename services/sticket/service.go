@@ -124,10 +124,22 @@ func (s *Service) SearchTickets(ctx context.Context, params *ticket.ParamsSearch
 		}
 	}
 
+	var withStatus ticket.TicketStatus
+
+	if params.WithStatus.Valid {
+		var errConv error
+
+		withStatus, errConv = ticket.NewTicketStatus(params.WithStatus.String)
+		if errConv != nil {
+			return nil, errConv
+		}
+	}
+
 	return s.store.SearchTickets(
 		ctx,
 		&paramsstores.ParamsSearchTickets{
-			WithID: withID,
+			WithID:     withID,
+			WithStatus: withStatus,
 		},
 	)
 }

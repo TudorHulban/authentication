@@ -62,17 +62,17 @@ func NewSearchCreateTickets(params *ParamsNewSearchCreateTickets) g.Node {
 
 		InputElements: []*ElementInput{
 			{
-				CSSClass:    "form-group",
+				CSSClassDiv: "form-group",
 				ElementName: "ID",
 				TypeInput:   "text",
 			},
 			{
-				CSSClass:    "form-group",
+				CSSClassDiv: "form-group",
 				ElementName: "Status",
 				TypeInput:   "text",
 			},
 			{
-				CSSClass:    "form-group",
+				CSSClassDiv: "form-group",
 				ElementName: "Name",
 				TypeInput:   "text",
 			},
