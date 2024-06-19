@@ -2,7 +2,6 @@ package app
 
 import (
 	"errors"
-	"net/http"
 
 	"github.com/TudorHulban/authentication/app/constants"
 	"github.com/TudorHulban/authentication/apperrors"
@@ -24,20 +23,11 @@ func (a *App) HandlerHTMLTickets(c *fiber.Ctx) error {
 			)
 	}
 
-	var params ticket.ParamsSearchTickets
-
-	if errBody := c.BodyParser(&params); errBody != nil {
-		return c.Status(http.StatusBadRequest).JSON(
-			&fiber.Map{
-				"success": false,
-				"error":   errBody.Error(),
-			},
-		)
-	}
-
 	reconstructedTickets, errGetTickets := a.ServiceTicket.SearchTickets(
 		c.Context(),
-		&params,
+		ticket.NewParamsSearchTickets(
+			c.BodyRaw(),
+		),
 	)
 	if errGetTickets != nil {
 		if errors.As(

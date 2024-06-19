@@ -1,8 +1,8 @@
 package helpers
 
-// id=&status=&name=aa
+import "bytes"
 
-func ProcessFormURLEncoded(response string) map[string]string {
+func ProcessFormURLEncoded(response []byte) map[string]string {
 	result := make(map[string]string)
 
 	var buffer []rune
@@ -14,7 +14,7 @@ func ProcessFormURLEncoded(response string) map[string]string {
 	runeEqual := []rune("=")
 	runeAmpersand := []rune("&")
 
-	for ix, digit := range []rune(response) {
+	for ix, digit := range bytes.Runes(response) {
 		if ix == 0 {
 			modeKey = true
 		}
@@ -50,7 +50,7 @@ func ProcessFormURLEncoded(response string) map[string]string {
 			continue
 		}
 
-		if ix == len([]rune(response))-1 {
+		if ix == len(bytes.Runes(response))-1 {
 			if modeValue {
 				buffer = append(buffer, digit)
 

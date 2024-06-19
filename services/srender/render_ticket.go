@@ -60,6 +60,7 @@ func (s *Service) RenderTickets(ctx context.Context, params *ParamsRenderTickets
 			ctx,
 			&ParamsTicketAsHTML{
 				Ticket: item,
+				Index:  ix + 1,
 			},
 		)
 	}

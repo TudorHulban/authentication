@@ -29,7 +29,7 @@ func TestErrorsProcessFormURLEncoded(t *testing.T) {
 			func(t *testing.T) {
 				assert.Equal(t,
 					tc.want,
-					ProcessFormURLEncoded(tc.input),
+					ProcessFormURLEncoded([]byte(tc.input)),
 				)
 			},
 		)
