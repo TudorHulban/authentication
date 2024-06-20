@@ -7,7 +7,7 @@ func ProcessFormURLEncoded(response []byte) map[string]string {
 
 	var buffer []rune
 
-	var modeKey, modeValue bool
+	modeKey := true
 
 	var key, value string
 
@@ -15,16 +15,11 @@ func ProcessFormURLEncoded(response []byte) map[string]string {
 	runeAmpersand := []rune("&")
 
 	for ix, digit := range bytes.Runes(response) {
-		if ix == 0 {
-			modeKey = true
-		}
-
 		if digit == runeEqual[0] {
 			if modeKey {
 				key = string(buffer)
 
 				modeKey = false
-				modeValue = true
 				buffer = []rune{}
 			}
 
@@ -32,11 +27,10 @@ func ProcessFormURLEncoded(response []byte) map[string]string {
 		}
 
 		if digit == runeAmpersand[0] {
-			if modeValue {
+			if !modeKey {
 				value = string(buffer)
 
 				modeKey = true
-				modeValue = false
 				buffer = []rune{}
 
 				if len(key) > 0 && len(value) > 0 {
@@ -51,7 +45,7 @@ func ProcessFormURLEncoded(response []byte) map[string]string {
 		}
 
 		if ix == len(bytes.Runes(response))-1 {
-			if modeValue {
+			if !modeKey {
 				buffer = append(buffer, digit)
 
 				value = string(buffer)
