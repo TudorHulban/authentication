@@ -57,6 +57,7 @@ func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 				srender.LinksFavicon,
 				[]g.Node{
 					srender.ScriptHTMX,
+					srender.ScriptHTMXMultiswap,
 					srender.ScriptCommonJS,
 					srender.LinkCSSMaterialSymbolOutlined,
 					srender.LinkCSSCommon,
@@ -75,7 +76,7 @@ func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 					EntriesMain: []g.Node{
 						srender.NewFormSearchTickets(
 							&srender.ParamsNewFormSearchTickets{
-								TextForm: "Search / Crteate Tickets",
+								TextForm: "Search / Create Tickets",
 
 								ActionButtonCreate: constants.RouteTicket,
 								ActionButtonSearch: constants.RouteTickets,
@@ -89,15 +90,11 @@ func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 
 						a.serviceRender.TableTickets(
 							c.Context(),
-							&srender.ParamsTableTickets{
-								Tickets:   reconstructedTickets,
-								URLTicket: a.baseURL() + constants.RouteTicket,
-							},
-						),
 
-						srender.ModalCreateTicket(
-							&srender.ParamsModalCreateTicket{
-								URLAddTicket: constants.RouteTicket,
+							&srender.ParamsTableTickets{
+								Tickets:        reconstructedTickets,
+								URLTicket:      a.baseURL() + constants.RouteTicket,
+								CSSIDTableHead: constants.IDItemsTableHead,
 							},
 						),
 					},

@@ -125,6 +125,13 @@ func (s *Service) GetTicketByID(ctx context.Context, params *ParamsGetTicketByID
 }
 
 func (s *Service) SearchTickets(ctx context.Context, params *ticket.ParamsSearchTickets) (ticket.Tickets, error) {
+	if params == nil {
+		return s.store.SearchTickets(
+			ctx,
+			nil,
+		)
+	}
+
 	var withID helpers.PrimaryKey
 
 	if params.WithID.Valid {

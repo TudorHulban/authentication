@@ -16,10 +16,17 @@ func (a *App) newMenuSidebar() (*srender.MenuSidebar, error) {
 
 				TextSection1Entry1:   "Tickets",
 				SymbolSection1Entry1: "call",
-				URLSection1Entry1:    a.baseURL() + constants.RouteTickets,
+				URLSection1Entry1:    constants.RouteTickets,
 
-				TextSection1Entry2:   "Ticket Events",
-				SymbolSection1Entry2: "comment",
+				HTMXTargetsSection1Entry1: []string{
+					constants.IDItemsTableHead,
+					constants.IDItemsTableBody,
+				},
+
+				TextSection1Entry2:       "Ticket Events",
+				SymbolSection1Entry2:     "comment",
+				URLSection1Entry2:        constants.RouteEvents,
+				HTMXTargetSection1Entry2: constants.IDItemsTable,
 			},
 		),
 	)

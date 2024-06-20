@@ -58,7 +58,7 @@ func (s *StoreTickets) GetTicketByID(ctx context.Context, ticketID helpers.Prima
 }
 
 func (s *StoreTickets) SearchTickets(ctx context.Context, params *paramsstores.ParamsSearchTickets) (ticket.Tickets, error) {
-	if params.WithID == helpers.PrimaryKeyZero {
+	if params == nil || params.WithID == helpers.PrimaryKeyZero {
 		return s.storeTickets.SearchItems(
 			helpers.CriteriaTrue,
 		)

@@ -18,7 +18,7 @@ type ParamsTicketAsHTML struct {
 	Index       int
 }
 
-func (s *Service) RenderTicket(ctx context.Context, params *ParamsTicketAsHTML) g.Node {
+func (s *Service) RenderTicketInTableRow(ctx context.Context, params *ParamsTicketAsHTML) g.Node {
 	userInfo, errGetUserInfo := s.serviceUser.GetUserInfoByID(
 		ctx,
 		params.Ticket.OpenedByUserID,
@@ -52,11 +52,11 @@ type ParamsRenderTickets struct {
 	CSSIDTicketBody string
 }
 
-func (s *Service) RenderTickets(ctx context.Context, params *ParamsRenderTickets) g.Node {
+func (s *Service) RenderTicketsTableBody(ctx context.Context, params *ParamsRenderTickets) g.Node {
 	result := make([]g.Node, len(params.Tickets), len(params.Tickets))
 
 	for ix, item := range params.Tickets {
-		result[ix] = s.RenderTicket(
+		result[ix] = s.RenderTicketInTableRow(
 			ctx,
 			&ParamsTicketAsHTML{
 				Ticket: item,

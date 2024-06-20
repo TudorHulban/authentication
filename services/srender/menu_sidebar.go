@@ -8,7 +8,10 @@ import (
 type MenuSidebarSectionEntry struct {
 	TextSectionEntry string
 	URLEntry         string
-	SymbolEntry      string
+
+	HTMXMultiswapTargets []string
+
+	SymbolEntry string
 }
 
 func (entry MenuSidebarSectionEntry) Render() g.Node {
@@ -17,6 +20,16 @@ func (entry MenuSidebarSectionEntry) Render() g.Node {
 			g.Attr(
 				"href",
 				entry.URLEntry,
+			),
+
+			g.Attr(
+				"hx-get",
+				entry.URLEntry,
+			),
+
+			g.Attr(
+				"hx-swap",
+				newMultiswap(entry.HTMXMultiswapTargets),
 			),
 
 			html.Span(

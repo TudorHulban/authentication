@@ -6,13 +6,15 @@ type ParamsCurrentMenuSidebar struct {
 
 	TextSection1 string
 
-	TextSection1Entry1   string
-	SymbolSection1Entry1 string
-	URLSection1Entry1    string
+	TextSection1Entry1        string
+	SymbolSection1Entry1      string
+	URLSection1Entry1         string
+	HTMXTargetsSection1Entry1 []string
 
-	TextSection1Entry2   string
-	SymbolSection1Entry2 string
-	URLSection1Entry2    string
+	TextSection1Entry2       string
+	SymbolSection1Entry2     string
+	URLSection1Entry2        string
+	HTMXTargetSection1Entry2 string
 
 	TextSection2 string
 
@@ -36,9 +38,10 @@ var ParamsMenuSidebarToUse = func(params *ParamsCurrentMenuSidebar) ParamsMenuSi
 
 				Entries: []*MenuSidebarSectionEntry{
 					{
-						TextSectionEntry: params.TextSection1Entry1,
-						SymbolEntry:      params.SymbolSection1Entry1,
-						URLEntry:         params.URLSection1Entry1,
+						TextSectionEntry:     params.TextSection1Entry1,
+						SymbolEntry:          params.SymbolSection1Entry1,
+						URLEntry:             params.URLSection1Entry1,
+						HTMXMultiswapTargets: params.HTMXTargetsSection1Entry1,
 					},
 					{
 						TextSectionEntry: params.TextSection1Entry2,

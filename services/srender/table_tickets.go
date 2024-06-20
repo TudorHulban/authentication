@@ -15,9 +15,39 @@ import (
 // table tickets
 // create new ticket button
 
+func (s *Service) TableTicketsHead(cssID string) g.Node {
+	return html.THead(
+		g.Attr(
+			"id",
+			cssID,
+		),
+
+		html.Th(
+			g.Text("#"),
+		),
+		html.Th(
+			g.Text("ID"),
+		),
+		html.Th(
+			g.Text("Name"),
+		),
+		html.Th(
+			g.Text("Status"),
+		),
+		html.Th(
+			g.Text("Opened By"),
+		),
+		html.Th(
+			g.Text("Last Update"),
+		),
+	)
+}
+
 type ParamsTableTickets struct {
 	Tickets   ticket.Tickets
 	URLTicket string
+
+	CSSIDTableHead string
 }
 
 func (s *Service) TableTickets(ctx context.Context, params *ParamsTableTickets) g.Node {
@@ -28,6 +58,7 @@ func (s *Service) TableTickets(ctx context.Context, params *ParamsTableTickets) 
 	var ix int
 	var currentTicket *ticket.Ticket
 
+	// TODO: delete and use RenderTicketInTableRow
 	tableTicketsRow := func(item *ticket.Ticket) g.Node {
 		userInfo, errGetUserInfo := s.serviceUser.GetUserInfoByID(ctx, item.OpenedByUserID)
 		if errGetUserInfo != nil {
@@ -83,47 +114,32 @@ func (s *Service) TableTickets(ctx context.Context, params *ParamsTableTickets) 
 
 	return html.Div(
 		html.Table(
-			g.Attr(
-				"id",
-				constants.IDItems,
-			),
+			[]g.Node{
+				g.Attr(
+					"id",
+					constants.IDItemsTable,
+				),
 
-			g.Attr(
-				"class",
-				constants.ClassTableItems,
-			),
+				g.Attr(
+					"class",
+					constants.ClassTableItems,
+				),
 
-			html.THead(
-				html.Th(
-					g.Text("#"),
+				s.TableTicketsHead(
+					params.CSSIDTableHead,
 				),
-				html.Th(
-					g.Text("ID"),
-				),
-				html.Th(
-					g.Text("Name"),
-				),
-				html.Th(
-					g.Text("Status"),
-				),
-				html.Th(
-					g.Text("Opened By"),
-				),
-				html.Th(
-					g.Text("Last Update"),
-				),
-			),
 
-			html.TBody(
-				append(
-					rows,
+				html.TBody(
+					append(
+						rows,
 
-					g.Attr(
-						"id",
-						constants.IDItemsTableBody,
-					),
-				)...,
-			),
+						g.Attr(
+							"id",
+							constants.IDItemsTableBody,
+						),
+					)...,
+				),
+			}...,
 		),
 	)
 }
