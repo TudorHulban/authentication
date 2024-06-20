@@ -29,26 +29,15 @@ func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 			)
 	}
 
-	var params sticket.ParamsCreateTicket
+	params := sticket.NewParamsCreateTicket(
+		c.BodyRaw(),
+	)
 
-	if errValidateBody := c.BodyParser(&params); errValidateBody != nil {
-		return c.Status(fiber.StatusBadRequest).
-			JSON(
-				&fiber.Map{
-					"success": false,
-					"error":   errValidateBody,
-					"handler": "HandlerAddTicket - c.BodyParser", // development only
-				},
-			)
-	}
+	params.OpenedByUserID = userLogged.PrimaryKey
 
 	pkConstructedTicket, errGetTicket := a.ServiceTicket.CreateTicket(
 		c.Context(),
-		&sticket.ParamsCreateTicket{
-			OpenedByUserID: userLogged.PrimaryKey,
-			TicketName:     params.TicketName,
-			TicketKind:     params.TicketKind,
-		},
+		params,
 	)
 	if errGetTicket != nil {
 		return c.Status(fiber.StatusInternalServerError).
@@ -79,9 +68,19 @@ func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 			)
 	}
 
-	return c.Status(fiber.StatusOK).JSON(
-		reconstructedTicket.PrimaryKey,
-	)
+	return a.serviceRender.
+		RenderTickets(
+			c.Context(),
+			&srender.ParamsRenderTickets{
+				Tickets: []*ticket.Ticket{
+					reconstructedTicket,
+				},
+
+				RouteTicket:     a.baseURL() + constants.RouteTickets,
+				CSSIDTicketBody: constants.IDItemsTableBody,
+			},
+		).
+		Render(c)
 }
 
 func (a *App) HandlerPageTickets(c *fiber.Ctx) error {

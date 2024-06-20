@@ -25,9 +25,23 @@ func NewService(store stores.IStoreTicket) *Service {
 }
 
 type ParamsCreateTicket struct {
-	TicketName     string             `valid:"required" json:"ticketname"`
+	TicketName     string             `valid:"required" json:"ticketname" form:"name"`
 	OpenedByUserID helpers.PrimaryKey `valid:"required"`
 	TicketKind     ticket.TicketKind
+}
+
+func NewParamsCreateTicket(responseForm []byte) *ParamsCreateTicket {
+	responseParams := helpers.ProcessFormURLEncoded(responseForm)
+
+	var ticketName string
+
+	if value, exists := responseParams["name"]; exists {
+		ticketName = value
+	}
+
+	return &ParamsCreateTicket{
+		TicketName: ticketName,
+	}
 }
 
 func (s *Service) CreateTicket(ctx context.Context, params *ParamsCreateTicket) (helpers.PrimaryKey, error) {
