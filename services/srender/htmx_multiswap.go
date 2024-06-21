@@ -1,9 +1,11 @@
 package srender
 
 import (
+	"bytes"
 	"strings"
 
 	"github.com/TudorHulban/authentication/helpers"
+	g "github.com/maragudk/gomponents"
 )
 
 func newMultiswap(idsElements []string) string {
@@ -16,4 +18,14 @@ func newMultiswap(idsElements []string) string {
 	}
 
 	return "multi:" + strings.Join(idsSanitized, ",")
+}
+
+func RenderNodes(nodes ...g.Node) []byte {
+	var buf bytes.Buffer
+
+	for _, node := range nodes {
+		node.Render(&buf)
+	}
+
+	return buf.Bytes()
 }

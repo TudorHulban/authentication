@@ -23,6 +23,11 @@ func (entry MenuSidebarSectionEntry) Render() g.Node {
 			),
 
 			g.Attr(
+				"hx-ext",
+				"multi-swap",
+			),
+
+			g.Attr(
 				"hx-get",
 				entry.URLEntry,
 			),

@@ -116,14 +116,21 @@ func (a *App) HandlerHTMLTicketsTable(c *fiber.Ctx) error {
 			)
 	}
 
-	return a.serviceRender.RenderTicketsTableBody(
-		c.Context(),
-		&srender.ParamsRenderTickets{
-			Tickets: reconstructedTickets,
+	return c.Send(
+		srender.RenderNodes(
+			a.serviceRender.TableTicketsHead(
+				constants.IDItemsTableHead,
+			),
 
-			RouteTicket:     a.baseURL() + constants.RouteTickets,
-			CSSIDTicketBody: constants.IDItemsTableBody,
-		},
-	).
-		Render(c)
+			a.serviceRender.RenderTicketsTableBody(
+				c.Context(),
+				&srender.ParamsRenderTickets{
+					Tickets: reconstructedTickets,
+
+					RouteTicket:     a.baseURL() + constants.RouteTickets,
+					CSSIDTicketBody: constants.IDItemsTableBody,
+				},
+			),
+		),
+	)
 }
