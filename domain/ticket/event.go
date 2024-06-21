@@ -11,7 +11,8 @@ type EventInfo struct {
 type Event struct {
 	helpers.PrimaryKey
 
-	TicketPK helpers.PrimaryKey
+	TicketPK        helpers.PrimaryKey
+	TicketEventType uint8 // internal note, answer, 3rd party
 
 	*EventInfo
 }
@@ -30,7 +31,7 @@ var CriteriaIDOfTicket = func(pk helpers.PrimaryKey) func(item *Event) bool {
 	}
 }
 
-var CriteriaEventsOfTicket = func(pk helpers.PrimaryKey) func(item *Event) bool {
+var CriteriaEventsWithTicketID = func(pk helpers.PrimaryKey) func(item *Event) bool {
 	return func(item *Event) bool {
 		return GetIDEventTicket(item) == uint64(pk)
 	}

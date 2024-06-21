@@ -24,10 +24,10 @@ type IStoreTicket interface {
 	CreateTicket(ctx context.Context, ticket *ticket.Ticket, force ...bool) error
 	GetTicketByID(ctx context.Context, ticketID helpers.PrimaryKey, result *ticket.TicketInfo) error
 	SearchTickets(ctx context.Context, params *paramsstores.ParamsSearchTickets) (ticket.Tickets, error)
+	SearchTicketEvents(ctx context.Context, params *paramsstores.ParamsSearchTicketEvents) (ticket.Events, error)
 	CloseTicket(ctx context.Context, ticketID helpers.PrimaryKey, status ticket.TicketStatus) error
 
 	AddEvent(ctx context.Context, ticketID helpers.PrimaryKey, event *ticket.Event) error
-	GetEventsForTicketID(ctx context.Context, ticketID helpers.PrimaryKey) ([]*ticket.Event, error)
 }
 
 var _ IStoreTicket = &storefile.StoreTickets{}

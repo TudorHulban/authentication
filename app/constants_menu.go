@@ -23,10 +23,14 @@ func (a *App) newMenuSidebar() (*srender.MenuSidebar, error) {
 					constants.IDItemsTableBody,
 				},
 
-				TextSection1Entry2:       "Ticket Events",
-				SymbolSection1Entry2:     "comment",
-				URLSection1Entry2:        constants.RouteEvents,
-				HTMXTargetSection1Entry2: constants.IDItemsTable,
+				TextSection1Entry2:   "Ticket Events",
+				SymbolSection1Entry2: "comment",
+				URLSection1Entry2:    constants.RouteTicketEvents,
+
+				HTMXTargetsSection1Entry2: []string{
+					constants.IDItemsTableHead,
+					constants.IDItemsTableBody,
+				},
 			},
 		),
 	)

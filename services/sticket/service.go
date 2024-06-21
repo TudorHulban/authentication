@@ -165,6 +165,35 @@ func (s *Service) SearchTickets(ctx context.Context, params *ticket.ParamsSearch
 	)
 }
 
+func (s *Service) SearchTicketEvents(ctx context.Context, params *ticket.ParamsSearchTicketEvents) (ticket.Events, error) {
+	if params == nil {
+		return s.store.SearchTicketEvents(
+			ctx,
+			nil,
+		)
+	}
+
+	var withID helpers.PrimaryKey
+
+	if params.WithTicketID.Valid {
+		var errConv error
+
+		withID, errConv = helpers.NewPrimaryKey(
+			params.WithTicketID.String,
+		)
+		if errConv != nil {
+			return nil, errConv
+		}
+	}
+
+	return s.store.SearchTicketEvents(
+		ctx,
+		&paramsstores.ParamsSearchTicketEvents{
+			WithTicketID: withID,
+		},
+	)
+}
+
 func (s *Service) CloseTicket(ctx context.Context, taskID helpers.PrimaryKey, status ticket.TicketStatus) error {
 	return s.store.CloseTicket(
 		ctx,
@@ -208,8 +237,10 @@ func (s *Service) AddEvent(ctx context.Context, params *ParamsAddEvent) error {
 }
 
 func (s *Service) GetEventsForTicketID(ctx context.Context, ticketID helpers.PrimaryKey) ([]*ticket.Event, error) {
-	return s.store.GetEventsForTicketID(
+	return s.store.SearchTicketEvents(
 		ctx,
-		helpers.PrimaryKey(ticketID),
+		&paramsstores.ParamsSearchTicketEvents{
+			WithTicketID: ticketID,
+		},
 	)
 }

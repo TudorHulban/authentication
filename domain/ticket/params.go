@@ -45,3 +45,31 @@ func NewParamsSearchTickets(responseForm []byte) *ParamsSearchTickets {
 		WithStatus: withStatus,
 	}
 }
+
+type ParamsSearchTicketEvents struct {
+	helpers.ParamsPagination
+
+	WithTicketID sql.NullString `json:",omitempty" form:"ticketid"`
+
+	WithLastUpdateBefore string
+	WithLastUpdatedAfter string
+
+	WithOpenedByUserID uint
+}
+
+func NewParamsSearchTicketEvents(responseForm []byte) *ParamsSearchTicketEvents {
+	responseParams := helpers.ProcessFormURLEncoded(responseForm)
+
+	var withID sql.NullString
+
+	if value, exists := responseParams["id"]; exists {
+		withID = sql.NullString{
+			Valid:  true,
+			String: value,
+		}
+	}
+
+	return &ParamsSearchTicketEvents{
+		WithTicketID: withID,
+	}
+}

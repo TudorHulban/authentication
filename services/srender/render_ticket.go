@@ -28,7 +28,7 @@ func (s *Service) RenderTicketInTableRow(ctx context.Context, params *ParamsTick
 	}
 
 	return g.Rawf(
-		`<tr><td>%d</td><td>%d</td><td><a href="%s/%d">%s</a><td>%s</td><td>%s</td><td>%s</td>`,
+		`<tr><td>%d</td><td>%d</td><td><a href="%s/%d">%s</a><td>%s</td><td>%s</td><td>%s</td></tr>`,
 
 		params.Index,
 		params.Ticket.PrimaryKey,

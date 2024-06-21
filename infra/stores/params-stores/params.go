@@ -17,3 +17,14 @@ type ParamsSearchTickets struct {
 
 	WithOpenedByUserID uint
 }
+
+type ParamsSearchTicketEvents struct {
+	helpers.ParamsPagination
+
+	WithTicketID helpers.PrimaryKey
+
+	WithLastUpdateBefore int64
+	WithLastUpdatedAfter int64
+
+	WithOpenedByUserID uint
+}

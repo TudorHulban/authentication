@@ -37,7 +37,7 @@ func (a *App) Start() error {
 			constants.RouteLogged,
 			constants.RouteTicket,
 			constants.RouteTickets,
-			constants.RouteEvent,
+			constants.RouteTicketEvent,
 		},
 
 		mw,
