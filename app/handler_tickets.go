@@ -83,74 +83,6 @@ func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 		Render(c)
 }
 
-// func (a *App) HandlerPageTickets(c *fiber.Ctx) error {
-// 	_, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
-// 	if errGetUser != nil {
-// 		return c.Status(fiber.StatusInternalServerError).
-// 			JSON(
-// 				&fiber.Map{
-// 					"success": false,
-// 					"error":   errGetUser,
-// 				},
-// 			)
-// 	}
-
-// 	reconstructedTasks, errGetTasks := a.ServiceTicket.SearchTickets(
-// 		c.Context(),
-// 		&ticket.ParamsSearchTickets{
-// 			ParamsPagination: helpers.ParamsPagination{
-// 				First: 10,
-// 			},
-// 		},
-// 	)
-// 	if errGetTasks != nil {
-// 		return c.Status(fiber.StatusInternalServerError).
-// 			JSON(
-// 				&fiber.Map{
-// 					"success": false,
-// 					"error":   errGetTasks,
-// 				},
-// 			)
-// 	}
-
-// 	page := co.HTML5(
-// 		co.HTML5Props{
-// 			Title:       "Tickets",
-// 			Description: "HTMX Login",
-// 			Language:    "English",
-
-// 			Head: []g.Node{
-// 				srender.ScriptHTMX,
-// 				srender.ScriptCommonJS,
-// 				srender.LinkCSSWater,
-// 				srender.LinkCSSCommon,
-// 			},
-
-// 			Body: []g.Node{
-// 				srender.Header(),
-// 				a.serviceRender.TableTickets(
-// 					c.Context(),
-// 					&srender.ParamsTableTickets{
-// 						Tickets:        reconstructedTasks,
-// 						URLTicket:      a.baseURL() + constants.RouteTicket,
-// 						CSSIDTableHead: constants.IDItemsTableHead,
-// 					},
-// 				),
-// 				srender.ButtonCreateTicket("Create Ticket"),
-
-// 				srender.ScriptCreateTicket(
-// 					constants.RouteTickets,
-// 				),
-// 				srender.Footer(),
-// 			},
-// 		},
-// 	)
-
-// 	c.Set("Content-Type", "text/html")
-
-// 	return page.Render(c)
-// }
-
 func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 	userLogged, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
 	if errGetUser != nil {
@@ -223,7 +155,6 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 				srender.ScriptCreateTicketEvent(
 					constants.RouteTicket + "/" + reconstructedTask.PrimaryKey.String(),
 				),
-				srender.Footer(),
 			},
 		},
 	)

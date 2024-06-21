@@ -18,7 +18,6 @@ func PageLogin(caller string) g.Node {
 			Body: []g.Node{
 				Header(),
 				FormLogin(caller),
-				Footer(),
 			},
 		},
 	)

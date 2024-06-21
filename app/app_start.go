@@ -34,7 +34,7 @@ func (a *App) Start() error {
 		logger.New(),
 
 		[]string{
-			constants.RouteLogged,
+			constants.RouteHome,
 			constants.RouteTicket,
 			constants.RouteTickets,
 			constants.RouteTicketEvent,

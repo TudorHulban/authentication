@@ -74,7 +74,7 @@ func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 					SidebarMenu: menu,
 
 					EntriesMain: []g.Node{
-						srender.NewFormSearchTickets(
+						a.serviceRender.NewFormSearchCreateTickets(
 							&srender.ParamsNewFormSearchTickets{
 								TextForm: "Search / Create Tickets",
 
@@ -84,7 +84,7 @@ func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 								LabelButtonSearch: "Search",
 								LabelButtonCreate: "Create",
 
-								IDEnclosingDiv: "container-search",
+								IDEnclosingDiv: constants.IDContainerSearchItems,
 							},
 						),
 

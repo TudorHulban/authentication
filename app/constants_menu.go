@@ -21,6 +21,7 @@ func (a *App) newMenuSidebar() (*srender.MenuSidebar, error) {
 				HTMXTargetsSection1Entry1: []string{
 					constants.IDItemsTableHead,
 					constants.IDItemsTableBody,
+					constants.IDContainerSearchItems,
 				},
 
 				TextSection1Entry2:   "Ticket Events",
@@ -30,6 +31,7 @@ func (a *App) newMenuSidebar() (*srender.MenuSidebar, error) {
 				HTMXTargetsSection1Entry2: []string{
 					constants.IDItemsTableHead,
 					constants.IDItemsTableBody,
+					constants.IDContainerSearchItems,
 				},
 			},
 		),

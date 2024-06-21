@@ -53,7 +53,7 @@ func (a *App) HandlerLoginRequest(c *fiber.Ctx) error {
 		},
 	)
 
-	c.Set("HX-Redirect", constants.RouteLogged)
+	c.Set("HX-Redirect", constants.RouteHome)
 
 	return c.SendStatus(fiber.StatusOK)
 }

@@ -3,8 +3,8 @@ package constants
 const (
 	RoutesAll = "/"
 
-	RouteLogin  = "/login"
-	RouteLogged = "/logged"
+	RouteLogin = "/login"
+	RouteHome  = "/logged"
 
 	RouteTicket  = "/ticket"
 	RouteTickets = "/tickets"

@@ -3,6 +3,7 @@ package constants
 // page
 
 const (
+	IDContainerSearchItems   = "container-search"
 	IDSearchItems            = "items-search"
 	IDSearchItemsInputID     = "items-search-id"
 	IDSearchItemsInputStatus = "items-search-status"

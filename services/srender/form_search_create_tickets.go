@@ -22,7 +22,7 @@ type ParamsNewFormSearchTickets struct {
 	LabelButtonCreate string
 }
 
-func NewFormSearchTickets(params *ParamsNewFormSearchTickets) g.Node {
+func (s *Service) NewFormSearchCreateTickets(params *ParamsNewFormSearchTickets) g.Node {
 	return newFormGeneric(
 		&paramsNewFormGeneric{
 			TextForm: params.TextForm,

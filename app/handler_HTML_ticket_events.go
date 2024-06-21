@@ -10,6 +10,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// should be called by POST by search in form.
 func (a *App) HandlerHTMLTicketEventsTableBody(c *fiber.Ctx) error {
 	reconstructedTicketEvents, errGetTicketEvents := a.ServiceTicket.SearchTicketEvents(
 		c.Context(),
@@ -56,6 +57,7 @@ func (a *App) HandlerHTMLTicketEventsTableBody(c *fiber.Ctx) error {
 		Render(c)
 }
 
+// should be called by GET in sidebar menu.
 func (a *App) HandlerHTMLTicketEventsTable(c *fiber.Ctx) error {
 	reconstructedTicketEvents, errGetTicketEvents := a.ServiceTicket.SearchTicketEvents(
 		c.Context(),
@@ -70,6 +72,20 @@ func (a *App) HandlerHTMLTicketEventsTable(c *fiber.Ctx) error {
 		) {
 			return c.Send(
 				srender.RenderNodes(
+					a.serviceRender.NewFormSearchCreateTicketEvents(
+						&srender.ParamsNewFormSearchTicketEvents{
+							TextForm: "Search / Create Ticket Events",
+
+							ActionButtonCreate: constants.RouteTicketEvent,
+							ActionButtonSearch: constants.RouteTicketEvents,
+
+							LabelButtonSearch: "Search",
+							LabelButtonCreate: "Create",
+
+							IDEnclosingDiv: constants.IDContainerSearchItems,
+						},
+					),
+
 					a.serviceRender.TableTicketEventsHead(
 						constants.IDItemsTableHead,
 					),
@@ -98,6 +114,20 @@ func (a *App) HandlerHTMLTicketEventsTable(c *fiber.Ctx) error {
 
 	return c.Send(
 		srender.RenderNodes(
+			a.serviceRender.NewFormSearchCreateTicketEvents(
+				&srender.ParamsNewFormSearchTicketEvents{
+					TextForm: "Search / Create Ticket Events",
+
+					ActionButtonCreate: constants.RouteTicketEvent,
+					ActionButtonSearch: constants.RouteTicketEvents,
+
+					LabelButtonSearch: "Search",
+					LabelButtonCreate: "Create",
+
+					IDEnclosingDiv: constants.IDContainerSearchItems,
+				},
+			),
+
 			a.serviceRender.TableTicketEventsHead(
 				constants.IDItemsTableHead,
 			),

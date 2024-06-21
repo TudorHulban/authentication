@@ -16,7 +16,7 @@ func InitializeTransportRoutes(application *App) {
 	)
 
 	application.Transport.Get(
-		constants.RouteLogged,
+		constants.RouteHome,
 		application.HandlerHomePage,
 	)
 
@@ -38,11 +38,6 @@ func InitializeTransportRoutes(application *App) {
 	)
 
 	application.Transport.Get(
-		constants.RouteTicketEvents,
-		application.HandlerHTMLTicketEventsTable,
-	)
-
-	application.Transport.Get(
 		constants.RouteTickets,
 		application.HandlerHTMLTicketsTable,
 	)
@@ -50,6 +45,16 @@ func InitializeTransportRoutes(application *App) {
 	application.Transport.Get(
 		constants.RouteTicket+"/:id",
 		application.HandlerTicketID,
+	)
+
+	application.Transport.Get(
+		constants.RouteTicketEvents,
+		application.HandlerHTMLTicketEventsTable,
+	)
+
+	application.Transport.Post(
+		constants.RouteTicketEvents,
+		application.HandlerHTMLTicketEventsTableBody,
 	)
 
 	// Event
