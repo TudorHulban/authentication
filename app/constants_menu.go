@@ -19,9 +19,9 @@ func (a *App) newMenuSidebar() (*srender.MenuSidebar, error) {
 				URLSection1Entry1:    constants.RouteTickets,
 
 				HTMXTargetsSection1Entry1: []string{
-					constants.IDContainerSearchItems + constants.HTMXOuterHTML,
-					constants.IDItemsTableHead + constants.HTMXOuterHTML,
-					constants.IDItemsTableBody + constants.HTMXOuterHTML,
+					constants.IDContainerSearchItems,
+					constants.IDItemsTableHead,
+					constants.IDItemsTableBody + constants.HTMXInnerHTML,
 				},
 
 				TextSection1Entry2:   "Ticket Events",

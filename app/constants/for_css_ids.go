@@ -10,6 +10,6 @@ const (
 	IDSearchItemsInputName   = "items-search-name"
 
 	// IDItemsTable     = "items-tbl"
-	IDItemsTableHead = "items-tbl-head"
-	IDItemsTableBody = "items-tbl-body"
+	IDItemsTableHead = "itemstbl-head"
+	IDItemsTableBody = "itemstbl-body"
 )

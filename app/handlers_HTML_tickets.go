@@ -2,7 +2,6 @@ package app
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/TudorHulban/authentication/app/constants"
 	"github.com/TudorHulban/authentication/apperrors"
@@ -31,8 +30,7 @@ func (a *App) HandlerHTMLTicketsTableBody(c *fiber.Ctx) error {
 					&srender.ParamsRenderTickets{
 						Tickets: reconstructedTickets,
 
-						RouteTicket:     a.baseURL() + constants.RouteTickets,
-						CSSIDTicketBody: constants.IDItemsTableBody,
+						RouteTicket: a.baseURL() + constants.IDItemsTableBody,
 					},
 				).
 				Render(c)
@@ -54,7 +52,7 @@ func (a *App) HandlerHTMLTicketsTableBody(c *fiber.Ctx) error {
 			&srender.ParamsRenderTickets{
 				Tickets: reconstructedTickets,
 
-				RouteTicket:     a.baseURL() + constants.RouteTickets,
+				RouteTicket:     constants.RouteTickets,
 				CSSIDTicketBody: constants.IDItemsTableBody,
 			},
 		).
@@ -82,7 +80,7 @@ func (a *App) HandlerHTMLTicketsTable(c *fiber.Ctx) error {
 						&srender.ParamsRenderTickets{
 							Tickets: reconstructedTickets,
 
-							RouteTicket:     a.baseURL() + constants.RouteTickets,
+							RouteTicket:     constants.RouteTickets,
 							CSSIDTicketBody: constants.IDItemsTableBody,
 						},
 					),
@@ -112,17 +110,17 @@ func (a *App) HandlerHTMLTicketsTable(c *fiber.Ctx) error {
 			&srender.ParamsRenderTickets{
 				Tickets: reconstructedTickets,
 
-				RouteTicket:     a.baseURL() + constants.RouteTickets,
+				RouteTicket:     constants.RouteTickets,
 				CSSIDTicketBody: constants.IDItemsTableBody,
 			},
 		),
 	)
 
-	fmt.Println(
-		string(
-			responseBytes,
-		),
-	)
+	// fmt.Println(
+	// 	string(
+	// 		responseBytes,
+	// 	),
+	// )
 
 	return c.Send(
 		responseBytes,

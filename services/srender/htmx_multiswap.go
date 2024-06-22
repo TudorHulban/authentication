@@ -23,11 +23,15 @@ func newMultiswap(idsElements []string) string {
 func RenderNodes(nodes ...g.Node) []byte {
 	var buf bytes.Buffer
 
+	// buf.WriteString("<body>")
+
 	for _, node := range nodes {
 		node.Render(&buf)
 
 		buf.WriteString("\n")
 	}
+
+	// buf.WriteString("</body>")
 
 	return buf.Bytes()
 }

@@ -72,19 +72,7 @@ func (a *App) HandlerHTMLTicketEventsTable(c *fiber.Ctx) error {
 		) {
 			return c.Send(
 				srender.RenderNodes(
-					a.serviceRender.NewFormSearchCreateTicketEvents(
-						&srender.ParamsNewFormSearchTicketEvents{
-							TextForm: "Search / Create Ticket Events",
-
-							ActionButtonCreate: constants.RouteTicketEvent,
-							ActionButtonSearch: constants.RouteTicketEvents,
-
-							LabelButtonSearch: "Search",
-							LabelButtonCreate: "Create",
-
-							IDEnclosingDiv: constants.IDContainerSearchItems,
-						},
-					),
+					// a.formSearchCreateTicketEvents(),
 
 					a.serviceRender.TableItemsHeadForTicketEvents(
 						constants.IDItemsTableHead,
@@ -114,19 +102,7 @@ func (a *App) HandlerHTMLTicketEventsTable(c *fiber.Ctx) error {
 
 	return c.Send(
 		srender.RenderNodes(
-			a.serviceRender.NewFormSearchCreateTicketEvents(
-				&srender.ParamsNewFormSearchTicketEvents{
-					TextForm: "Search / Create Ticket Events",
-
-					ActionButtonCreate: constants.RouteTicketEvent,
-					ActionButtonSearch: constants.RouteTicketEvents,
-
-					LabelButtonSearch: "Search",
-					LabelButtonCreate: "Create",
-
-					IDEnclosingDiv: constants.IDContainerSearchItems,
-				},
-			),
+			a.formSearchCreateTicketEvents(),
 
 			a.serviceRender.TableItemsHeadForTicketEvents(
 				constants.IDItemsTableHead,

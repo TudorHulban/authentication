@@ -19,7 +19,7 @@ func (entry MenuSidebarSectionEntry) Render() g.Node {
 		html.A(
 			g.Attr(
 				"href",
-				entry.URLEntry,
+				"#",
 			),
 
 			g.Attr(
