@@ -18,11 +18,6 @@ func (s *Service) TableItems(ctx context.Context, params *ParamsTableItems) g.No
 		html.Table(
 			[]g.Node{
 				g.Attr(
-					"id",
-					constants.IDItemsTable,
-				),
-
-				g.Attr(
 					"class",
 					constants.ClassTableItems,
 				),

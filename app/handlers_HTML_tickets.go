@@ -2,6 +2,7 @@ package app
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/TudorHulban/authentication/app/constants"
 	"github.com/TudorHulban/authentication/apperrors"
@@ -99,21 +100,31 @@ func (a *App) HandlerHTMLTicketsTable(c *fiber.Ctx) error {
 			)
 	}
 
-	return c.Send(
-		srender.RenderNodes(
-			a.serviceRender.TableItemsHeadForTickets(
-				constants.IDItemsTableHead,
-			),
+	responseBytes := srender.RenderNodes(
+		a.formSearchCreateTickets(),
 
-			a.serviceRender.TableItemsBodyForTickets(
-				c.Context(),
-				&srender.ParamsRenderTickets{
-					Tickets: reconstructedTickets,
-
-					RouteTicket:     a.baseURL() + constants.RouteTickets,
-					CSSIDTicketBody: constants.IDItemsTableBody,
-				},
-			),
+		a.serviceRender.TableItemsHeadForTickets(
+			constants.IDItemsTableHead,
 		),
+
+		a.serviceRender.TableItemsBodyForTickets(
+			c.Context(),
+			&srender.ParamsRenderTickets{
+				Tickets: reconstructedTickets,
+
+				RouteTicket:     a.baseURL() + constants.RouteTickets,
+				CSSIDTicketBody: constants.IDItemsTableBody,
+			},
+		),
+	)
+
+	fmt.Println(
+		string(
+			responseBytes,
+		),
+	)
+
+	return c.Send(
+		responseBytes,
 	)
 }
