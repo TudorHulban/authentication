@@ -52,7 +52,7 @@ type ParamsRenderTickets struct {
 	CSSIDTicketBody string
 }
 
-func (s *Service) RenderTicketsTableBody(ctx context.Context, params *ParamsRenderTickets) g.Node {
+func (s *Service) TableItemsBodyForTickets(ctx context.Context, params *ParamsRenderTickets) g.Node {
 	result := make([]g.Node, len(params.Tickets), len(params.Tickets))
 
 	for ix, item := range params.Tickets {

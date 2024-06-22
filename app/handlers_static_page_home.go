@@ -1,7 +1,6 @@
 package app
 
 import (
-	"github.com/TudorHulban/authentication/app/constants"
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
@@ -73,36 +72,10 @@ func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 
 					SidebarMenu: menu,
 
-					// Main: a.mainWithTickets(
-					// 	c.Context(),
-					// 	reconstructedTickets,
-					// ),
-
-					Main: []g.Node{
-						a.serviceRender.NewFormSearchCreateTickets(
-							&srender.ParamsNewFormSearchTickets{
-								TextForm: "Search / Create Tickets",
-
-								ActionButtonCreate: constants.RouteTicket,
-								ActionButtonSearch: constants.RouteTickets,
-
-								LabelButtonSearch: "Search",
-								LabelButtonCreate: "Create",
-
-								IDEnclosingDiv: constants.IDContainerSearchItems,
-							},
-						),
-
-						a.serviceRender.TableItems(
-							c.Context(),
-
-							&srender.ParamsTableItems{
-								Tickets:        reconstructedTickets,
-								URLTicket:      constants.RouteTicket,
-								CSSIDTableHead: constants.IDItemsTableHead,
-							},
-						),
-					},
+					Main: a.mainWithTickets(
+						c.Context(),
+						reconstructedTickets,
+					),
 				},
 			),
 		},

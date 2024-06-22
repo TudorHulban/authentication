@@ -35,7 +35,7 @@ func TestBody(t *testing.T) {
 	body := serviceRender.Body(
 		&ParamsBody{
 			Main: []g.Node{
-				serviceRender.TableTicketEventsHead("1"),
+				serviceRender.TableItemsHeadForTicketEvents("1"),
 			},
 		},
 	)

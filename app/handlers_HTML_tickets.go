@@ -25,7 +25,7 @@ func (a *App) HandlerHTMLTicketsTableBody(c *fiber.Ctx) error {
 			&apperrors.ErrNoEntriesFound{},
 		) {
 			return a.serviceRender.
-				RenderTicketsTableBody(
+				TableItemsBodyForTickets(
 					c.Context(),
 					&srender.ParamsRenderTickets{
 						Tickets: reconstructedTickets,
@@ -48,7 +48,7 @@ func (a *App) HandlerHTMLTicketsTableBody(c *fiber.Ctx) error {
 	}
 
 	return a.serviceRender.
-		RenderTicketsTableBody(
+		TableItemsBodyForTickets(
 			c.Context(),
 			&srender.ParamsRenderTickets{
 				Tickets: reconstructedTickets,
@@ -72,11 +72,11 @@ func (a *App) HandlerHTMLTicketsTable(c *fiber.Ctx) error {
 		) {
 			return c.Send(
 				srender.RenderNodes(
-					a.serviceRender.TableTicketsHead(
+					a.serviceRender.TableItemsHeadForTickets(
 						constants.IDItemsTableHead,
 					),
 
-					a.serviceRender.RenderTicketsTableBody(
+					a.serviceRender.TableItemsBodyForTickets(
 						c.Context(),
 						&srender.ParamsRenderTickets{
 							Tickets: reconstructedTickets,
@@ -101,11 +101,11 @@ func (a *App) HandlerHTMLTicketsTable(c *fiber.Ctx) error {
 
 	return c.Send(
 		srender.RenderNodes(
-			a.serviceRender.TableTicketsHead(
+			a.serviceRender.TableItemsHeadForTickets(
 				constants.IDItemsTableHead,
 			),
 
-			a.serviceRender.RenderTicketsTableBody(
+			a.serviceRender.TableItemsBodyForTickets(
 				c.Context(),
 				&srender.ParamsRenderTickets{
 					Tickets: reconstructedTickets,

@@ -86,7 +86,7 @@ func (a *App) HandlerHTMLTicketEventsTable(c *fiber.Ctx) error {
 						},
 					),
 
-					a.serviceRender.TableTicketEventsHead(
+					a.serviceRender.TableItemsHeadForTicketEvents(
 						constants.IDItemsTableHead,
 					),
 
@@ -128,7 +128,7 @@ func (a *App) HandlerHTMLTicketEventsTable(c *fiber.Ctx) error {
 				},
 			),
 
-			a.serviceRender.TableTicketEventsHead(
+			a.serviceRender.TableItemsHeadForTicketEvents(
 				constants.IDItemsTableHead,
 			),
 

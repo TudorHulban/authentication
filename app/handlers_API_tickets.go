@@ -69,7 +69,7 @@ func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 	}
 
 	return a.serviceRender.
-		RenderTicketsTableBody(
+		TableItemsBodyForTickets(
 			c.Context(),
 			&srender.ParamsRenderTickets{
 				Tickets: []*ticket.Ticket{

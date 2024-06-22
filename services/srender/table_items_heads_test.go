@@ -32,7 +32,7 @@ func TestTableTicketsHead(t *testing.T) {
 	require.NoError(t, errCr)
 
 	serviceRender.
-		TableTicketsHead("1").
+		TableItemsHeadForTickets("1").
 		Render(os.Stdout)
 
 	os.Remove(
