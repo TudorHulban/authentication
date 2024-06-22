@@ -7,19 +7,13 @@ import (
 
 	storefile "github.com/TudorHulban/authentication/infra/stores/store-file"
 	"github.com/TudorHulban/authentication/services/suser"
+	g "github.com/maragudk/gomponents"
 	"github.com/stretchr/testify/require"
 )
 
-func TestNewFormSearchTickets(t *testing.T) {
-	p := ParamsNewFormSearchTickets{
-		ActionButtonSearch: "/tickets",
-		ActionButtonCreate: "/ticket",
-
-		LabelButtonCreate: "Submit",
-	}
-
+func TestBody(t *testing.T) {
 	nameFile := fmt.Sprintf(
-		"local_cache_user_%s_.json",
+		"local_%s_.json",
 		t.Name(),
 	)
 
@@ -38,11 +32,24 @@ func TestNewFormSearchTickets(t *testing.T) {
 	)
 	require.NoError(t, errCr)
 
-	serviceRender.NewFormSearchCreateTickets(&p).Render(os.Stdout)
+	body := serviceRender.Body(
+		&ParamsBody{
+			Main: []g.Node{
+				serviceRender.TableTicketEventsHead("1"),
+			},
+		},
+	)
+	require.NotEmpty(t, body)
 
-	require.NoError(t,
-		os.Remove(
-			nameFile,
+	rendered := RenderNodes(body...)
+
+	fmt.Println(
+		string(
+			rendered,
 		),
+	)
+
+	os.Remove(
+		nameFile,
 	)
 }

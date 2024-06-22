@@ -13,7 +13,8 @@ import (
 func (a *App) HandlerLoginPage(c *fiber.Ctx) error {
 	c.Set("Content-Type", "text/html")
 
-	return srender.PageLogin("HandlerLoginPage").
+	return srender.
+		PageLogin("HandlerLoginPage").
 		Render(c)
 }
 

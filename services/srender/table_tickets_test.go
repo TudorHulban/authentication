@@ -10,16 +10,9 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestNewFormSearchTickets(t *testing.T) {
-	p := ParamsNewFormSearchTickets{
-		ActionButtonSearch: "/tickets",
-		ActionButtonCreate: "/ticket",
-
-		LabelButtonCreate: "Submit",
-	}
-
+func TestTableTicketsHead(t *testing.T) {
 	nameFile := fmt.Sprintf(
-		"local_cache_user_%s_.json",
+		"local_%s_.json",
 		t.Name(),
 	)
 
@@ -38,11 +31,11 @@ func TestNewFormSearchTickets(t *testing.T) {
 	)
 	require.NoError(t, errCr)
 
-	serviceRender.NewFormSearchCreateTickets(&p).Render(os.Stdout)
+	serviceRender.
+		TableTicketsHead("1").
+		Render(os.Stdout)
 
-	require.NoError(t,
-		os.Remove(
-			nameFile,
-		),
+	os.Remove(
+		nameFile,
 	)
 }

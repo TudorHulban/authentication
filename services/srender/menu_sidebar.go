@@ -88,6 +88,7 @@ func (section MenuSidebarSection) Render() []g.Node {
 	return result
 }
 
+// TODO: move to []g.Node
 type MenuSidebar struct {
 	PathImageLogo string
 	TextLogo      string

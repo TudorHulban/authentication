@@ -64,16 +64,21 @@ func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 				}...,
 			),
 
-			Body: srender.Body(
+			Body: a.serviceRender.Body(
 				&srender.ParamsBody{
-					EntriesHeader: []g.Node{
+					Header: []g.Node{
 						srender.Header(),
 						srender.UserSalutation(userLogged),
 					},
 
 					SidebarMenu: menu,
 
-					EntriesMain: []g.Node{
+					// Main: a.mainWithTickets(
+					// 	c.Context(),
+					// 	reconstructedTickets,
+					// ),
+
+					Main: []g.Node{
 						a.serviceRender.NewFormSearchCreateTickets(
 							&srender.ParamsNewFormSearchTickets{
 								TextForm: "Search / Create Tickets",
@@ -88,12 +93,12 @@ func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 							},
 						),
 
-						a.serviceRender.TableTickets(
+						a.serviceRender.TableItems(
 							c.Context(),
 
-							&srender.ParamsTableTickets{
+							&srender.ParamsTableItems{
 								Tickets:        reconstructedTickets,
-								URLTicket:      a.baseURL() + constants.RouteTicket,
+								URLTicket:      constants.RouteTicket,
 								CSSIDTableHead: constants.IDItemsTableHead,
 							},
 						),

@@ -6,16 +6,16 @@ import (
 )
 
 type ParamsBody struct {
-	EntriesHeader []g.Node
-	SidebarMenu   *MenuSidebar
-	EntriesMain   []g.Node
+	Header      []g.Node
+	SidebarMenu *MenuSidebar
+	Main        []g.Node
 }
 
-func Body(params *ParamsBody) []g.Node {
+func (s *Service) Body(params *ParamsBody) []g.Node {
 	return []g.Node{
 		html.Div(
 			append(
-				params.EntriesHeader,
+				params.Header,
 				g.Attr(
 					"class",
 					"header",
@@ -29,12 +29,15 @@ func Body(params *ParamsBody) []g.Node {
 				"sidebar",
 			),
 
-			params.SidebarMenu.Render(),
+			g.If(
+				params.SidebarMenu != nil,
+				params.SidebarMenu.Render(),
+			),
 		),
 
 		html.Div(
 			append(
-				params.EntriesMain,
+				params.Main,
 				g.Attr(
 					"class",
 					"main",
