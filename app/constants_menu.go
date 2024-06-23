@@ -33,6 +33,16 @@ func (a *App) newMenuSidebar() (*srender.MenuSidebar, error) {
 					constants.IDItemsTableHead,
 					constants.IDItemsTableBody,
 				},
+
+				TextSection1Entry3:   "Ticket",
+				SymbolSection1Entry3: "edit",
+				URLSection1Entry3:    constants.RouteTicketEvents,
+
+				HTMXTargetsSection1Entry3: []string{
+					constants.IDContainerSearchItems,
+					constants.IDItemsTableHead,
+					constants.IDItemsTableBody,
+				},
 			},
 		),
 	)
