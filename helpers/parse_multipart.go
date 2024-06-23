@@ -75,6 +75,10 @@ func ParseMultipartForm(formData []byte, requestHeaders map[string][]string) (ma
 
 		formValue := buf.String()
 
+		if len(formValue) == 0 {
+			continue
+		}
+
 		result[formField] = formValue
 	}
 

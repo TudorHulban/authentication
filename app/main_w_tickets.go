@@ -23,6 +23,9 @@ func (a *App) formSearchCreateTickets() g.Node {
 			TargetsSwapCreate: []string{
 				constants.IDItemsTableBody,
 			},
+			TargetsSwapSearch: []string{
+				constants.IDItemsTableBody,
+			},
 
 			IDEnclosingDiv: constants.IDContainerSearchItems,
 		},

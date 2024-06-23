@@ -6,6 +6,7 @@ import (
 	"github.com/TudorHulban/authentication/app/constants"
 	"github.com/TudorHulban/authentication/apperrors"
 	"github.com/TudorHulban/authentication/domain/ticket"
+	"github.com/TudorHulban/authentication/helpers"
 	"github.com/TudorHulban/authentication/services/srender"
 	"github.com/gofiber/fiber/v2"
 )
@@ -13,11 +14,28 @@ import (
 // HandlerHTMLTicketsTableBody should be used for search,
 // when change of table header is not needed.
 func (a *App) HandlerHTMLTicketsTableBody(c *fiber.Ctx) error {
+	responseForm, errCr := helpers.ParseMultipartForm(
+		c.BodyRaw(),
+		c.GetReqHeaders(),
+	)
+	if errCr != nil {
+		return c.Status(fiber.StatusInternalServerError).
+			JSON(
+				&fiber.Map{
+					"success": false,
+					"error":   errCr.Error(),
+					"handler": "HandlerAddTicket - helpers.ParseMultipartForm", // development only
+				},
+			)
+	}
+
+	params := ticket.NewParamsSearchTicketsFromMap(
+		responseForm,
+	)
+
 	reconstructedTickets, errGetTickets := a.ServiceTicket.SearchTickets(
 		c.Context(),
-		ticket.NewParamsSearchTickets(
-			c.BodyRaw(),
-		),
+		params,
 	)
 	if errGetTickets != nil {
 		if errors.As(
@@ -30,7 +48,8 @@ func (a *App) HandlerHTMLTicketsTableBody(c *fiber.Ctx) error {
 					&srender.ParamsRenderTickets{
 						Tickets: reconstructedTickets,
 
-						RouteTicket: a.baseURL() + constants.IDItemsTableBody,
+						RouteTicket:     constants.RouteTickets,
+						CSSIDTicketBody: constants.IDItemsTableBody,
 					},
 				).
 				Render(c)

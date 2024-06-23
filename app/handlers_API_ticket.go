@@ -38,7 +38,7 @@ func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 			JSON(
 				&fiber.Map{
 					"success": false,
-					"error":   errGetUser,
+					"error":   errCr.Error(),
 					"handler": "HandlerAddTicket - helpers.ParseMultipartForm", // development only
 				},
 			)

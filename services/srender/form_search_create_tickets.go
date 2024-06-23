@@ -17,6 +17,7 @@ type ParamsNewFormSearchTickets struct {
 
 	ClassButtonSearch string
 	LabelButtonSearch string
+	TargetsSwapSearch []string
 
 	ClassButtonCreate string
 	LabelButtonCreate string
@@ -75,6 +76,13 @@ func (s *Service) NewFormSearchCreateTickets(params *ParamsNewFormSearchTickets)
 					g.Attr(
 						"hx-post",
 						params.ActionButtonSearch,
+					),
+
+					g.Attr(
+						"hx-swap",
+						NewMultiswap(
+							params.TargetsSwapCreate,
+						),
 					),
 
 					g.If(
