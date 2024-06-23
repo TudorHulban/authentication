@@ -1,5 +1,21 @@
 document.
     addEventListener('DOMContentLoaded', (event) => {
+        function parseString(inputString, elements) {
+            let parts = inputString.split('|');
+            let matchedElementsMap = new Map();
+            
+            for (let part of parts) {
+                for (let element of elements) {
+                    if (part.includes(`id="${element.id}"`)) {
+                        matchedElementsMap.set(element.id, part);
+                        break;
+                    }
+                }
+            }
+            
+            return matchedElementsMap;
+        }
+
         const handleAjax = (element, form) => {
             const method = element.hasAttribute('hx-get') ? 'GET' :
                            element.hasAttribute('hx-post') ? 'POST' : 'DELETE';
@@ -18,16 +34,15 @@ document.
             fetch(endpoint, fetchOptions)
                 .then(response => response.text())
                 .then(data => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(data, 'text/html');
-
-                    console.log(doc);
+                    let extractedHTML = parseString(data, targetElements)
                     
-                    targetElements.forEach((targetElement, index) => {
+                    targetElements.forEach((targetElement) => {
                         if (targetElement) {
-                            const responseElement = doc.querySelector(`#${targetElement.id}`);
+                            const responseElement = extractedHTML.get(targetElement.id);
+
+                            console.log(targetElement.id, responseElement)
                             if (responseElement) {
-                                targetElement.innerHTML = responseElement.innerHTML;
+                                targetElement.innerHTML = responseElement;
                             }
                         }
                     });

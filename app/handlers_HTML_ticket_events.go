@@ -72,7 +72,7 @@ func (a *App) HandlerHTMLTicketEventsTable(c *fiber.Ctx) error {
 		) {
 			return c.Send(
 				srender.RenderNodes(
-					// a.formSearchCreateTicketEvents(),
+					a.formSearchCreateTicketEvents(),
 
 					a.serviceRender.TableItemsHeadForTicketEvents(
 						constants.IDItemsTableHead,

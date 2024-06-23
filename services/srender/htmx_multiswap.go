@@ -28,7 +28,7 @@ func RenderNodes(nodes ...g.Node) []byte {
 	for _, node := range nodes {
 		node.Render(&buf)
 
-		buf.WriteString("\n")
+		buf.WriteString("|")
 	}
 
 	return buf.Bytes()
