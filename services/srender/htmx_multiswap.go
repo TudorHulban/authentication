@@ -8,7 +8,7 @@ import (
 	g "github.com/maragudk/gomponents"
 )
 
-func newMultiswap(idsElements []string) string {
+func NewMultiswap(idsElements []string) string {
 	idsSanitized := make([]string, len(idsElements), len(idsElements))
 
 	for ix, id := range idsElements {
@@ -16,8 +16,6 @@ func newMultiswap(idsElements []string) string {
 			id,
 		)
 	}
-
-	// return "multi:" + strings.Join(idsSanitized, ",")
 
 	return strings.Join(idsSanitized, ",")
 }

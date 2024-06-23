@@ -30,7 +30,7 @@ type ParamsCreateTicket struct {
 	TicketKind     ticket.TicketKind
 }
 
-func NewParamsCreateTicket(responseForm []byte) *ParamsCreateTicket {
+func NewParamsCreateTicketFromBytes(responseForm []byte) *ParamsCreateTicket {
 	responseParams := helpers.ProcessFormURLEncoded(responseForm)
 
 	var ticketName string
@@ -42,6 +42,17 @@ func NewParamsCreateTicket(responseForm []byte) *ParamsCreateTicket {
 	return &ParamsCreateTicket{
 		TicketName: ticketName,
 	}
+}
+
+func NewParamsCreateTicketFromMap(responseForm map[string]string) *ParamsCreateTicket {
+	ticketName, exists := responseForm["name"]
+	if exists {
+		return &ParamsCreateTicket{
+			TicketName: ticketName,
+		}
+	}
+
+	return &ParamsCreateTicket{}
 }
 
 func (s *Service) CreateTicket(ctx context.Context, params *ParamsCreateTicket) (helpers.PrimaryKey, error) {

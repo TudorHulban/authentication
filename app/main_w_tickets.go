@@ -20,6 +20,10 @@ func (a *App) formSearchCreateTickets() g.Node {
 			LabelButtonSearch: "Search",
 			LabelButtonCreate: "Create",
 
+			TargetsSwapCreate: []string{
+				constants.IDItemsTableBody,
+			},
+
 			IDEnclosingDiv: constants.IDContainerSearchItems,
 		},
 	)

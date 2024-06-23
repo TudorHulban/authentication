@@ -29,8 +29,23 @@ func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 			)
 	}
 
-	params := sticket.NewParamsCreateTicket(
+	responseForm, errCr := helpers.ParseMultipartForm(
 		c.BodyRaw(),
+		c.GetReqHeaders(),
+	)
+	if errCr != nil {
+		return c.Status(fiber.StatusInternalServerError).
+			JSON(
+				&fiber.Map{
+					"success": false,
+					"error":   errGetUser,
+					"handler": "HandlerAddTicket - helpers.ParseMultipartForm", // development only
+				},
+			)
+	}
+
+	params := sticket.NewParamsCreateTicketFromMap(
+		responseForm,
 	)
 
 	params.OpenedByUserID = userLogged.PrimaryKey

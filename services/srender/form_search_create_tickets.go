@@ -20,6 +20,7 @@ type ParamsNewFormSearchTickets struct {
 
 	ClassButtonCreate string
 	LabelButtonCreate string
+	TargetsSwapCreate []string
 }
 
 func (s *Service) NewFormSearchCreateTickets(params *ParamsNewFormSearchTickets) g.Node {
@@ -43,6 +44,13 @@ func (s *Service) NewFormSearchCreateTickets(params *ParamsNewFormSearchTickets)
 					g.Attr(
 						"hx-post",
 						params.ActionButtonCreate,
+					),
+
+					g.Attr(
+						"hx-swap",
+						NewMultiswap(
+							params.TargetsSwapCreate,
+						),
 					),
 
 					g.If(

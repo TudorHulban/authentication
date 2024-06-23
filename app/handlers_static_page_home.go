@@ -55,8 +55,6 @@ func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 			Head: append(
 				srender.LinksFavicon,
 				[]g.Node{
-					// srender.ScriptHTMX,
-					// srender.ScriptHTMXMultiswap,
 					srender.ScriptCommonJS,
 					srender.LinkCSSMaterialSymbolOutlined,
 					srender.LinkCSSCommon,

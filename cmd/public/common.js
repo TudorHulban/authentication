@@ -40,7 +40,6 @@ document.
                         if (targetElement) {
                             const responseElement = extractedHTML.get(targetElement.id);
 
-                            console.log(targetElement.id, responseElement)
                             if (responseElement) {
                                 targetElement.innerHTML = responseElement;
                             }
