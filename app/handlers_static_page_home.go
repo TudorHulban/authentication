@@ -49,14 +49,14 @@ func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 	page := co.HTML5(
 		co.HTML5Props{
 			Title:       "Home",
-			Description: "HTMX Logged",
+			Description: "SEO - Home",
 			Language:    "English",
 
 			Head: append(
 				srender.LinksFavicon,
 				[]g.Node{
-					srender.ScriptHTMX,
-					srender.ScriptHTMXMultiswap,
+					// srender.ScriptHTMX,
+					// srender.ScriptHTMXMultiswap,
 					srender.ScriptCommonJS,
 					srender.LinkCSSMaterialSymbolOutlined,
 					srender.LinkCSSCommon,
