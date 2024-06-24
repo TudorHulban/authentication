@@ -47,14 +47,14 @@ func InitializeTransportRoutes(application *App) {
 		application.HandlerTicketID,
 	)
 
-	application.Transport.Get(
-		constants.RouteTicketEvents,
-		application.HandlerHTMLTicketEventsTable,
-	)
-
 	application.Transport.Post(
 		constants.RouteTicketEvents,
 		application.HandlerHTMLTicketEventsTableBody,
+	)
+
+	application.Transport.Get(
+		constants.RouteTicketEvents,
+		application.HandlerHTMLTicketEventsTable,
 	)
 
 	// Event

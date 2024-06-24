@@ -17,9 +17,11 @@ type ParamsNewFormSearchTicketEvents struct {
 
 	ClassButtonSearch string
 	LabelButtonSearch string
+	TargetsSwapSearch []string
 
 	ClassButtonCreate string
 	LabelButtonCreate string
+	TargetsSwapCreate []string
 }
 
 func (s *Service) NewFormSearchCreateTicketEvents(params *ParamsNewFormSearchTicketEvents) g.Node {
@@ -45,6 +47,13 @@ func (s *Service) NewFormSearchCreateTicketEvents(params *ParamsNewFormSearchTic
 						params.ActionButtonCreate,
 					),
 
+					g.Attr(
+						"hx-swap",
+						NewMultiswap(
+							params.TargetsSwapCreate,
+						),
+					),
+
 					g.If(
 						len(params.ClassButtonCreate) > 0,
 						g.Attr(
@@ -67,6 +76,13 @@ func (s *Service) NewFormSearchCreateTicketEvents(params *ParamsNewFormSearchTic
 					g.Attr(
 						"hx-post",
 						params.ActionButtonSearch,
+					),
+
+					g.Attr(
+						"hx-swap",
+						NewMultiswap(
+							params.TargetsSwapCreate,
+						),
 					),
 
 					g.If(

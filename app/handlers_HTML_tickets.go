@@ -78,6 +78,7 @@ func (a *App) HandlerHTMLTicketsTableBody(c *fiber.Ctx) error {
 		Render(c)
 }
 
+// should be called by sidebar menu entry.
 func (a *App) HandlerHTMLTicketsTable(c *fiber.Ctx) error {
 	reconstructedTickets, errGetTickets := a.ServiceTicket.SearchTickets(
 		c.Context(),
@@ -134,12 +135,6 @@ func (a *App) HandlerHTMLTicketsTable(c *fiber.Ctx) error {
 			},
 		),
 	)
-
-	// fmt.Println(
-	// 	string(
-	// 		responseBytes,
-	// 	),
-	// )
 
 	return c.Send(
 		responseBytes,
