@@ -11,7 +11,7 @@ import (
 )
 
 func TestNewFormSearchTickets(t *testing.T) {
-	p := ParamsNewFormSearchTickets{
+	p := ParamsNewFormSearchCreateTickets{
 		ActionButtonSearch: "/tickets",
 		ActionButtonCreate: "/ticket",
 

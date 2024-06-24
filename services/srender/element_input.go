@@ -12,8 +12,6 @@ type ElementInput struct {
 	CSSIDInput  string
 	ElementName string
 	TypeInput   string
-
-	IsRequired bool
 }
 
 func (el ElementInput) Raw() g.Node {
@@ -44,21 +42,12 @@ func (el ElementInput) Raw() g.Node {
 		)
 	}
 
-	if el.IsRequired {
-		result[2] = fmt.Sprintf(
-			`<input type="%s" id="%s" name="%s" required></div>`,
-			el.TypeInput,
-			el.CSSIDInput,
-			toLowerElementName,
-		)
-	} else {
-		result[2] = fmt.Sprintf(
-			`<input type="%s" id="%s" name="%s"></div>`,
-			el.TypeInput,
-			el.CSSIDInput,
-			toLowerElementName,
-		)
-	}
+	result[2] = fmt.Sprintf(
+		`<input type="%s" id="%s" name="%s"></div>`,
+		el.TypeInput,
+		el.CSSIDInput,
+		toLowerElementName,
+	)
 
 	return g.Raw(
 		strings.Join(result[:], "\n"),

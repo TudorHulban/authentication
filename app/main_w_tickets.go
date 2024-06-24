@@ -11,7 +11,7 @@ import (
 
 func (a *App) formSearchCreateTickets() g.Node {
 	return a.serviceRender.NewFormSearchCreateTickets(
-		&srender.ParamsNewFormSearchTickets{
+		&srender.ParamsNewFormSearchCreateTickets{
 			TextForm: "Search / Create Tickets",
 
 			ActionButtonCreate: constants.RouteTicket,
@@ -27,7 +27,8 @@ func (a *App) formSearchCreateTickets() g.Node {
 				constants.IDItemsTableBody,
 			},
 
-			IDEnclosingDiv: constants.IDContainerSearchItems,
+			IDEnclosingDiv:    constants.IDContainerSearchItems,
+			IDInputTicketName: constants.IDSearchItemsInputName,
 		},
 	)
 }

@@ -2,18 +2,20 @@ package srender
 
 import (
 	"github.com/TudorHulban/authentication/app/constants"
+	"github.com/TudorHulban/authentication/helpers"
 	"github.com/gofiber/fiber/v2"
 	g "github.com/maragudk/gomponents"
 	html "github.com/maragudk/gomponents/html"
 )
 
-type ParamsNewFormSearchTickets struct {
+type ParamsNewFormSearchCreateTickets struct {
 	TextForm string
 
 	ActionButtonCreate string
 	ActionButtonSearch string
 
-	IDEnclosingDiv string
+	IDEnclosingDiv    string
+	IDInputTicketName string
 
 	ClassButtonSearch string
 	LabelButtonSearch string
@@ -24,7 +26,7 @@ type ParamsNewFormSearchTickets struct {
 	TargetsSwapCreate []string
 }
 
-func (s *Service) NewFormSearchCreateTickets(params *ParamsNewFormSearchTickets) g.Node {
+func (s *Service) NewFormSearchCreateTickets(params *ParamsNewFormSearchCreateTickets) g.Node {
 	return newFormGeneric(
 		&paramsNewFormGeneric{
 			TextForm: params.TextForm,
@@ -45,6 +47,13 @@ func (s *Service) NewFormSearchCreateTickets(params *ParamsNewFormSearchTickets)
 					g.Attr(
 						"hx-post",
 						params.ActionButtonCreate,
+					),
+
+					g.Attr(
+						"hx-require",
+						helpers.SanitizeCSSId(
+							params.IDInputTicketName,
+						),
 					),
 
 					g.Attr(

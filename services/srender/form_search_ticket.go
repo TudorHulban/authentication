@@ -2,13 +2,15 @@ package srender
 
 import (
 	"github.com/TudorHulban/authentication/app/constants"
+	"github.com/TudorHulban/authentication/helpers"
 	g "github.com/maragudk/gomponents"
 	html "github.com/maragudk/gomponents/html"
 )
 
 type ParamsNewFormSearchTicket struct {
-	TextForm       string
-	IDEnclosingDiv string
+	TextForm        string
+	IDEnclosingDiv  string
+	IDInputTicketID string
 
 	ActionButtonSearch string
 	ClassButtonSearch  string
@@ -45,6 +47,13 @@ func (s *Service) NewFormSearchTicket(params *ParamsNewFormSearchTicket) g.Node 
 						),
 					),
 
+					g.Attr(
+						"hx-require",
+						helpers.SanitizeCSSId(
+							params.IDInputTicketID,
+						),
+					),
+
 					g.If(
 						len(params.ClassButtonSearch) > 0,
 						g.Attr(
@@ -66,8 +75,6 @@ func (s *Service) NewFormSearchTicket(params *ParamsNewFormSearchTicket) g.Node 
 
 					ElementName: "TicketID",
 					TypeInput:   "text",
-
-					IsRequired: true,
 				},
 			},
 		},

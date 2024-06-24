@@ -21,7 +21,8 @@ func (a *App) formSearchTicket() g.Node {
 				constants.IDItemsTableBody,
 			},
 
-			IDEnclosingDiv: constants.IDContainerSearchItems,
+			IDEnclosingDiv:  constants.IDContainerSearchItems,
+			IDInputTicketID: constants.IDSearchItemsInputID,
 		},
 	)
 }

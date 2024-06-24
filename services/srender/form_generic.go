@@ -1,7 +1,6 @@
 package srender
 
 import (
-	"github.com/TudorHulban/authentication/helpers"
 	g "github.com/maragudk/gomponents"
 	html "github.com/maragudk/gomponents/html"
 )
@@ -46,22 +45,6 @@ func newFormGeneric(params *paramsNewFormGeneric) g.Node {
 					g.Attr(
 						"id",
 						params.IDForm,
-					),
-
-					g.If(
-						len(params.IDTarget) > 0,
-
-						g.Attr(
-							"hx-target",
-							helpers.SanitizeCSSId(
-								params.IDTarget,
-							),
-						),
-					),
-
-					g.Attr(
-						"hx-swap",
-						"outerHTML",
 					),
 				},
 				params.Elements.AsHTML(params.Buttons...)...,

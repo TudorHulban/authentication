@@ -15,7 +15,41 @@ document.addEventListener('DOMContentLoaded', (event) => {
         return matchedElementsMap;
     }
 
+    function showPopover(element, message) {
+        const popover = document.createElement('div');
+        popover.className = 'popover';
+        popover.textContent = message;
+        document.body.appendChild(popover);
+
+        const rect = element.getBoundingClientRect();
+        popover.style.left = `${rect.left + window.scrollX}px`;
+        popover.style.top = `${rect.bottom + window.scrollY}px`;
+
+        setTimeout(() => {
+            document.body.removeChild(popover);
+        }, 3000);
+    }
+
+    const validateRequirements = (element) => {
+        const requireAttr = element.getAttribute('hx-require');
+        if (requireAttr) {
+            const requiredIds = requireAttr.split(',');
+            for (let id of requiredIds) {
+                const requiredElement = document.querySelector(id.trim());
+                if (requiredElement && !requiredElement.value) {
+                    showPopover(requiredElement, 'This field is required.');
+                    return false;
+                }
+            }
+        }
+        return true;
+    };
+
     const handleAjax = (element, form) => {
+        if (!validateRequirements(element)) {
+            return;
+        }
+
         const method = element.hasAttribute('hx-get') ? 'GET' :
                        element.hasAttribute('hx-post') ? 'POST' : 'DELETE';
         const endpoint = element.getAttribute('hx-get') || 
@@ -76,7 +110,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     });
 
-    const addSearchItemListener = (searchItem) => {
+    const addDblClickInputClearerListener = (searchItem) => {
         searchItem.addEventListener('dblclick', event => {
             const inputs = searchItem.getElementsByTagName('input');
             
@@ -87,7 +121,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     };
 
     const searchItems = document.getElementById('items-search');
-    addSearchItemListener(searchItems);
+    addDblClickInputClearerListener(searchItems);
 
     const observer = new MutationObserver((mutationsList) => {
         for (let mutation of mutationsList) {
@@ -98,11 +132,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         addEventListeners(elements);
 
                         if (node.id === 'items-search') {
-                            addSearchItemListener(node);
+                            addDblClickInputClearerListener(node);
                         } else {
                             const searchItem = node.querySelector('#items-search');
                             if (searchItem) {
-                                addSearchItemListener(searchItem);
+                                addDblClickInputClearerListener(searchItem);
                             }
                         }
                     }

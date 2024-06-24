@@ -159,12 +159,12 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 					},
 				),
 				srender.ButtonCreateTicketEvent("Create Ticket Event"),
-				srender.ModalCreateTicketEvent(
-					&srender.ParamsModalCreateTicketEvent{
-						URLAddTicketEvent: constants.RouteTicketEvent,
-						TicketID:          reconstructedTask.PrimaryKey,
-					},
-				),
+				// srender.ModalCreateTicketEvent(
+				// 	&srender.ParamsModalCreateTicketEvent{
+				// 		URLAddTicketEvent: constants.RouteTicketEvent,
+				// 		TicketID:          reconstructedTask.PrimaryKey,
+				// 	},
+				// ),
 			},
 		},
 	)
