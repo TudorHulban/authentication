@@ -56,3 +56,22 @@ Not sure if to use modals though.
     window.openModal = openModal;
     window.closeModal = closeModal;
 ```  
+
+## Code for form support
+
+```js
+    document.querySelectorAll('.ajax-form').forEach(form => {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const submitButton = form.querySelector('button[type="submit"]');
+            handleAjax(submitButton, form);
+        });
+
+        form.querySelectorAll('.deleteButton').forEach(deleteButton => {
+            deleteButton.addEventListener('click', function(event) {
+                event.preventDefault();
+                handleAjax(deleteButton, form);
+            });
+        });
+    });
+```

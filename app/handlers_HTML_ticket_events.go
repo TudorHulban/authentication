@@ -6,17 +6,35 @@ import (
 	"github.com/TudorHulban/authentication/app/constants"
 	"github.com/TudorHulban/authentication/apperrors"
 	"github.com/TudorHulban/authentication/domain/ticket"
+	"github.com/TudorHulban/authentication/helpers"
 	"github.com/TudorHulban/authentication/services/srender"
 	"github.com/gofiber/fiber/v2"
 )
 
 // should be called by POST by search in form.
 func (a *App) HandlerHTMLTicketEventsTableBody(c *fiber.Ctx) error {
+	responseForm, errCr := helpers.ParseMultipartForm(
+		c.BodyRaw(),
+		c.GetReqHeaders(),
+	)
+	if errCr != nil {
+		return c.Status(fiber.StatusInternalServerError).
+			JSON(
+				&fiber.Map{
+					"success": false,
+					"error":   errCr.Error(),
+					"handler": "HandlerHTMLTicketEventsTableBody - helpers.ParseMultipartForm", // development only
+				},
+			)
+	}
+
+	params := ticket.NewParamsSearchTicketEventsFromMap(
+		responseForm,
+	)
+
 	reconstructedTicketEvents, errGetTicketEvents := a.ServiceTicket.SearchTicketEvents(
 		c.Context(),
-		ticket.NewParamsSearchTicketEvents(
-			c.BodyRaw(),
-		),
+		params,
 	)
 	if errGetTicketEvents != nil {
 		if errors.As(
@@ -61,7 +79,7 @@ func (a *App) HandlerHTMLTicketEventsTableBody(c *fiber.Ctx) error {
 func (a *App) HandlerHTMLTicketEventsTable(c *fiber.Ctx) error {
 	reconstructedTicketEvents, errGetTicketEvents := a.ServiceTicket.SearchTicketEvents(
 		c.Context(),
-		ticket.NewParamsSearchTicketEvents(
+		ticket.NewParamsSearchTicketEventsFromBytes(
 			c.BodyRaw(),
 		),
 	)

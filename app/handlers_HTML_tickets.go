@@ -24,18 +24,16 @@ func (a *App) HandlerHTMLTicketsTableBody(c *fiber.Ctx) error {
 				&fiber.Map{
 					"success": false,
 					"error":   errCr.Error(),
-					"handler": "HandlerAddTicket - helpers.ParseMultipartForm", // development only
+					"handler": "HandlerHTMLTicketsTableBody - helpers.ParseMultipartForm", // development only
 				},
 			)
 	}
 
-	params := ticket.NewParamsSearchTicketsFromMap(
-		responseForm,
-	)
-
 	reconstructedTickets, errGetTickets := a.ServiceTicket.SearchTickets(
 		c.Context(),
-		params,
+		ticket.NewParamsSearchTicketsFromMap(
+			responseForm,
+		),
 	)
 	if errGetTickets != nil {
 		if errors.As(

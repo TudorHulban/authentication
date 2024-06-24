@@ -83,19 +83,34 @@ type ParamsSearchTicketEvents struct {
 	WithOpenedByUserID uint
 }
 
-func NewParamsSearchTicketEvents(responseForm []byte) *ParamsSearchTicketEvents {
+func NewParamsSearchTicketEventsFromBytes(responseForm []byte) *ParamsSearchTicketEvents {
 	responseParams := helpers.ProcessFormURLEncoded(responseForm)
 
-	var withID sql.NullString
+	var withTicketID sql.NullString
 
-	if value, exists := responseParams["id"]; exists {
-		withID = sql.NullString{
+	if value, exists := responseParams["ticketid"]; exists {
+		withTicketID = sql.NullString{
 			Valid:  true,
 			String: value,
 		}
 	}
 
 	return &ParamsSearchTicketEvents{
-		WithTicketID: withID,
+		WithTicketID: withTicketID,
+	}
+}
+
+func NewParamsSearchTicketEventsFromMap(responseForm map[string]string) *ParamsSearchTicketEvents {
+	var withTicketID sql.NullString
+
+	if value, exists := responseForm["ticketid"]; exists {
+		withTicketID = sql.NullString{
+			Valid:  true,
+			String: value,
+		}
+	}
+
+	return &ParamsSearchTicketEvents{
+		WithTicketID: withTicketID,
 	}
 }
