@@ -4,7 +4,7 @@ const (
 	RoutesAll = "/"
 
 	RouteLogin = "/login"
-	RouteHome  = "/logged"
+	RouteHome  = "/home"
 
 	RouteTicket  = "/ticket"
 	RouteTickets = "/tickets"

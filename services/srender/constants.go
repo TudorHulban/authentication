@@ -5,11 +5,6 @@ import (
 	html "github.com/maragudk/gomponents/html"
 )
 
-var LinkCSSWater = html.Link(
-	html.Rel("stylesheet"),
-	html.Href("https://cdn.jsdelivr.net/npm/water.css@2/out/dark.min.css"),
-)
-
 var LinkCSSCommon = html.Link(
 	html.Rel("stylesheet"),
 	html.Href("/public/common.css"),

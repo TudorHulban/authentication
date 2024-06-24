@@ -15,9 +15,6 @@ func FormLogin(caller string) g.Node {
 		),
 
 		html.Form(
-			g.Attr("hx-post", "/login"),
-			g.Attr("hx-swap", "none"),
-
 			html.Label(
 				g.Attr("for", "email"),
 				g.Text("Email:"),
@@ -42,7 +39,8 @@ func FormLogin(caller string) g.Node {
 				g.Attr("value", testuser.TestUser.Password),
 			),
 
-			html.Input(
+			html.Button(
+				g.Attr("hx-post", "/login"),
 				g.Attr("type", "submit"),
 				g.Attr("value", "Submit"),
 			),

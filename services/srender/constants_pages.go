@@ -11,11 +11,13 @@ func PageLogin(caller string) g.Node {
 			Title:       "Login",
 			Description: "HTMX Login",
 			Language:    "English",
+
 			Head: []g.Node{
-				LinkCSSWater,
+				ScriptCommonJS,
+				LinkCSSCommon,
 			},
+
 			Body: []g.Node{
-				Header(),
 				FormLogin(caller),
 			},
 		},

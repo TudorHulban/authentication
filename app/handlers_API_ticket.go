@@ -149,7 +149,6 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 			Language:    "English",
 			Head: []g.Node{
 				srender.ScriptCommonJS,
-				srender.LinkCSSWater,
 				srender.LinkCSSCommon,
 			},
 			Body: []g.Node{
