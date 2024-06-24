@@ -114,3 +114,18 @@ func NewParamsSearchTicketEventsFromMap(responseForm map[string]string) *ParamsS
 		WithTicketID: withTicketID,
 	}
 }
+
+func NewParamsSearchTicketFromMap(responseForm map[string]string) *ParamsSearchTicketEvents {
+	var withTicketID sql.NullString
+
+	if value, exists := responseForm["ticketid"]; exists {
+		withTicketID = sql.NullString{
+			Valid:  true,
+			String: value,
+		}
+	}
+
+	return &ParamsSearchTicketEvents{
+		WithTicketID: withTicketID,
+	}
+}

@@ -6,8 +6,9 @@ const (
 	RouteLogin = "/login"
 	RouteHome  = "/home"
 
-	RouteTicket  = "/ticket"
-	RouteTickets = "/tickets"
+	RouteTicket    = "/ticket"
+	RouteGetTicket = "/ticketg"
+	RouteTickets   = "/tickets"
 
 	RouteTicketEvent  = "/event"
 	RouteTicketEvents = "/events"

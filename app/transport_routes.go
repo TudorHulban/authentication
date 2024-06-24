@@ -11,11 +11,6 @@ func InitializeTransportRoutes(application *App) {
 	)
 
 	application.Transport.Get(
-		constants.RouteLogin,
-		application.HandlerLoginPage,
-	)
-
-	application.Transport.Get(
 		constants.RouteHome,
 		application.HandlerHomePage,
 	)
@@ -25,11 +20,12 @@ func InitializeTransportRoutes(application *App) {
 		application.HandlerLoginRequest,
 	)
 
-	// Ticket
+	// Grouped by sidebar menu w sidebar call first
+	// Tickets
 
-	application.Transport.Post(
-		constants.RouteTicket,
-		application.HandlerAddTicket,
+	application.Transport.Get(
+		constants.RouteTickets,
+		application.HandlerHTMLTicketsTable,
 	)
 
 	application.Transport.Post(
@@ -37,14 +33,16 @@ func InitializeTransportRoutes(application *App) {
 		application.HandlerHTMLTicketsTableBody,
 	)
 
-	application.Transport.Get(
-		constants.RouteTickets,
-		application.HandlerHTMLTicketsTable,
+	application.Transport.Post(
+		constants.RouteTicket,
+		application.HandlerAddTicket,
 	)
 
+	// Ticket Events
+
 	application.Transport.Get(
-		constants.RouteTicket+"/:id",
-		application.HandlerTicketID,
+		constants.RouteTicketEvents,
+		application.HandlerHTMLTicketEventsTable,
 	)
 
 	application.Transport.Post(
@@ -52,12 +50,24 @@ func InitializeTransportRoutes(application *App) {
 		application.HandlerHTMLTicketEventsTableBody,
 	)
 
+	// Ticket
+
 	application.Transport.Get(
-		constants.RouteTicketEvents,
-		application.HandlerHTMLTicketEventsTable,
+		constants.RouteGetTicket,
+		application.HandlerHTMLTicketEventsWContentTable,
 	)
 
-	// Event
+	application.Transport.Post(
+		constants.RouteGetTicket,
+		application.HandlerHTMLTicketTableBody,
+	)
+
+	// Unused
+
+	application.Transport.Get(
+		constants.RouteTicket+"/:id",
+		application.HandlerTicketID,
+	)
 
 	application.Transport.Post(
 		constants.RouteTicketEvent,

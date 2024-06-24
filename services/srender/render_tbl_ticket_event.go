@@ -41,6 +41,31 @@ func (s *Service) RenderTicketEventInTableRow(ctx context.Context, params *Param
 	)
 }
 
+func (s *Service) RenderTicketEventWContentInTableRow(ctx context.Context, params *ParamsTicketEventAsHTML) g.Node {
+	userInfo, errGetUserInfo := s.serviceUser.GetUserInfoByID(
+		ctx,
+		params.TicketEvent.OpenedByUserID,
+	)
+	if errGetUserInfo != nil {
+		fmt.Println(errGetUserInfo) //TODO: proper log
+	}
+
+	return g.Rawf(
+		`<tr><td>%d</td><td>%d<td>%d</td><td>%s</td><td>%s</td><td>%s</td></tr>`,
+
+		params.Index,
+		params.TicketEvent.PrimaryKey,
+
+		params.TicketEvent.TicketEventType,
+
+		userInfo.Name,
+		helpers.UnixNanoTo(
+			params.TicketEvent.TimestampOfAdd,
+		),
+		params.TicketEvent.Content,
+	)
+}
+
 type ParamsRenderTicketEvents struct {
 	Events ticket.Events
 
@@ -48,10 +73,35 @@ type ParamsRenderTicketEvents struct {
 }
 
 func (s *Service) TableItemsBodyForTicketEvents(ctx context.Context, params *ParamsRenderTicketEvents) g.Node {
-	result := make([]g.Node, len(params.Events), len(params.Events))
+	return s.tableBodyForTicketEvents(
+		ctx,
+		&paramsTableBodyForTicketEvents{
+			RenderInfo: params,
+			Renderer:   s.RenderTicketEventInTableRow,
+		},
+	)
+}
 
-	for ix, item := range params.Events {
-		result[ix] = s.RenderTicketEventInTableRow(
+func (s *Service) TableItemsBodyForTicketEventsWContent(ctx context.Context, params *ParamsRenderTicketEvents) g.Node {
+	return s.tableBodyForTicketEvents(
+		ctx,
+		&paramsTableBodyForTicketEvents{
+			RenderInfo: params,
+			Renderer:   s.RenderTicketEventWContentInTableRow,
+		},
+	)
+}
+
+type paramsTableBodyForTicketEvents struct {
+	RenderInfo *ParamsRenderTicketEvents
+	Renderer   func(ctx context.Context, params *ParamsTicketEventAsHTML) g.Node
+}
+
+func (s *Service) tableBodyForTicketEvents(ctx context.Context, params *paramsTableBodyForTicketEvents) g.Node {
+	result := make([]g.Node, len(params.RenderInfo.Events), len(params.RenderInfo.Events))
+
+	for ix, item := range params.RenderInfo.Events {
+		result[ix] = params.Renderer(
 			ctx,
 			&ParamsTicketEventAsHTML{
 				TicketEvent: item,
@@ -65,10 +115,10 @@ func (s *Service) TableItemsBodyForTicketEvents(ctx context.Context, params *Par
 			result,
 
 			g.If(
-				len(params.CSSIDTicketEventsBody) > 0,
+				len(params.RenderInfo.CSSIDTicketEventsBody) > 0,
 				g.Attr(
 					"id",
-					params.CSSIDTicketEventsBody,
+					params.RenderInfo.CSSIDTicketEventsBody,
 				),
 			),
 		)...,

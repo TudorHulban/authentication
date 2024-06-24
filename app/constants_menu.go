@@ -36,7 +36,7 @@ func (a *App) newMenuSidebar() (*srender.MenuSidebar, error) {
 
 				TextSection1Entry3:   "Ticket",
 				SymbolSection1Entry3: "edit",
-				URLSection1Entry3:    constants.RouteTicketEvents,
+				URLSection1Entry3:    constants.RouteGetTicket,
 
 				HTMXTargetsSection1Entry3: []string{
 					constants.IDContainerSearchItems,

@@ -64,3 +64,33 @@ func (s *Service) TableItemsHeadForTicketEvents(cssID string) g.Node {
 		),
 	)
 }
+
+func (s *Service) TableItemsHeadForTicket(cssID string) g.Node {
+	return html.THead(
+		html.Tr(
+			g.Attr(
+				"id",
+				cssID,
+			),
+
+			html.Th(
+				g.Text("#"),
+			),
+			html.Th(
+				g.Text("Event ID"),
+			),
+			html.Th(
+				g.Text("Event Type"),
+			),
+			html.Th(
+				g.Text("Opened By"),
+			),
+			html.Th(
+				g.Text("Opened time"),
+			),
+			html.Th(
+				g.Text("Content"),
+			),
+		),
+	)
+}
