@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                          element.getAttribute('hx-delete');
         const targetSelectors = element.getAttribute('hx-swap');
         const targetElements = targetSelectors ? targetSelectors.split(',').map(selector => document.querySelector(selector.trim())) : [];
+        const redirectUrl = element.getAttribute('hx-redirect');
 
         let fetchOptions = { method };
         if (method === 'POST' || method === 'DELETE') {
@@ -31,19 +32,28 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
 
         fetch(endpoint, fetchOptions)
-            .then(response => response.text())
+            .then(response => {
+                if (response.ok && redirectUrl) {
+                    window.location.href = redirectUrl;
+                    return null; // No need to process further
+                } else {
+                    return response.text();
+                }
+            })
             .then(data => {
-                let extractedHTML = parseString(data, targetElements);
+                if (data) {
+                    let extractedHTML = parseString(data, targetElements);
 
-                targetElements.forEach((targetElement) => {
-                    if (targetElement) {
-                        const responseElement = extractedHTML.get(targetElement.id);
+                    targetElements.forEach((targetElement) => {
+                        if (targetElement) {
+                            const responseElement = extractedHTML.get(targetElement.id);
 
-                        if (responseElement) {
-                            targetElement.innerHTML = responseElement;
+                            if (responseElement) {
+                                targetElement.innerHTML = responseElement;
+                            }
                         }
-                    }
-                });
+                    });
+                }
             })
             .catch(error => console.error('Error:', error));
     };

@@ -1,6 +1,7 @@
 package srender
 
 import (
+	"github.com/TudorHulban/authentication/app/constants"
 	testuser "github.com/TudorHulban/authentication/fixtures/test-user"
 	g "github.com/maragudk/gomponents"
 	html "github.com/maragudk/gomponents/html"
@@ -40,7 +41,16 @@ func FormLogin(caller string) g.Node {
 			),
 
 			html.Button(
-				g.Attr("hx-post", "/login"),
+				g.Attr(
+					"hx-post",
+					constants.RouteLogin,
+				),
+
+				g.Attr(
+					"hx-redirect",
+					constants.RouteHome,
+				),
+
 				g.Attr("type", "submit"),
 				g.Attr("value", "Submit"),
 			),
