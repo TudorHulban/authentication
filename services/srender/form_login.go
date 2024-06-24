@@ -53,6 +53,8 @@ func FormLogin(caller string) g.Node {
 
 				g.Attr("type", "submit"),
 				g.Attr("value", "Submit"),
+
+				g.Text("Submit"),
 			),
 		),
 	)

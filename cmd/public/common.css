@@ -331,6 +331,8 @@ body {
 }
 
 input[type="text"],
+input[type="email"],
+input[type="password"],
 input[type="date"] {
   padding: 5px;
   border: 1px solid #ccc;
@@ -357,7 +359,7 @@ button:hover {
 }
 
 
-@media (max-width: 970px) {
+@media (max-width: 1000px) {
   body {
     grid-template-columns: 80px 1fr;
     grid-template-areas:
