@@ -8,23 +8,16 @@ import (
 )
 
 type ParamsNewFormSearchTicketEvents struct {
-	TextForm string
-
-	ActionButtonCreate string
-	ActionButtonSearch string
-
+	TextForm       string
 	IDEnclosingDiv string
 
-	ClassButtonSearch string
-	LabelButtonSearch string
-	TargetsSwapSearch []string
-
-	ClassButtonCreate string
-	LabelButtonCreate string
-	TargetsSwapCreate []string
+	ActionButtonSearch string
+	ClassButtonSearch  string
+	LabelButtonSearch  string
+	TargetsSwapSearch  []string
 }
 
-func (s *Service) NewFormSearchCreateTicketEvents(params *ParamsNewFormSearchTicketEvents) g.Node {
+func (s *Service) NewFormSearchTicketEvents(params *ParamsNewFormSearchTicketEvents) g.Node {
 	return newFormGeneric(
 		&paramsNewFormGeneric{
 			TextForm: params.TextForm,
@@ -44,44 +37,13 @@ func (s *Service) NewFormSearchCreateTicketEvents(params *ParamsNewFormSearchTic
 
 					g.Attr(
 						"hx-post",
-						params.ActionButtonCreate,
-					),
-
-					g.Attr(
-						"hx-swap",
-						NewMultiswap(
-							params.TargetsSwapCreate,
-						),
-					),
-
-					g.If(
-						len(params.ClassButtonCreate) > 0,
-						g.Attr(
-							"class",
-							params.ClassButtonCreate,
-						),
-					),
-
-					g.Text(
-						params.LabelButtonCreate,
-					),
-				),
-
-				html.Button(
-					g.Attr(
-						"type",
-						"submit",
-					),
-
-					g.Attr(
-						"hx-post",
 						params.ActionButtonSearch,
 					),
 
 					g.Attr(
 						"hx-swap",
 						NewMultiswap(
-							params.TargetsSwapCreate,
+							params.TargetsSwapSearch,
 						),
 					),
 

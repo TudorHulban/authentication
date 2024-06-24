@@ -148,7 +148,6 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 			Description: "Ticket Information",
 			Language:    "English",
 			Head: []g.Node{
-				srender.ScriptHTMX,
 				srender.ScriptCommonJS,
 				srender.LinkCSSWater,
 				srender.LinkCSSCommon,
@@ -166,9 +165,6 @@ func (a *App) HandlerTicketID(c *fiber.Ctx) error {
 						URLAddTicketEvent: constants.RouteTicketEvent,
 						TicketID:          reconstructedTask.PrimaryKey,
 					},
-				),
-				srender.ScriptCreateTicketEvent(
-					constants.RouteTicket + "/" + reconstructedTask.PrimaryKey.String(),
 				),
 			},
 		},

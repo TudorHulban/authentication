@@ -16,7 +16,6 @@ type ParamsTicketEventAsHTML struct {
 	Index int
 }
 
-// TODO: add event content?
 func (s *Service) RenderTicketEventInTableRow(ctx context.Context, params *ParamsTicketEventAsHTML) g.Node {
 	userInfo, errGetUserInfo := s.serviceUser.GetUserInfoByID(
 		ctx,
@@ -48,7 +47,7 @@ type ParamsRenderTicketEvents struct {
 	CSSIDTicketEventsBody string
 }
 
-func (s *Service) RenderTicketEventsTableBody(ctx context.Context, params *ParamsRenderTicketEvents) g.Node {
+func (s *Service) TableItemsBodyForTicketEvents(ctx context.Context, params *ParamsRenderTicketEvents) g.Node {
 	result := make([]g.Node, len(params.Events), len(params.Events))
 
 	for ix, item := range params.Events {

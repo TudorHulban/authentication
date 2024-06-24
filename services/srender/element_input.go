@@ -38,7 +38,7 @@ func (el ElementInput) Raw() g.Node {
 		result[1] = fmt.Sprintf(
 			`<label for="%s">%s:</label>`,
 			toLowerElementName,
-			strings.ToUpper(toLowerElementName[:1])+toLowerElementName[1:],
+			el.ElementName,
 		)
 	}
 

@@ -70,7 +70,7 @@ func (a *App) HandlerHomePage(c *fiber.Ctx) error {
 
 					SidebarMenu: menu,
 
-					Main: a.mainWithTickets(
+					Main: a.TableWithTickets(
 						c.Context(),
 						reconstructedTickets,
 					),

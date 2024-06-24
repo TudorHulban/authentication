@@ -89,19 +89,15 @@ func (a *App) HandlerHTMLTicketsTable(c *fiber.Ctx) error {
 		) {
 			return c.Send(
 				srender.RenderNodes(
-					a.serviceRender.TableItemsHeadForTickets(
-						constants.IDItemsTableHead,
-					),
-
-					a.serviceRender.TableItemsBodyForTickets(
+					a.serviceRender.HTMLTableItemsForTickets(
 						c.Context(),
-						&srender.ParamsRenderTickets{
-							Tickets: reconstructedTickets,
-
-							RouteTicket:     constants.RouteTickets,
-							CSSIDTicketBody: constants.IDItemsTableBody,
+						&srender.ParamsHTMLTableItemsForTickets{
+							IDItemsTableHead: constants.IDItemsTableHead,
+							RouteTickets:     constants.RouteTickets,
+							CSSIDTicketBody:  constants.IDItemsTableBody,
+							Tickets:          reconstructedTickets,
 						},
-					),
+					)...,
 				),
 			)
 		}
@@ -117,21 +113,10 @@ func (a *App) HandlerHTMLTicketsTable(c *fiber.Ctx) error {
 	}
 
 	responseBytes := srender.RenderNodes(
-		a.formSearchCreateTickets(),
-
-		a.serviceRender.TableItemsHeadForTickets(
-			constants.IDItemsTableHead,
-		),
-
-		a.serviceRender.TableItemsBodyForTickets(
+		a.HTMLWithTickets(
 			c.Context(),
-			&srender.ParamsRenderTickets{
-				Tickets: reconstructedTickets,
-
-				RouteTicket:     constants.RouteTickets,
-				CSSIDTicketBody: constants.IDItemsTableBody,
-			},
-		),
+			reconstructedTickets,
+		)...,
 	)
 
 	return c.Send(

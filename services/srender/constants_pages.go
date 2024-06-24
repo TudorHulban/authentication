@@ -12,7 +12,6 @@ func PageLogin(caller string) g.Node {
 			Description: "HTMX Login",
 			Language:    "English",
 			Head: []g.Node{
-				ScriptHTMX,
 				LinkCSSWater,
 			},
 			Body: []g.Node{

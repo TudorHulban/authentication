@@ -42,7 +42,7 @@ func (a *App) HandlerHTMLTicketEventsTableBody(c *fiber.Ctx) error {
 			&apperrors.ErrNoEntriesFound{},
 		) {
 			return a.serviceRender.
-				RenderTicketEventsTableBody(
+				TableItemsBodyForTicketEvents(
 					c.Context(),
 					&srender.ParamsRenderTicketEvents{
 						Events: reconstructedTicketEvents,
@@ -64,7 +64,7 @@ func (a *App) HandlerHTMLTicketEventsTableBody(c *fiber.Ctx) error {
 	}
 
 	return a.serviceRender.
-		RenderTicketEventsTableBody(
+		TableItemsBodyForTicketEvents(
 			c.Context(),
 			&srender.ParamsRenderTicketEvents{
 				Events: reconstructedTicketEvents,
@@ -90,20 +90,10 @@ func (a *App) HandlerHTMLTicketEventsTable(c *fiber.Ctx) error {
 		) {
 			return c.Send(
 				srender.RenderNodes(
-					a.formSearchCreateTicketEvents(),
-
-					a.serviceRender.TableItemsHeadForTicketEvents(
-						constants.IDItemsTableHead,
-					),
-
-					a.serviceRender.RenderTicketEventsTableBody(
+					a.HTMLWithTicketEvents(
 						c.Context(),
-						&srender.ParamsRenderTicketEvents{
-							Events: reconstructedTicketEvents,
-
-							CSSIDTicketEventsBody: constants.IDItemsTableBody,
-						},
-					),
+						reconstructedTicketEvents,
+					)...,
 				),
 			)
 		}
@@ -120,20 +110,10 @@ func (a *App) HandlerHTMLTicketEventsTable(c *fiber.Ctx) error {
 
 	return c.Send(
 		srender.RenderNodes(
-			a.formSearchCreateTicketEvents(),
-
-			a.serviceRender.TableItemsHeadForTicketEvents(
-				constants.IDItemsTableHead,
-			),
-
-			a.serviceRender.RenderTicketEventsTableBody(
+			a.HTMLWithTicketEvents(
 				c.Context(),
-				&srender.ParamsRenderTicketEvents{
-					Events: reconstructedTicketEvents,
-
-					CSSIDTicketEventsBody: constants.IDItemsTableBody,
-				},
-			),
+				reconstructedTicketEvents,
+			)...,
 		),
 	)
 }

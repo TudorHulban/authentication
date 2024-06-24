@@ -32,7 +32,7 @@ func (a *App) formSearchCreateTickets() g.Node {
 	)
 }
 
-func (a *App) mainWithTickets(ctx context.Context, tickets ticket.Tickets) []g.Node {
+func (a *App) TableWithTickets(ctx context.Context, tickets ticket.Tickets) []g.Node {
 	return []g.Node{
 		a.formSearchCreateTickets(),
 
@@ -54,6 +54,27 @@ func (a *App) mainWithTickets(ctx context.Context, tickets ticket.Tickets) []g.N
 						CSSIDTicketBody: constants.IDItemsTableBody,
 					},
 				),
+			},
+		),
+	}
+}
+
+func (a *App) HTMLWithTickets(ctx context.Context, tickets ticket.Tickets) []g.Node {
+	return []g.Node{
+		a.formSearchCreateTickets(),
+
+		a.serviceRender.TableItemsHeadForTickets(
+			constants.IDItemsTableHead,
+		),
+
+		a.serviceRender.TableItemsBodyForTickets(
+			ctx,
+
+			&srender.ParamsRenderTickets{
+				Tickets: tickets,
+
+				RouteTicket:     constants.RouteTicket,
+				CSSIDTicketBody: constants.IDItemsTableBody,
 			},
 		),
 	}

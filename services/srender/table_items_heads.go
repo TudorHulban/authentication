@@ -17,7 +17,7 @@ func (s *Service) TableItemsHeadForTickets(cssID string) g.Node {
 				g.Text("#"),
 			),
 			html.Th(
-				g.Text("ID"),
+				g.Text("Ticket ID"),
 			),
 			html.Th(
 				g.Text("Name"),
