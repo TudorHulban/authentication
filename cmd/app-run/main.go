@@ -55,7 +55,7 @@ func main() {
 
 			TicketKind:           ticket.KindUndefined,
 			TicketOpenedByUserID: pkUser,
-			NumberEvents:         10,
+			NumberEvents:         3,
 		},
 	)
 

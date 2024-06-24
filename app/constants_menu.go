@@ -43,6 +43,20 @@ func (a *App) newMenuSidebar() (*srender.MenuSidebar, error) {
 					constants.IDItemsTableHead,
 					constants.IDItemsTableBody,
 				},
+
+				TextSection2: "User Management",
+
+				TextSection2Entry1:   "Users",
+				SymbolSection2Entry1: "person_search",
+				URLSection2Entry1:    constants.RouteTickets,
+
+				TextSection2Entry2:   "Groups",
+				SymbolSection2Entry2: "group",
+				URLSection2Entry2:    constants.RouteTickets,
+
+				TextSection2Entry3:   "User Info",
+				SymbolSection2Entry3: "settings_accessibility",
+				URLSection2Entry3:    constants.RouteTickets,
 			},
 		),
 	)

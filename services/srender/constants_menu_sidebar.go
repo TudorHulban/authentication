@@ -31,6 +31,10 @@ type ParamsCurrentMenuSidebar struct {
 	SymbolSection2Entry2 string
 	URLSection2Entry2    string
 
+	TextSection2Entry3   string
+	SymbolSection2Entry3 string
+	URLSection2Entry3    string
+
 	TextSection3 string
 
 	TextSection3Entry1   string
@@ -86,6 +90,11 @@ var ParamsMenuSidebarToUse = func(params *ParamsCurrentMenuSidebar) ParamsMenuSi
 						TextSectionEntry: params.TextSection2Entry2,
 						SymbolEntry:      params.SymbolSection2Entry2,
 						URLEntry:         params.URLSection2Entry2,
+					},
+					{
+						TextSectionEntry: params.TextSection2Entry3,
+						SymbolEntry:      params.SymbolSection2Entry3,
+						URLEntry:         params.URLSection2Entry3,
 					},
 				},
 			},
