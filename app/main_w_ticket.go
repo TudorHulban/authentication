@@ -5,14 +5,16 @@ import (
 
 	"github.com/TudorHulban/authentication/app/constants"
 	"github.com/TudorHulban/authentication/domain/ticket"
+	"github.com/TudorHulban/authentication/helpers"
 	"github.com/TudorHulban/authentication/services/srender"
 	g "github.com/maragudk/gomponents"
 )
 
-func (a *App) formSearchTicket() g.Node {
+func (a *App) formSearchTicket(ticketID helpers.PrimaryKey) g.Node {
 	return a.serviceRender.NewFormSearchTicket(
 		&srender.ParamsNewFormSearchTicket{
-			TextForm: "Search Ticket",
+			TextForm:  "Search Ticket",
+			TextInput: ticketID.String(),
 
 			ActionButtonSearch: constants.RouteGetTicket,
 			LabelButtonSearch:  "Search",
@@ -27,9 +29,16 @@ func (a *App) formSearchTicket() g.Node {
 	)
 }
 
-func (a *App) HTMLWithTicketEventsWContent(ctx context.Context, ticketEvents ticket.Events) []g.Node {
+type ParamsHTMLWithTicketEventsWContent struct {
+	TicketEvents ticket.Events
+	TicketID     helpers.PrimaryKey
+}
+
+func (a *App) HTMLWithTicketEventsWContent(ctx context.Context, params *ParamsHTMLWithTicketEventsWContent) []g.Node {
 	return []g.Node{
-		a.formSearchTicket(),
+		a.formSearchTicket(
+			helpers.Sanitize(params).TicketID,
+		),
 
 		a.serviceRender.TableItemsHeadForTicket(
 			constants.IDItemsTableHead,
@@ -38,7 +47,7 @@ func (a *App) HTMLWithTicketEventsWContent(ctx context.Context, ticketEvents tic
 		a.serviceRender.TableItemsBodyForTicketEventsWContent(
 			ctx,
 			&srender.ParamsRenderTicketEvents{
-				Events: ticketEvents,
+				Events: helpers.Sanitize(params).TicketEvents,
 
 				CSSIDTicketEventsBody: constants.IDItemsTableBody,
 			},

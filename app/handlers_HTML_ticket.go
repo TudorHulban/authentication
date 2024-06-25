@@ -84,24 +84,25 @@ func (a *App) HandlerHTMLTicketIDFull(c *fiber.Ctx) error {
 			JSON(
 				&fiber.Map{
 					"success": false,
-					"error":   errGetUser,
+					"error":   errGetUser.Error(),
+					"handler": "HandlerHTMLTicketIDFull - ExtractLoggedUserFrom", // development only
 				},
 			)
 	}
 
-	reconstructedTask, errGetTask := a.ServiceTicket.GetTicketByID(
+	reconstructedTicket, errGetTicket := a.ServiceTicket.GetTicketByID(
 		c.Context(),
 		&sticket.ParamsGetTicketByID{
 			TicketID:     c.Params("id"),
 			UserLoggedID: userLogged.PrimaryKey,
 		},
 	)
-	if errGetTask != nil {
+	if errGetTicket != nil {
 		return c.Status(fiber.StatusInternalServerError).
 			JSON(
 				&fiber.Map{
 					"success": false,
-					"error":   errGetTask,
+					"error":   errGetTicket,
 					"level":   "GetTicketByID",
 				},
 			)
@@ -109,7 +110,7 @@ func (a *App) HandlerHTMLTicketIDFull(c *fiber.Ctx) error {
 
 	reconstructedTicketEvents, errGetEvents := a.ServiceTicket.GetEventsForTicketID(
 		c.Context(),
-		helpers.PrimaryKey(reconstructedTask.PrimaryKey),
+		helpers.PrimaryKey(reconstructedTicket.PrimaryKey),
 	)
 	if errGetEvents != nil && !errors.As(errGetEvents, &apperrors.ErrNoEntriesFound{}) {
 		return c.Status(fiber.StatusInternalServerError).
@@ -121,16 +122,17 @@ func (a *App) HandlerHTMLTicketIDFull(c *fiber.Ctx) error {
 			)
 	}
 
-	return a.serviceRender.
-		TableItemsBodyForTicketEventsWContent(
-			c.Context(),
-			&srender.ParamsRenderTicketEvents{
-				Events: reconstructedTicketEvents,
-
-				CSSIDTicketEventsBody: constants.IDItemsTableBody,
-			},
-		).
-		Render(c)
+	return c.Send(
+		srender.RenderNodes(
+			a.HTMLWithTicketEventsWContent(
+				c.Context(),
+				&ParamsHTMLWithTicketEventsWContent{
+					TicketEvents: reconstructedTicketEvents,
+					TicketID:     reconstructedTicket.PrimaryKey,
+				},
+			)...,
+		),
+	)
 }
 
 // should be called by GET in sidebar menu.

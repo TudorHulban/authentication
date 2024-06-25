@@ -8,7 +8,9 @@ import (
 )
 
 type ParamsNewFormSearchTicket struct {
-	TextForm        string
+	TextForm  string
+	TextInput string
+
 	IDEnclosingDiv  string
 	IDInputTicketID string
 
@@ -75,6 +77,8 @@ func (s *Service) NewFormSearchTicket(params *ParamsNewFormSearchTicket) g.Node 
 
 					ElementName: "TicketID",
 					TypeInput:   "text",
+
+					TextInput: params.TextInput,
 				},
 			},
 		},

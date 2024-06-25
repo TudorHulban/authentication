@@ -12,6 +12,7 @@ type ElementInput struct {
 	CSSIDInput  string
 	ElementName string
 	TypeInput   string
+	TextInput   string
 }
 
 func (el ElementInput) Raw() g.Node {
@@ -42,12 +43,24 @@ func (el ElementInput) Raw() g.Node {
 		)
 	}
 
-	result[2] = fmt.Sprintf(
-		`<input type="%s" id="%s" name="%s"></div>`,
-		el.TypeInput,
-		el.CSSIDInput,
-		toLowerElementName,
-	)
+	if len(el.TextInput) > 0 && el.TextInput != "0" {
+		fmt.Println(el.TextInput)
+
+		result[2] = fmt.Sprintf(
+			`<input type="%s" id="%s" name="%s" value="%s"></div>`,
+			el.TypeInput,
+			el.CSSIDInput,
+			toLowerElementName,
+			el.TextInput,
+		)
+	} else {
+		result[2] = fmt.Sprintf(
+			`<input type="%s" id="%s" name="%s"></div>`,
+			el.TypeInput,
+			el.CSSIDInput,
+			toLowerElementName,
+		)
+	}
 
 	return g.Raw(
 		strings.Join(result[:], "\n"),
