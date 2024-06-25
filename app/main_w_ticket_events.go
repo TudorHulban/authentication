@@ -39,7 +39,14 @@ func (a *App) HTMLWithTicketEvents(ctx context.Context, ticketEvents ticket.Even
 			&srender.ParamsRenderTicketEvents{
 				Events: ticketEvents,
 
+				RouteGetTicket:        constants.RouteGetTicket,
 				CSSIDTicketEventsBody: constants.IDItemsTableBody,
+
+				TargetsSwapSearch: []string{
+					constants.IDContainerSearchItems,
+					constants.IDItemsTableHead,
+					constants.IDItemsTableBody,
+				},
 			},
 		),
 	}

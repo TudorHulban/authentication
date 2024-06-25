@@ -62,12 +62,12 @@ func InitializeTransportRoutes(application *App) {
 		application.HandlerHTMLTicketTableBody,
 	)
 
-	// Unused
-
 	application.Transport.Get(
-		constants.RouteTicket+"/:id",
-		application.HandlerTicketID,
+		constants.RouteGetTicket+"/:id",
+		application.HandlerHTMLTicketIDFull,
 	)
+
+	// Unused
 
 	application.Transport.Post(
 		constants.RouteTicketEvent,

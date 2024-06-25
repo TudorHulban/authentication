@@ -13,6 +13,9 @@ import (
 type ParamsTicketEventAsHTML struct {
 	TicketEvent *ticket.Event
 
+	RouteGetTicket   string
+	TargetsMultiswap string
+
 	Index int
 }
 
@@ -26,9 +29,15 @@ func (s *Service) RenderTicketEventInTableRow(ctx context.Context, params *Param
 	}
 
 	return g.Rawf(
-		`<tr><td>%d</td><td>%d</td><td>%d<td>%d</td><td>%s</td><td>%s</td></tr>`,
+		`<tr><td>%d</td><td><a href="#" hx-get="%s/%d" hx-swap="%s">%d</td><td>%d<td>%d</td><td>%s</td><td>%s</td></tr>`,
 
 		params.Index,
+
+		params.RouteGetTicket,
+		params.TicketEvent.TicketPK,
+
+		params.TargetsMultiswap,
+
 		params.TicketEvent.TicketPK,
 		params.TicketEvent.PrimaryKey,
 
@@ -69,7 +78,10 @@ func (s *Service) RenderTicketEventWContentInTableRow(ctx context.Context, param
 type ParamsRenderTicketEvents struct {
 	Events ticket.Events
 
+	RouteGetTicket        string
 	CSSIDTicketEventsBody string
+
+	TargetsSwapSearch []string
 }
 
 func (s *Service) TableItemsBodyForTicketEvents(ctx context.Context, params *ParamsRenderTicketEvents) g.Node {
@@ -100,12 +112,19 @@ type paramsTableBodyForTicketEvents struct {
 func (s *Service) tableBodyForTicketEvents(ctx context.Context, params *paramsTableBodyForTicketEvents) g.Node {
 	result := make([]g.Node, len(params.RenderInfo.Events), len(params.RenderInfo.Events))
 
+	targetsMultiswap := NewMultiswap(
+		params.RenderInfo.TargetsSwapSearch,
+	)
+
 	for ix, item := range params.RenderInfo.Events {
 		result[ix] = params.Renderer(
 			ctx,
 			&ParamsTicketEventAsHTML{
 				TicketEvent: item,
 				Index:       ix + 1,
+
+				RouteGetTicket:   params.RenderInfo.RouteGetTicket,
+				TargetsMultiswap: targetsMultiswap,
 			},
 		)
 	}

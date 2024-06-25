@@ -51,8 +51,14 @@ func (a *App) TableWithTickets(ctx context.Context, tickets ticket.Tickets) []g.
 					&srender.ParamsRenderTickets{
 						Tickets: tickets,
 
-						RouteTicket:     constants.RouteTicket,
+						RouteGetTicket:  constants.RouteGetTicket,
 						CSSIDTicketBody: constants.IDItemsTableBody,
+
+						TargetsSwapSearch: []string{
+							constants.IDContainerSearchItems,
+							constants.IDItemsTableHead,
+							constants.IDItemsTableBody,
+						},
 					},
 				),
 			},
@@ -74,8 +80,14 @@ func (a *App) HTMLWithTickets(ctx context.Context, tickets ticket.Tickets) []g.N
 			&srender.ParamsRenderTickets{
 				Tickets: tickets,
 
-				RouteTicket:     constants.RouteTicket,
+				RouteGetTicket:  constants.RouteGetTicket,
 				CSSIDTicketBody: constants.IDItemsTableBody,
+
+				TargetsSwapSearch: []string{
+					constants.IDContainerSearchItems,
+					constants.IDItemsTableHead,
+					constants.IDItemsTableBody,
+				},
 			},
 		),
 	}

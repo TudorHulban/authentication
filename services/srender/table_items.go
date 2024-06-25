@@ -49,7 +49,7 @@ func (s *Service) HTMLTableItemsForTickets(ctx context.Context, params *ParamsHT
 			&ParamsRenderTickets{
 				Tickets: params.Tickets,
 
-				RouteTicket:     params.RouteTickets,
+				RouteGetTicket:  params.RouteTickets,
 				CSSIDTicketBody: params.CSSIDTicketBody,
 			},
 		),

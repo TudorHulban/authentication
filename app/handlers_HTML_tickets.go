@@ -46,8 +46,14 @@ func (a *App) HandlerHTMLTicketsTableBody(c *fiber.Ctx) error {
 					&srender.ParamsRenderTickets{
 						Tickets: reconstructedTickets,
 
-						RouteTicket:     constants.RouteTickets,
+						RouteGetTicket:  constants.RouteGetTicket,
 						CSSIDTicketBody: constants.IDItemsTableBody,
+
+						TargetsSwapSearch: []string{
+							constants.IDContainerSearchItems,
+							constants.IDItemsTableHead,
+							constants.IDItemsTableBody,
+						},
 					},
 				).
 				Render(c)
@@ -69,8 +75,14 @@ func (a *App) HandlerHTMLTicketsTableBody(c *fiber.Ctx) error {
 			&srender.ParamsRenderTickets{
 				Tickets: reconstructedTickets,
 
-				RouteTicket:     constants.RouteTickets,
+				RouteGetTicket:  constants.RouteGetTicket,
 				CSSIDTicketBody: constants.IDItemsTableBody,
+
+				TargetsSwapSearch: []string{
+					constants.IDContainerSearchItems,
+					constants.IDItemsTableHead,
+					constants.IDItemsTableBody,
+				},
 			},
 		).
 		Render(c)
@@ -89,15 +101,16 @@ func (a *App) HandlerHTMLTicketsTable(c *fiber.Ctx) error {
 		) {
 			return c.Send(
 				srender.RenderNodes(
-					a.serviceRender.HTMLTableItemsForTickets(
-						c.Context(),
-						&srender.ParamsHTMLTableItemsForTickets{
-							IDItemsTableHead: constants.IDItemsTableHead,
-							RouteTickets:     constants.RouteTickets,
-							CSSIDTicketBody:  constants.IDItemsTableBody,
-							Tickets:          reconstructedTickets,
-						},
-					)...,
+					a.serviceRender.
+						HTMLTableItemsForTickets(
+							c.Context(),
+							&srender.ParamsHTMLTableItemsForTickets{
+								IDItemsTableHead: constants.IDItemsTableHead,
+								RouteTickets:     constants.RouteTickets,
+								CSSIDTicketBody:  constants.IDItemsTableBody,
+								Tickets:          reconstructedTickets,
+							},
+						)...,
 				),
 			)
 		}
@@ -112,14 +125,12 @@ func (a *App) HandlerHTMLTicketsTable(c *fiber.Ctx) error {
 			)
 	}
 
-	responseBytes := srender.RenderNodes(
-		a.HTMLWithTickets(
-			c.Context(),
-			reconstructedTickets,
-		)...,
-	)
-
 	return c.Send(
-		responseBytes,
+		srender.RenderNodes(
+			a.HTMLWithTickets(
+				c.Context(),
+				reconstructedTickets,
+			)...,
+		),
 	)
 }
