@@ -2,6 +2,7 @@ package fixtures
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
@@ -38,12 +39,16 @@ func FixtureTicketWEvents(ctx context.Context, piers *PiersFixtureTicketWEvents,
 
 	loremIpsumGenerator := loremipsum.New()
 
-	for range params.NumberEvents {
+	for ix := range params.NumberEvents {
 		if errAddEvent := piers.ServiceTicket.AddEvent(
 			ctx,
 
 			&sticket.ParamsAddEvent{
-				EventContent:   loremIpsumGenerator.Sentence(),
+				EventContent: fmt.Sprintf(
+					"Event %d\n%s",
+					ix+1,
+					loremIpsumGenerator.Sentence(),
+				),
 				OpenedByUserID: params.TicketOpenedByUserID,
 
 				TicketID: idTicket,

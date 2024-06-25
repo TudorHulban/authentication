@@ -362,6 +362,13 @@ button:hover {
   white-space: nowrap;
 }
 
+button {
+  user-select: none;
+}
+
+label {
+  user-select: none;
+}
 
 @media (max-width: 1000px) {
   body {

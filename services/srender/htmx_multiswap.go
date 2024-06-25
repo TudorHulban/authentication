@@ -8,6 +8,7 @@ import (
 	g "github.com/maragudk/gomponents"
 )
 
+// no input validation.
 func NewMultiswap(idsElements []string) string {
 	idsSanitized := make([]string, len(idsElements), len(idsElements))
 

@@ -7,20 +7,26 @@ import (
 	html "github.com/maragudk/gomponents/html"
 )
 
-type ParamsNewFormSearchTicket struct {
+type ParamsNewFormSearchTicketCreateEvent struct {
 	TextForm  string
 	TextInput string
 
-	IDEnclosingDiv  string
-	IDInputTicketID string
+	IDEnclosingDiv      string
+	IDInputTicketID     string
+	IDInputEventContent string
 
 	ActionButtonSearch string
 	ClassButtonSearch  string
 	LabelButtonSearch  string
 	TargetsSwapSearch  []string
+
+	ActionButtonCreateTicketEvent string
+	ClassButtonCreateTicketEvent  string
+	LabelButtonCreateTicketEvent  string
+	TargetsSwapCreateTicketEvent  []string
 }
 
-func (s *Service) NewFormSearchTicket(params *ParamsNewFormSearchTicket) g.Node {
+func (s *Service) NewFormSearchTicketCreateEvent(params *ParamsNewFormSearchTicketCreateEvent) g.Node {
 	return newFormGeneric(
 		&paramsNewFormGeneric{
 			TextForm: params.TextForm,
@@ -68,6 +74,39 @@ func (s *Service) NewFormSearchTicket(params *ParamsNewFormSearchTicket) g.Node 
 						params.LabelButtonSearch,
 					),
 				),
+
+				html.Button(
+					g.Attr(
+						"type",
+						"submit",
+					),
+
+					g.Attr(
+						"hx-post",
+						params.ActionButtonCreateTicketEvent,
+					),
+
+					g.Attr(
+						"hx-swap",
+						NewMultiswap(
+							params.TargetsSwapCreateTicketEvent,
+						),
+					),
+
+					g.Attr(
+						"hx-require",
+						NewMultiswap(
+							[]string{
+								params.IDInputTicketID,
+								params.IDInputEventContent,
+							},
+						),
+					),
+
+					g.Text(
+						params.LabelButtonCreateTicketEvent,
+					),
+				),
 			},
 
 			Elements: []*ElementInput{
@@ -79,6 +118,23 @@ func (s *Service) NewFormSearchTicket(params *ParamsNewFormSearchTicket) g.Node 
 					TypeInput:   "text",
 
 					TextInput: params.TextInput,
+				},
+				{
+					CSSClassDiv: "form-group",
+					CSSIDInput:  constants.IDSearchItemsInputID,
+
+					ElementName: "Event type",
+					TypeInput:   "text",
+				},
+				{
+					CSSClassDiv: "form-group",
+					CSSIDInput:  constants.IDTicketEventContent,
+
+					ElementName: "Event content",
+					TypeInput:   "text",
+
+					TextInput:  params.TextInput,
+					IsTextArea: true,
 				},
 			},
 		},

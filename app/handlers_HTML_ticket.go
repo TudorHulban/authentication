@@ -77,6 +77,7 @@ func (a *App) HandlerHTMLTicketTableBody(c *fiber.Ctx) error {
 		Render(c)
 }
 
+// Called from other rows.
 func (a *App) HandlerHTMLTicketIDFull(c *fiber.Ctx) error {
 	userLogged, errGetUser := appuser.ExtractLoggedUserFrom(c.Context())
 	if errGetUser != nil {
