@@ -105,6 +105,10 @@ body {
   height: 100vh;
 }
 
+#container-search {
+  width: 300px;
+}
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -307,6 +311,10 @@ body {
 
   margin-top: 10px;
   margin-right: 10px;
+
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
 #searchForm .form-group label {
@@ -348,6 +356,10 @@ button {
   user-select: none;
 }
 
+textarea {
+  min-height: 70px;
+}
+
 button:hover {
   background-color: var(--color-complementary-2);
   color: var(--color-primary);
@@ -366,6 +378,10 @@ button:hover {
 
 
 label {
+  user-select: none;
+}
+
+th {
   user-select: none;
 }
 
