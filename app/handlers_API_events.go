@@ -2,6 +2,8 @@ package app
 
 import (
 	appuser "github.com/TudorHulban/authentication/domain/app-user"
+	"github.com/TudorHulban/authentication/helpers"
+	"github.com/TudorHulban/authentication/services/srender"
 	"github.com/TudorHulban/authentication/services/sticket"
 	"github.com/gofiber/fiber/v2"
 )
@@ -19,15 +21,31 @@ func (a *App) HandlerAddEvent(c *fiber.Ctx) error {
 			)
 	}
 
-	var params sticket.ParamsAddEvent
+	responseForm, errCr := helpers.ParseMultipartForm(
+		c.BodyRaw(),
+		c.GetReqHeaders(),
+	)
+	if errCr != nil {
+		return c.Status(fiber.StatusInternalServerError).
+			JSON(
+				&fiber.Map{
+					"success": false,
+					"error":   errCr.Error(),
+					"handler": "HandlerAddEvent - helpers.ParseMultipartForm", // development only
+				},
+			)
+	}
 
-	if errValidateBody := c.BodyParser(&params); errValidateBody != nil {
+	params, errCrParams := sticket.NewParamsAddEvent(
+		responseForm,
+	)
+	if errCrParams != nil {
 		return c.Status(fiber.StatusBadRequest).
 			JSON(
 				&fiber.Map{
 					"success": false,
-					"error":   errValidateBody,
-					"handler": "HandlerAddEvent - c.BodyParser", // development only
+					"error":   errCrParams.Error(),
+					"handler": "HandlerAddEvent - sticket.NewParamsAddEvent", // development only
 				},
 			)
 	}
@@ -36,7 +54,7 @@ func (a *App) HandlerAddEvent(c *fiber.Ctx) error {
 
 	errAddEvent := a.ServiceTicket.AddEvent(
 		c.Context(),
-		&params,
+		params,
 	)
 	if errAddEvent != nil {
 		return c.Status(fiber.StatusInternalServerError).
@@ -44,10 +62,35 @@ func (a *App) HandlerAddEvent(c *fiber.Ctx) error {
 				&fiber.Map{
 					"success": false,
 					"error":   errAddEvent,
-					"handler": "HandlerAddEvent - serviceTask.CreateTask", // development only
+					"handler": "HandlerAddEvent - ServiceTicket.AddEvent", // development only
 				},
 			)
 	}
 
-	return c.SendStatus(fiber.StatusOK)
+	reconstructedTicketEvents, errGetTicketEvents := a.ServiceTicket.GetEventsForTicketID(
+		c.Context(),
+		params.TicketID,
+	)
+	if errGetTicketEvents != nil {
+		return c.Status(
+			fiber.StatusInternalServerError).
+			JSON(
+				&fiber.Map{
+					"success": false,
+					"error":   errGetTicketEvents.Error(),
+				},
+			)
+	}
+
+	return c.Send(
+		srender.RenderNodes(
+			a.HTMLWithTicketEventsWContent(
+				c.Context(),
+				&ParamsHTMLWithTicketEventsWContent{
+					TicketEvents: reconstructedTicketEvents,
+					TicketID:     params.TicketID,
+				},
+			)...,
+		),
+	)
 }

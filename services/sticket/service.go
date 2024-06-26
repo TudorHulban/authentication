@@ -3,8 +3,10 @@ package sticket
 import (
 	"context"
 	"strconv"
+	"strings"
 	"time"
 
+	"github.com/TudorHulban/authentication/app/constants"
 	"github.com/TudorHulban/authentication/apperrors"
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
@@ -218,6 +220,39 @@ type ParamsAddEvent struct {
 
 	TicketID       helpers.PrimaryKey `json:"ticketid" valid:"required"`
 	OpenedByUserID helpers.PrimaryKey `valid:"required"`
+}
+
+func NewParamsAddEvent(responseForm map[string]string) (*ParamsAddEvent, error) {
+	var withTicketID helpers.PrimaryKey
+
+	ticketID, exists := responseForm["ticketid"]
+	if exists {
+		var errConv error
+
+		withTicketID, errConv = helpers.NewPrimaryKey(ticketID)
+		if errConv != nil {
+			return nil,
+				apperrors.ErrValidation{
+					Issue:  errConv,
+					Caller: "NewParamsAddEvent",
+				}
+		}
+	}
+
+	var withEventContent string
+
+	eventContent, exists := responseForm[strings.ToLower(
+		constants.LabelTicketEventContent,
+	)]
+	if exists {
+		withEventContent = eventContent
+	}
+
+	return &ParamsAddEvent{
+			TicketID:     withTicketID,
+			EventContent: withEventContent,
+		},
+		nil
 }
 
 func (s *Service) AddEvent(ctx context.Context, params *ParamsAddEvent) error {

@@ -6,5 +6,5 @@ import (
 
 func UnixNanoTo(timestamp int64) string {
 	return time.Unix(0, timestamp).
-		Format("2006, January 02 HH15:04:05")
+		Format("2006, Jan 02 15:04:05")
 }

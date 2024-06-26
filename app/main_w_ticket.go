@@ -29,8 +29,9 @@ func (a *App) formSearchTicketCreateEvent(ticketID helpers.PrimaryKey) g.Node {
 				constants.IDItemsTableBody,
 			},
 
-			IDEnclosingDiv:  constants.IDContainerSearchItems,
-			IDInputTicketID: constants.IDSearchItemsInputID,
+			IDEnclosingDiv:      constants.IDContainerSearchItems,
+			IDInputTicketID:     constants.IDSearchItemsInputID,
+			IDInputEventContent: constants.IDTicketEventContent,
 		},
 	)
 }

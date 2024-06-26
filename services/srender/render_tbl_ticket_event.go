@@ -110,22 +110,24 @@ type paramsTableBodyForTicketEvents struct {
 }
 
 func (s *Service) tableBodyForTicketEvents(ctx context.Context, params *paramsTableBodyForTicketEvents) g.Node {
-	result := make([]g.Node, len(params.RenderInfo.Events), len(params.RenderInfo.Events))
-
 	targetsMultiswap := NewMultiswap(
 		params.RenderInfo.TargetsSwapSearch,
 	)
 
-	for ix, item := range params.RenderInfo.Events {
-		result[ix] = params.Renderer(
-			ctx,
-			&ParamsTicketEventAsHTML{
-				TicketEvent: item,
-				Index:       ix + 1,
+	var result []g.Node
 
-				RouteGetTicket:   params.RenderInfo.RouteGetTicket,
-				TargetsMultiswap: targetsMultiswap,
-			},
+	for ix := len(params.RenderInfo.Events) - 1; ix >= 0; ix-- {
+		result = append(result,
+			params.Renderer(
+				ctx,
+				&ParamsTicketEventAsHTML{
+					TicketEvent: params.RenderInfo.Events[ix],
+					Index:       ix + 1,
+
+					RouteGetTicket:   params.RenderInfo.RouteGetTicket,
+					TargetsMultiswap: targetsMultiswap,
+				},
+			),
 		)
 	}
 

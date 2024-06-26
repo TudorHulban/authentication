@@ -344,6 +344,8 @@ button {
 
   cursor: pointer;
   font-size: 1em;
+
+  user-select: none;
 }
 
 button:hover {
@@ -362,12 +364,14 @@ button:hover {
   white-space: nowrap;
 }
 
-button {
-  user-select: none;
-}
 
 label {
   user-select: none;
+}
+
+#ticket-event-content {
+  padding: 5px;
+  min-width: 160px;
 }
 
 @media (max-width: 1000px) {
