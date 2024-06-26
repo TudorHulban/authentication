@@ -8,8 +8,8 @@ import (
 )
 
 type ParamsNewFormSearchTicketCreateEvent struct {
-	TextForm  string
-	TextInput string
+	TextForm          string
+	TextInputTicketID string
 
 	IDEnclosingDiv      string
 	IDInputTicketID     string
@@ -117,7 +117,7 @@ func (s *Service) NewFormSearchTicketCreateEvent(params *ParamsNewFormSearchTick
 					ElementName: "TicketID",
 					TypeInput:   "text",
 
-					TextInput: params.TextInput,
+					TextInput: params.TextInputTicketID,
 				},
 				{
 					CSSClassDiv: "form-group",
@@ -133,7 +133,6 @@ func (s *Service) NewFormSearchTicketCreateEvent(params *ParamsNewFormSearchTick
 					ElementName: "Event content",
 					TypeInput:   "text",
 
-					TextInput:  params.TextInput,
 					IsTextArea: true,
 				},
 			},

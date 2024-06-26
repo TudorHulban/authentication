@@ -112,9 +112,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     const addDblClickInputClearerListener = (searchItem) => {
         searchItem.addEventListener('dblclick', event => {
-            const inputs = searchItem.getElementsByTagName('input');
+            const elInputs = searchItem.getElementsByTagName('input');
             
-            for (let input of inputs) {
+            for (let input of elInputs) {
                 input.value = "";
             }
         });

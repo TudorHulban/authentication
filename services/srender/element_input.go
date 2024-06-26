@@ -47,8 +47,6 @@ func (el ElementInput) Raw() g.Node {
 
 	if !el.IsTextArea {
 		if len(el.TextInput) > 0 && el.TextInput != "0" {
-			fmt.Println(el.TextInput)
-
 			result[2] = fmt.Sprintf(
 				`<input type="%s" id="%s" name="%s" value="%s"></div>`,
 				el.TypeInput,

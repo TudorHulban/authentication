@@ -54,11 +54,7 @@ func (a *App) TableWithTickets(ctx context.Context, tickets ticket.Tickets) []g.
 						RouteGetTicket:  constants.RouteGetTicket,
 						CSSIDTicketBody: constants.IDItemsTableBody,
 
-						TargetsSwapSearch: []string{
-							constants.IDContainerSearchItems,
-							constants.IDItemsTableHead,
-							constants.IDItemsTableBody,
-						},
+						TargetsSwapSearch: swapTargetsBodyTicket,
 					},
 				),
 			},
@@ -83,11 +79,7 @@ func (a *App) HTMLWithTickets(ctx context.Context, tickets ticket.Tickets) []g.N
 				RouteGetTicket:  constants.RouteGetTicket,
 				CSSIDTicketBody: constants.IDItemsTableBody,
 
-				TargetsSwapSearch: []string{
-					constants.IDContainerSearchItems,
-					constants.IDItemsTableHead,
-					constants.IDItemsTableBody,
-				},
+				TargetsSwapSearch: swapTargetsBodyTicket,
 			},
 		),
 	}

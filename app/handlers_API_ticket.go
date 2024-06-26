@@ -86,8 +86,10 @@ func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 					reconstructedTicket,
 				},
 
-				RouteGetTicket:  a.baseURL() + constants.RouteTickets,
+				RouteGetTicket:  constants.RouteGetTicket,
 				CSSIDTicketBody: constants.IDItemsTableBody,
+
+				TargetsSwapSearch: swapTargetsBodyTicket,
 			},
 		).
 		Render(c)

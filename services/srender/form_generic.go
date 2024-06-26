@@ -9,7 +9,6 @@ type paramsNewFormGeneric struct {
 	TextForm string
 
 	IDForm         string
-	ActionForm     string // TODO: review if needed
 	HTTPMethodForm string // TODO: review if needed
 	IDEnclosingDiv string
 

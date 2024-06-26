@@ -13,21 +13,17 @@ import (
 func (a *App) formSearchTicketCreateEvent(ticketID helpers.PrimaryKey) g.Node {
 	return a.serviceRender.NewFormSearchTicketCreateEvent(
 		&srender.ParamsNewFormSearchTicketCreateEvent{
-			TextForm:  "Search Ticket / Create Event",
-			TextInput: ticketID.String(),
+			TextForm:          "Search Ticket / Create Event",
+			TextInputTicketID: ticketID.String(),
 
 			ActionButtonSearch:            constants.RouteGetTicket,
 			ActionButtonCreateTicketEvent: constants.RouteTicketEvent,
 
 			LabelButtonSearch:            "Search",
-			LabelButtonCreateTicketEvent: "Create event",
+			LabelButtonCreateTicketEvent: constants.LabelTicketEventContent,
 
-			TargetsSwapSearch: []string{
-				constants.IDItemsTableBody,
-			},
-			TargetsSwapCreateTicketEvent: []string{
-				constants.IDItemsTableBody,
-			},
+			TargetsSwapSearch:            swapTargetsBodyTicket,
+			TargetsSwapCreateTicketEvent: swapTargetsBodyTicket,
 
 			IDEnclosingDiv:      constants.IDContainerSearchItems,
 			IDInputTicketID:     constants.IDSearchItemsInputID,
