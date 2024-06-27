@@ -67,6 +67,24 @@ func (a *App) HandlerAddEvent(c *fiber.Ctx) error {
 			)
 	}
 
+	reconstructedTicket, errGetTicket := a.ServiceTicket.GetTicketByID(
+		c.Context(),
+		&sticket.ParamsGetTicketByID{
+			TicketID:     params.TicketID.String(),
+			UserLoggedID: userLogged.PrimaryKey,
+		},
+	)
+	if errGetTicket != nil {
+		return c.Status(fiber.StatusInternalServerError).
+			JSON(
+				&fiber.Map{
+					"success": false,
+					"error":   errGetTicket,
+					"handler": "HandlerAddEvent - ServiceTicket.GetTicketByID", // development only
+				},
+			)
+	}
+
 	reconstructedTicketEvents, errGetTicketEvents := a.ServiceTicket.GetEventsForTicketID(
 		c.Context(),
 		params.TicketID,
@@ -88,7 +106,7 @@ func (a *App) HandlerAddEvent(c *fiber.Ctx) error {
 				c.Context(),
 				&ParamsHTMLWithTicketEventsWContent{
 					TicketEvents: reconstructedTicketEvents,
-					TicketID:     params.TicketID,
+					Ticket:       reconstructedTicket,
 				},
 			)...,
 		),

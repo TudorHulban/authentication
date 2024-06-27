@@ -129,7 +129,7 @@ func (a *App) HandlerHTMLTicketIDFull(c *fiber.Ctx) error {
 				c.Context(),
 				&ParamsHTMLWithTicketEventsWContent{
 					TicketEvents: reconstructedTicketEvents,
-					TicketID:     reconstructedTicket.PrimaryKey,
+					Ticket:       reconstructedTicket,
 				},
 			)...,
 		),

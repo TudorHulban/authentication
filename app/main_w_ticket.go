@@ -10,11 +10,11 @@ import (
 	g "github.com/maragudk/gomponents"
 )
 
-func (a *App) formSearchTicketCreateEvent(ticketID helpers.PrimaryKey) g.Node {
+func (a *App) formSearchTicketCreateEvent(ticket ticket.Ticket) g.Node {
 	return a.serviceRender.NewFormSearchTicketCreateEvent(
 		&srender.ParamsNewFormSearchTicketCreateEvent{
 			TextForm:          "Search Ticket / Create Event",
-			TextInputTicketID: ticketID.String(),
+			TextInputTicketID: ticket.PrimaryKey.String(),
 
 			ActionButtonSearch:            constants.RouteGetTicket,
 			ActionButtonCreateTicketEvent: constants.RouteTicketEvent,
@@ -34,13 +34,13 @@ func (a *App) formSearchTicketCreateEvent(ticketID helpers.PrimaryKey) g.Node {
 
 type ParamsHTMLWithTicketEventsWContent struct {
 	TicketEvents ticket.Events
-	TicketID     helpers.PrimaryKey
+	Ticket       *ticket.Ticket
 }
 
 func (a *App) HTMLWithTicketEventsWContent(ctx context.Context, params *ParamsHTMLWithTicketEventsWContent) []g.Node {
 	return []g.Node{
 		a.formSearchTicketCreateEvent(
-			helpers.Sanitize(params).TicketID,
+			helpers.Sanitize(params).Ticket.PrimaryKey,
 		),
 
 		a.serviceRender.TableItemsHeadForTicket(

@@ -123,6 +123,8 @@ func (s *Service) NewFormSearchTicketCreateEvent(params *ParamsNewFormSearchTick
 
 					ElementName: "Event type",
 					TypeInput:   "text",
+
+					SelectValues: nil,
 				},
 				{
 					CSSClassDiv: "form-group",

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/TudorHulban/authentication/helpers"
 	g "github.com/maragudk/gomponents"
 )
 
@@ -14,7 +15,17 @@ type ElementInput struct {
 	TypeInput   string
 	TextInput   string
 
+	SelectValues []string
+
 	IsTextArea bool
+}
+
+func option(value string) string {
+	return fmt.Sprintf(
+		`<option value="%s">%s</option>`,
+		strings.ToLower(value),
+		value,
+	)
 }
 
 func (el ElementInput) Raw() g.Node {
@@ -45,26 +56,47 @@ func (el ElementInput) Raw() g.Node {
 		)
 	}
 
-	if !el.IsTextArea {
-		if len(el.TextInput) > 0 && el.TextInput != "0" {
-			result[2] = fmt.Sprintf(
-				`<input type="%s" id="%s" name="%s" value="%s"></div>`,
-				el.TypeInput,
-				el.CSSIDInput,
-				toLowerElementName,
-				el.TextInput,
-			)
-		} else {
-			result[2] = fmt.Sprintf(
-				`<input type="%s" id="%s" name="%s"></div>`,
-				el.TypeInput,
-				el.CSSIDInput,
-				toLowerElementName,
-			)
-		}
-	} else {
+	if el.IsTextArea {
 		result[2] = fmt.Sprintf(
 			`<textarea id="%s" name="%s"></textarea></div>`,
+			el.CSSIDInput,
+			toLowerElementName,
+		)
+
+		return g.Raw(
+			strings.Join(result[:], "\n"),
+		)
+	}
+
+	if len(el.SelectValues) > 0 {
+		result[2] = fmt.Sprintf(
+			`<select id="%s" name="%s">%s</select></div>`,
+			el.CSSIDInput,
+			toLowerElementName,
+
+			strings.Join(
+				helpers.ForEach(el.SelectValues, option),
+				"\n",
+			),
+		)
+
+		return g.Raw(
+			strings.Join(result[:], "\n"),
+		)
+	}
+
+	if len(el.TextInput) > 0 && el.TextInput != "0" {
+		result[2] = fmt.Sprintf(
+			`<input type="%s" id="%s" name="%s" value="%s"></div>`,
+			el.TypeInput,
+			el.CSSIDInput,
+			toLowerElementName,
+			el.TextInput,
+		)
+	} else {
+		result[2] = fmt.Sprintf(
+			`<input type="%s" id="%s" name="%s"></div>`,
+			el.TypeInput,
 			el.CSSIDInput,
 			toLowerElementName,
 		)
