@@ -3,7 +3,6 @@ package srender
 import (
 	"github.com/TudorHulban/authentication/app/constants"
 	"github.com/TudorHulban/authentication/helpers"
-	"github.com/gofiber/fiber/v2"
 	g "github.com/maragudk/gomponents"
 	html "github.com/maragudk/gomponents/html"
 )
@@ -32,10 +31,7 @@ func (s *Service) NewFormSearchCreateTickets(params *ParamsNewFormSearchCreateTi
 			TextForm: params.TextForm,
 
 			IDForm:         constants.IDSearchItems,
-			HTTPMethodForm: fiber.MethodGet,
 			IDEnclosingDiv: params.IDEnclosingDiv,
-
-			IDTarget: constants.IDItemsTableBody,
 
 			Buttons: []g.Node{
 				html.Button(

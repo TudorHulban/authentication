@@ -2,20 +2,23 @@ package ticket
 
 import "github.com/TudorHulban/authentication/helpers"
 
+// TODO: i18n
 const (
-	EventTypeInit         = "open ticket"
+	EventTypeInit         = "open"
 	EventTypeInternalNote = "internal note"
 	EventTypeAnswer       = "answer"
 	EventType3rdParty     = "3rd party"
 	EventTypeBlocks       = "blocking"
 	EventTypeUnBlocks     = "unblocking"
+	EventTypeEscalation   = "escalation"
+	EventTypeClose        = "closure"
 )
 
 var setEventType = helpers.NewImmutableSetFrom[uint8, string](
 	[]helpers.KV[uint8, string]{
 		{
 			Key:   0,
-			Value: EventTypeInternalNote,
+			Value: EventTypeInit,
 		},
 		{
 			Key:   1,
@@ -36,6 +39,14 @@ var setEventType = helpers.NewImmutableSetFrom[uint8, string](
 		{
 			Key:   5,
 			Value: EventTypeUnBlocks,
+		},
+		{
+			Key:   6,
+			Value: EventTypeEscalation,
+		},
+		{
+			Key:   7,
+			Value: EventTypeClose,
 		},
 	},
 )

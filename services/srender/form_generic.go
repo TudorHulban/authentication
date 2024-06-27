@@ -9,10 +9,7 @@ type paramsNewFormGeneric struct {
 	TextForm string
 
 	IDForm         string
-	HTTPMethodForm string // TODO: review if needed
 	IDEnclosingDiv string
-
-	IDTarget string // TODO: review if needed
 
 	Elements InputElements
 

@@ -34,8 +34,6 @@ func (s *Service) NewFormSearchTicketCreateEvent(params *ParamsNewFormSearchTick
 			IDForm:         constants.IDSearchItems,
 			IDEnclosingDiv: params.IDEnclosingDiv,
 
-			IDTarget: constants.IDItemsTableBody,
-
 			Buttons: []g.Node{
 				html.Button(
 					g.Attr(

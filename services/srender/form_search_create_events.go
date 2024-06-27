@@ -2,7 +2,6 @@ package srender
 
 import (
 	"github.com/TudorHulban/authentication/app/constants"
-	"github.com/gofiber/fiber/v2"
 	g "github.com/maragudk/gomponents"
 	html "github.com/maragudk/gomponents/html"
 )
@@ -23,10 +22,7 @@ func (s *Service) NewFormSearchTicketEvents(params *ParamsNewFormSearchTicketEve
 			TextForm: params.TextForm,
 
 			IDForm:         constants.IDSearchItems,
-			HTTPMethodForm: fiber.MethodGet,
 			IDEnclosingDiv: params.IDEnclosingDiv,
-
-			IDTarget: constants.IDItemsTableBody,
 
 			Buttons: []g.Node{
 				html.Button(
