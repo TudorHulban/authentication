@@ -1,6 +1,8 @@
 package ticket
 
-import "github.com/TudorHulban/authentication/helpers"
+import (
+	"github.com/TudorHulban/authentication/helpers"
+)
 
 // TODO: i18n
 const (

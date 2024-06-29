@@ -2,14 +2,15 @@ package srender
 
 import (
 	"github.com/TudorHulban/authentication/app/constants"
+	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
 	g "github.com/maragudk/gomponents"
 	html "github.com/maragudk/gomponents/html"
 )
 
 type ParamsNewFormSearchTicketCreateEvent struct {
-	TextForm          string
-	TextInputTicketID string
+	TextForm string
+	Ticket   *ticket.Ticket
 
 	IDEnclosingDiv      string
 	IDInputTicketID     string
@@ -115,7 +116,7 @@ func (s *Service) NewFormSearchTicketCreateEvent(params *ParamsNewFormSearchTick
 					ElementName: "TicketID",
 					TypeInput:   "text",
 
-					TextInput: params.TextInputTicketID,
+					TextInput: helpers.Sanitize(params.Ticket).PrimaryKey.String(),
 				},
 				{
 					CSSClassDiv: "form-group",
@@ -124,7 +125,7 @@ func (s *Service) NewFormSearchTicketCreateEvent(params *ParamsNewFormSearchTick
 					ElementName: "Event type",
 					TypeInput:   "text",
 
-					SelectValues: nil,
+					SelectValues: []string{"1", "2"}, // get possible event types based on ticket type flow.
 				},
 				{
 					CSSClassDiv: "form-group",

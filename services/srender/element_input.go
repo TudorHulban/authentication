@@ -75,7 +75,7 @@ func (el ElementInput) Raw() g.Node {
 			toLowerElementName,
 
 			strings.Join(
-				helpers.ForEach(el.SelectValues, option),
+				helpers.ForEachSlice(el.SelectValues, option),
 				"\n",
 			),
 		)
