@@ -8,12 +8,24 @@ type EventInfo struct {
 	OpenedByUserID helpers.PrimaryKey
 }
 
+type TicketEventTypeInfo struct {
+	DefaultEventTypeLevel uint8
+	ActualEventTypeLevel  uint8
+	Dependency            uint8
+}
+
+type TicketEventType struct {
+	EventType uint8
+
+	*TicketEventTypeInfo
+}
+
 type Event struct {
 	helpers.PrimaryKey
 
-	TicketPK        helpers.PrimaryKey
-	TicketEventType uint8 // internal note, answer, 3rd party
+	TicketPK helpers.PrimaryKey
 
+	*TicketEventType
 	*EventInfo
 }
 

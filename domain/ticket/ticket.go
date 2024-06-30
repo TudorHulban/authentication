@@ -7,7 +7,7 @@ import (
 )
 
 type TicketMetadata struct {
-	Status         TicketStatus       `json:",omitempty"`
+	// Status         TicketStatus       `json:",omitempty"`
 	OpenedByUserID helpers.PrimaryKey `json:",omitempty"`
 	CurrentOwner   helpers.PrimaryKey `json:",omitempty"`
 	Kind           TicketKind         `json:",omitempty"`

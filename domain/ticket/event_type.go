@@ -6,14 +6,17 @@ import (
 
 // TODO: i18n
 const (
-	EventTypeInit         = "open"
-	EventTypeInternalNote = "internal note"
-	EventTypeAnswer       = "answer"
-	EventType3rdParty     = "3rd party"
-	EventTypeBlocks       = "blocking"
-	EventTypeUnBlocks     = "unblocking"
-	EventTypeEscalation   = "escalation"
-	EventTypeClose        = "closure"
+	EventTypeInit                     = "Open"
+	EventTypeInWork                   = "In work"
+	EventTypeAnalysis                 = "Analysis"
+	EventTypeInternalNote             = "Internal note"
+	EventTypeWaitingFutherInformation = "WFI"
+	EventTypeResolution               = "Resolution"
+	EventType3rdParty                 = "3rd party"
+	EventTypeBlocks                   = "Blocking"
+	EventTypeUnBlocks                 = "Unblocking"
+	EventTypeEscalation               = "Escalation"
+	EventTypeClose                    = "Closure"
 )
 
 var setEventType = helpers.NewImmutableSetFrom[uint8, string](
@@ -28,7 +31,7 @@ var setEventType = helpers.NewImmutableSetFrom[uint8, string](
 		},
 		{
 			Key:   2,
-			Value: EventTypeAnswer,
+			Value: EventTypeResolution,
 		},
 		{
 			Key:   3,
