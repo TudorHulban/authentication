@@ -28,7 +28,8 @@ func InitializeApp(config *ParamsNewApp) (*App, error) {
 
 	serviceRender, errCr := srender.NewServiceRender(
 		&srender.PiersServiceRender{
-			ServiceUser: piers.ServiceUser,
+			ServiceUser:   piers.ServiceUser,
+			ServiceTicket: piers.ServiceTicket,
 		},
 	)
 	if errCr != nil {

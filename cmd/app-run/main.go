@@ -41,7 +41,7 @@ func main() {
 		)
 	}
 
-	fixtures.FixtureTicketWEvents(
+	_, errFixture := fixtures.FixtureTicketWEvents(
 		context.Background(),
 		&fixtures.PiersFixtureTicketWEvents{
 			ServiceTicket: app.ServiceTicket,
@@ -53,11 +53,18 @@ func main() {
 				time.Now().Second(),
 			),
 
-			TicketKind:           ticket.KindUndefined,
+			TicketKind:           ticket.KindTicket,
 			TicketOpenedByUserID: pkUser,
 			NumberEvents:         3,
 		},
 	)
+	if errFixture != nil {
+		fmt.Println(errFixture)
+
+		os.Exit(
+			apperrors.OSExitForFixtureIssues,
+		)
+	}
 
 	fmt.Println(
 		app.Start(),

@@ -25,7 +25,7 @@ type IStoreTicket interface {
 	GetTicketByID(ctx context.Context, ticketID helpers.PrimaryKey, result *ticket.TicketInfo) error
 	SearchTickets(ctx context.Context, params *paramsstores.ParamsSearchTickets) (ticket.Tickets, error)
 	SearchTicketEvents(ctx context.Context, params *paramsstores.ParamsSearchTicketEvents) (ticket.Events, error)
-	CloseTicket(ctx context.Context, ticketID helpers.PrimaryKey, status ticket.TicketStatus) error
+	CloseTicket(ctx context.Context, ticketID helpers.PrimaryKey) error
 
 	AddEvent(ctx context.Context, ticketID helpers.PrimaryKey, event *ticket.Event) error
 }

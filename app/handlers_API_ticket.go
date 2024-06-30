@@ -60,9 +60,9 @@ func (a *App) HandlerAddTicket(c *fiber.Ctx) error {
 			)
 	}
 
-	reconstructedTicket, errGet := a.ServiceTicket.GetTicketByID(
+	reconstructedTicket, errGet := a.ServiceTicket.GetTicketByIDString(
 		c.Context(),
-		&sticket.ParamsGetTicketByID{
+		&sticket.ParamsGetTicketByIDString{
 			TicketID:     pkConstructedTicket.String(),
 			UserLoggedID: userLogged.PrimaryKey,
 		},

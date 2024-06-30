@@ -49,6 +49,7 @@ func FixtureTicketWEvents(ctx context.Context, piers *PiersFixtureTicketWEvents,
 					ix+1,
 					loremIpsumGenerator.Sentence(),
 				),
+				EventType:      ticket.KindTicket.OpeningEventType,
 				OpenedByUserID: params.TicketOpenedByUserID,
 
 				TicketID: idTicket,

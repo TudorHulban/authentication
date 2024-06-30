@@ -11,7 +11,7 @@ var (
 	OSExitForApplicationIssues          = 6
 	OSExitForFileOperationsIssues       = 7
 	OSExitForGRPCIssues                 = 8
-	OSExitForSeederIssues               = 9
+	OSExitForFixtureIssues              = 9
 	OSExitForWebServerIssues            = 10
 	OSExitForControllerIssues           = 11
 	OSExitForLoggingIssues              = 12

@@ -1,43 +1,15 @@
 [
     {
-        "PrimaryKey": 17193226961821830001,
-        "Name": "Ticket 3816",
-        "OpenedByUserID": 17193226961821830000,
-        "CreatedAt": 1719322696182869311,
-        "UpdatedAt": 1719322696182869311,
-        "DeletedAt": {
-            "Int64": 0,
-            "Valid": false
-        }
-    },
-    {
-        "PrimaryKey": 17193951514821830001,
-        "Name": "T1",
-        "OpenedByUserID": 17193226961821830000,
-        "CreatedAt": 1719395151466893656,
-        "UpdatedAt": 1719395151466893656,
-        "DeletedAt": {
-            "Int64": 0,
-            "Valid": false
-        }
-    },
-    {
-        "PrimaryKey": 17193952610821830001,
-        "Name": "T2",
-        "OpenedByUserID": 17193226961821830000,
-        "CreatedAt": 1719395261077458441,
-        "UpdatedAt": 1719395261077458441,
-        "DeletedAt": {
-            "Int64": 0,
-            "Valid": false
-        }
-    },
-    {
-        "PrimaryKey": 17193955049821830001,
-        "Name": "T3",
-        "OpenedByUserID": 17193226961821830000,
-        "CreatedAt": 1719395504962408405,
-        "UpdatedAt": 1719395504962408405,
+        "PrimaryKey": 17197609325821830001,
+        "Name": "Ticket 2212",
+        "OpenedByUserID": 17197609325821830000,
+        "Kind": {
+            "Kind": 1,
+            "OpeningEventType": 1,
+            "ClosingEventType": 10
+        },
+        "CreatedAt": 1719760932503420706,
+        "UpdatedAt": 1719760932503420706,
         "DeletedAt": {
             "Int64": 0,
             "Valid": false

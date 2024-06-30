@@ -81,7 +81,6 @@ func (s *Service) CreateTicket(ctx context.Context, params *ParamsCreateTicket) 
 				Name: params.TicketName,
 
 				TicketMetadata: ticket.TicketMetadata{
-					Status:         ticket.StatusNew,
 					OpenedByUserID: params.OpenedByUserID,
 					Kind:           params.TicketKind,
 				},
@@ -101,12 +100,12 @@ func (s *Service) CreateTicket(ctx context.Context, params *ParamsCreateTicket) 
 		nil
 }
 
-type ParamsGetTicketByID struct {
+type ParamsGetTicketByIDString struct {
 	TicketID     string
 	UserLoggedID helpers.PrimaryKey
 }
 
-func (s *Service) GetTicketByID(ctx context.Context, params *ParamsGetTicketByID) (*ticket.Ticket, error) {
+func (s *Service) GetTicketByIDString(ctx context.Context, params *ParamsGetTicketByIDString) (*ticket.Ticket, error) {
 	numericPK, errConv := strconv.ParseUint(params.TicketID, 10, 64)
 	if errConv != nil {
 		return nil,
@@ -137,6 +136,34 @@ func (s *Service) GetTicketByID(ctx context.Context, params *ParamsGetTicketByID
 		nil
 }
 
+type ParamsGetTicketByIDNumeric struct {
+	TicketID     helpers.PrimaryKey
+	UserLoggedID helpers.PrimaryKey
+}
+
+// TODO: inject in string version
+func (s *Service) GetTicketByIDNumeric(ctx context.Context, params *ParamsGetTicketByIDNumeric) (*ticket.Ticket, error) {
+	var result ticket.TicketInfo
+
+	if errGet := s.store.GetTicketByID(
+		ctx,
+		params.TicketID,
+		&result,
+	); errGet != nil {
+		return nil,
+			apperrors.ErrService{
+				Issue:  errGet,
+				Caller: "GetTicketByIDNumeric - s.store.GetTicketByID",
+			}
+	}
+
+	return &ticket.Ticket{
+			PrimaryKey: params.TicketID,
+			TicketInfo: result,
+		},
+		nil
+}
+
 func (s *Service) SearchTickets(ctx context.Context, params *ticket.ParamsSearchTickets) (ticket.Tickets, error) {
 	if params == nil {
 		return s.store.SearchTickets(
@@ -158,22 +185,22 @@ func (s *Service) SearchTickets(ctx context.Context, params *ticket.ParamsSearch
 		}
 	}
 
-	var withStatus ticket.TicketStatus
+	// var withStatus ticket.TicketStatus
 
-	if params.WithStatus.Valid {
-		var errConv error
+	// if params.WithStatus.Valid {
+	// 	var errConv error
 
-		withStatus, errConv = ticket.NewTicketStatus(params.WithStatus.String)
-		if errConv != nil {
-			return nil, errConv
-		}
-	}
+	// 	withStatus, errConv = ticket.NewTicketStatus(params.WithStatus.String)
+	// 	if errConv != nil {
+	// 		return nil, errConv
+	// 	}
+	// }
 
 	return s.store.SearchTickets(
 		ctx,
 		&paramsstores.ParamsSearchTickets{
-			WithID:     withID,
-			WithStatus: withStatus,
+			WithID: withID,
+			// WithStatus: withStatus,
 		},
 	)
 }
@@ -207,16 +234,17 @@ func (s *Service) SearchTicketEvents(ctx context.Context, params *ticket.ParamsS
 	)
 }
 
-func (s *Service) CloseTicket(ctx context.Context, taskID helpers.PrimaryKey, status ticket.TicketStatus) error {
+func (s *Service) CloseTicket(ctx context.Context, ticketID helpers.PrimaryKey) error {
 	return s.store.CloseTicket(
 		ctx,
-		helpers.PrimaryKey(taskID),
-		status,
+		helpers.PrimaryKey(ticketID),
 	)
 }
 
 type ParamsAddEvent struct {
-	EventContent string `json:"eventcontent" valid:"required"`
+	EventContent         string `json:"eventcontent,omitempty" valid:"required"`
+	EventType            uint8  `json:"eventtype,omitempty" valid:"required"`
+	ActualEventTypeLevel uint8  `json:"omitempty"`
 
 	TicketID       helpers.PrimaryKey `json:"ticketid" valid:"required"`
 	OpenedByUserID helpers.PrimaryKey `valid:"required"`
@@ -263,6 +291,17 @@ func (s *Service) AddEvent(ctx context.Context, params *ParamsAddEvent) error {
 		}
 	}
 
+	reconstructedTicket, errGetTicket := s.GetTicketByIDNumeric(
+		ctx,
+		&ParamsGetTicketByIDNumeric{
+			TicketID:     params.TicketID,
+			UserLoggedID: params.OpenedByUserID,
+		},
+	)
+	if errGetTicket != nil {
+		return errGetTicket
+	}
+
 	return s.store.AddEvent(
 		ctx,
 		helpers.PrimaryKey(params.TicketID),
@@ -278,11 +317,22 @@ func (s *Service) AddEvent(ctx context.Context, params *ParamsAddEvent) error {
 				TimestampOfAdd: time.Now().UnixNano(),
 				OpenedByUserID: params.OpenedByUserID,
 			},
+
+			TicketEventType: ticket.TicketEventType{
+				EventType: params.EventType,
+				TicketEventTypeInfo: &ticket.TicketEventTypeInfo{
+					ActualEventTypeLevel: helpers.Coalesce(
+						ticket.EventType(params.ActualEventTypeLevel),
+						ticket.TicketKindToEventType[reconstructedTicket.Kind][ticket.EventType(params.EventType)].
+							DefaultEventTypeLevel,
+					),
+				},
+			},
 		},
 	)
 }
 
-func (s *Service) GetEventsForTicketID(ctx context.Context, ticketID helpers.PrimaryKey) ([]*ticket.Event, error) {
+func (s *Service) GetEventsForTicketID(ctx context.Context, ticketID helpers.PrimaryKey) (ticket.Events, error) {
 	return s.store.SearchTicketEvents(
 		ctx,
 		&paramsstores.ParamsSearchTicketEvents{

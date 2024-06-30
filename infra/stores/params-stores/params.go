@@ -9,7 +9,7 @@ type ParamsSearchTickets struct {
 	helpers.ParamsPagination
 
 	WithID     helpers.PrimaryKey
-	WithStatus ticket.TicketStatus
+	WithStatus uint8
 	WithKind   ticket.TicketKind
 
 	WithLastUpdateBefore int64

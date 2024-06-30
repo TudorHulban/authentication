@@ -9,9 +9,10 @@ type EventInfo struct {
 }
 
 type TicketEventTypeInfo struct {
-	DefaultEventTypeLevel uint8
-	ActualEventTypeLevel  uint8
-	Dependency            uint8
+	DefaultEventTypeLevel EventType
+	ActualEventTypeLevel  EventType
+	Dependencies          []uint8
+	AllowedNextEventTypes []uint8
 }
 
 type TicketEventType struct {
@@ -25,7 +26,7 @@ type Event struct {
 
 	TicketPK helpers.PrimaryKey
 
-	*TicketEventType
+	TicketEventType
 	*EventInfo
 }
 

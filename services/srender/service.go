@@ -2,15 +2,18 @@ package srender
 
 import (
 	"github.com/TudorHulban/authentication/helpers"
+	"github.com/TudorHulban/authentication/services/sticket"
 	"github.com/TudorHulban/authentication/services/suser"
 )
 
 type Service struct {
-	serviceUser *suser.Service
+	serviceUser   *suser.Service
+	serviceTicket *sticket.Service
 }
 
 type PiersServiceRender struct {
-	ServiceUser *suser.Service
+	ServiceUser   *suser.Service
+	ServiceTicket *sticket.Service
 }
 
 func NewServiceRender(piers *PiersServiceRender) (*Service, error) {
@@ -19,7 +22,8 @@ func NewServiceRender(piers *PiersServiceRender) (*Service, error) {
 	}
 
 	return &Service{
-			serviceUser: piers.ServiceUser,
+			serviceUser:   piers.ServiceUser,
+			serviceTicket: piers.ServiceTicket,
 		},
 		nil
 }

@@ -1,11 +1,15 @@
 package appuser
 
-import "github.com/TudorHulban/authentication/helpers"
+import (
+	"github.com/TudorHulban/authentication/domain/ticket"
+	"github.com/TudorHulban/authentication/helpers"
+)
 
 type UserInfo struct {
 	helpers.PrimaryKey
 
-	Name string
+	Name  string
+	Level ticket.EventType
 
 	helpers.Timestamp
 }

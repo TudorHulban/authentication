@@ -8,6 +8,7 @@ import (
 
 	"github.com/TudorHulban/authentication/domain/ticket"
 	"github.com/TudorHulban/authentication/helpers"
+	"github.com/TudorHulban/authentication/services/sticket"
 	g "github.com/maragudk/gomponents"
 )
 
@@ -29,6 +30,17 @@ func (s *Service) RenderTicketInTableRow(ctx context.Context, params *ParamsTick
 		fmt.Println(errGetUserInfo) //TODO: proper log
 	}
 
+	numericStatus, errGetStatus := s.serviceTicket.GetTicketStatus(
+		ctx,
+		&sticket.ParamsGetTicketStatus{
+			TicketID: params.Ticket.PrimaryKey,
+			UserInfo: *userInfo,
+		},
+	)
+	if errGetStatus != nil {
+		fmt.Println(errGetStatus)
+	}
+
 	return g.Rawf(
 		`<tr><td>%d</td><td><a href="#" hx-get="%s/%d" hx-swap="%s">%d</td><td>%s</a><td>%s</td><td>%s</td><td>%s</td></tr>`,
 
@@ -43,7 +55,7 @@ func (s *Service) RenderTicketInTableRow(ctx context.Context, params *ParamsTick
 
 		params.Ticket.Name,
 
-		params.Ticket.Status,
+		ticket.GetStringStatusFor(numericStatus),
 		userInfo.Name,
 		helpers.UnixNanoTo(
 			params.Ticket.UpdatedAt,

@@ -91,9 +91,9 @@ func (a *App) HandlerHTMLTicketIDFull(c *fiber.Ctx) error {
 			)
 	}
 
-	reconstructedTicket, errGetTicket := a.ServiceTicket.GetTicketByID(
+	reconstructedTicket, errGetTicket := a.ServiceTicket.GetTicketByIDString(
 		c.Context(),
-		&sticket.ParamsGetTicketByID{
+		&sticket.ParamsGetTicketByIDString{
 			TicketID:     c.Params("id"),
 			UserLoggedID: userLogged.PrimaryKey,
 		},

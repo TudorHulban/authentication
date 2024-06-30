@@ -4,56 +4,98 @@ import (
 	"github.com/TudorHulban/authentication/helpers"
 )
 
-// TODO: i18n
+type EventType uint8
+
 const (
-	EventTypeInit                     = "Open"
-	EventTypeInWork                   = "In work"
-	EventTypeAnalysis                 = "Analysis"
-	EventTypeInternalNote             = "Internal note"
-	EventTypeWaitingFutherInformation = "WFI"
-	EventTypeResolution               = "Resolution"
-	EventType3rdParty                 = "3rd party"
-	EventTypeBlocks                   = "Blocking"
-	EventTypeUnBlocks                 = "Unblocking"
-	EventTypeEscalation               = "Escalation"
-	EventTypeClose                    = "Closure"
+	LevelEndUser        = 1
+	LevelEndUserManager = 2
+	LevelEndUserVIP     = 3
+
+	LevelTeam           = 5
+	LevelAgent          = 6
+	LevelLead           = 7
+	LevelTeamManager    = 9
+	LevelProjectManager = 11
+	LevelGroupManager   = 14
+	LevelAccountManager = 16
+	LevelC              = 19
 )
 
-var setEventType = helpers.NewImmutableSetFrom[uint8, string](
-	[]helpers.KV[uint8, string]{
-		{
-			Key:   0,
-			Value: EventTypeInit,
-		},
+const (
+	EventTypeInit                     = EventType(1)
+	EventTypeWorkInProgress           = EventType(2)
+	EventTypeAnalysis                 = EventType(3)
+	EventTypeNoteInternal             = EventType(4)
+	EventTypeWaitingFutherInformation = EventType(5)
+	EventTypeResolution               = EventType(6)
+	EventTypeWith3rdParty             = EventType(7)
+	EventTypeBlocks                   = EventType(8)
+	EventTypeUnBlocks                 = EventType(9)
+	EventTypeEscalationInternal       = EventType(10)
+	EventTypeEscalationCustomer       = EventType(11)
+	EventTypeClose                    = EventType(12)
+)
+
+var setEventTypeUS = helpers.NewImmutableSetFrom[EventType, string](
+	[]helpers.KV[EventType, string]{
 		{
 			Key:   1,
-			Value: EventTypeInternalNote,
+			Value: "Open",
 		},
 		{
 			Key:   2,
-			Value: EventTypeResolution,
+			Value: "WIP",
 		},
 		{
 			Key:   3,
-			Value: EventType3rdParty,
+			Value: "Analysis",
 		},
 		{
 			Key:   4,
-			Value: EventTypeBlocks,
+			Value: "NI",
 		},
 		{
 			Key:   5,
-			Value: EventTypeUnBlocks,
+			Value: "WFI",
 		},
 		{
 			Key:   6,
-			Value: EventTypeEscalation,
+			Value: "Resolution",
 		},
 		{
 			Key:   7,
-			Value: EventTypeClose,
+			Value: "With 3rd party",
+		},
+		{
+			Key:   8,
+			Value: "Blocking",
+		},
+		{
+			Key:   9,
+			Value: "Unblocking",
+		},
+		{
+			Key:   10,
+			Value: "Escalation Internal",
+		},
+		{
+			Key:   11,
+			Value: "Escalation Customer",
+		},
+		{
+			Key:   12,
+			Value: "Close",
 		},
 	},
 )
 
-var SetEventType = setEventType
+var SetEventType = setEventTypeUS
+
+func GetStringStatusFor(numeric EventType) string {
+	value, exists := setEventTypeUS.Get(numeric)
+	if !exists {
+		return "unknown status" //TODO: add constant
+	}
+
+	return value
+}

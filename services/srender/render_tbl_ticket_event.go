@@ -29,7 +29,7 @@ func (s *Service) RenderTicketEventInTableRow(ctx context.Context, params *Param
 	}
 
 	return g.Rawf(
-		`<tr><td>%d</td><td><a href="#" hx-get="%s/%d" hx-swap="%s">%d</td><td>%d<td>%d</td><td>%s</td><td>%s</td></tr>`,
+		`<tr><td>%d</td><td><a href="#" hx-get="%s/%d" hx-swap="%s">%d</td><td>%d<td>%s</td><td>%s</td><td>%s</td></tr>`,
 
 		params.Index,
 
@@ -41,7 +41,9 @@ func (s *Service) RenderTicketEventInTableRow(ctx context.Context, params *Param
 		params.TicketEvent.TicketPK,
 		params.TicketEvent.PrimaryKey,
 
-		params.TicketEvent.TicketEventType,
+		ticket.GetStringStatusFor(
+			ticket.EventType(params.TicketEvent.TicketEventType.EventType),
+		),
 
 		userInfo.Name,
 		helpers.UnixNanoTo(
@@ -60,12 +62,14 @@ func (s *Service) RenderTicketEventWContentInTableRow(ctx context.Context, param
 	}
 
 	return g.Rawf(
-		`<tr><td>%d</td><td>%d<td>%d</td><td>%s</td><td>%s</td><td>%s</td></tr>`,
+		`<tr><td>%d</td><td>%d<td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>`,
 
 		params.Index,
 		params.TicketEvent.PrimaryKey,
 
-		params.TicketEvent.TicketEventType,
+		ticket.GetStringStatusFor(
+			ticket.EventType(params.TicketEvent.TicketEventType.EventType),
+		),
 
 		userInfo.Name,
 		helpers.UnixNanoTo(

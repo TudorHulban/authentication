@@ -75,7 +75,7 @@ func (s *StoreTickets) UpdateTicket(ctx context.Context, item *ticket.Ticket) er
 	return s.storeTickets.UpdateItem(item.PrimaryKey, item, ticket.GetIDTicket)
 }
 
-func (s *StoreTickets) CloseTicket(ctx context.Context, ticketID helpers.PrimaryKey, status ticket.TicketStatus) error {
+func (s *StoreTickets) CloseTicket(ctx context.Context, ticketID helpers.PrimaryKey) error {
 	return nil
 }
 

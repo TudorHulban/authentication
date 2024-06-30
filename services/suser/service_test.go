@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	testuser "github.com/TudorHulban/authentication/fixtures/test-user"
+	"github.com/TudorHulban/authentication/helpers"
 	storefile "github.com/TudorHulban/authentication/infra/stores/store-file"
 	"github.com/stretchr/testify/require"
 )
@@ -29,8 +30,12 @@ func TestCreateUser(t *testing.T) {
 		Name:     testuser.TestUser.Name,
 	}
 
-	_, errCr := service.CreateUser(ctx, &p1)
+	pkCreatedUser, errCr := service.CreateUser(ctx, &p1)
 	require.NoError(t, errCr)
+	require.NotEqual(t,
+		helpers.PrimaryKeyZero,
+		pkCreatedUser,
+	)
 
 	_, errCrAgain := service.CreateUser(ctx, &p1)
 	require.Error(t, errCrAgain)
