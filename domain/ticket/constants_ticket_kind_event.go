@@ -4,14 +4,14 @@ var TicketKindToEventType = map[TicketKind]map[EventType]*TicketEventTypeInfo{
 	KindTicket: {
 		EventTypeOpen: {
 			DefaultEventTypeLevel: LevelEndUser,
-			AllowedNextEventTypes: []uint8{
-				2,
-				7,
-				8,
-				9,
-				10,
-				11,
-				12,
+			AllowedNextEventTypes: []EventType{
+				EventTypeWorkInProgress,
+				EventTypeWith3rdParty,
+				EventTypeBlocks,
+				EventTypeUnBlocks,
+				EventTypeEscalationInternal,
+				EventTypeEscalationCustomer,
+				EventTypeClose,
 			},
 		},
 		EventTypeWorkInProgress: {

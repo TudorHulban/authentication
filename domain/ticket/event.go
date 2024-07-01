@@ -12,11 +12,11 @@ type TicketEventTypeInfo struct {
 	DefaultEventTypeLevel EventLevel
 	ActualEventTypeLevel  EventLevel
 	Dependencies          []uint8
-	AllowedNextEventTypes []uint8
+	AllowedNextEventTypes []EventType
 }
 
 type TicketEventType struct {
-	EventType uint8
+	EvType EventType
 
 	*TicketEventTypeInfo
 }

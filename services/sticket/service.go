@@ -242,9 +242,9 @@ func (s *Service) CloseTicket(ctx context.Context, ticketID helpers.PrimaryKey) 
 }
 
 type ParamsAddEvent struct {
-	EventContent         string `json:"eventcontent,omitempty" valid:"required" form:"event content"`
-	EventType            uint8  `json:"eventtype,omitempty" valid:"required" form:"event type"`
-	ActualEventTypeLevel uint8  `json:"omitempty"`
+	EventContent         string           `json:"eventcontent,omitempty" valid:"required" form:"event content"`
+	EventType            ticket.EventType `json:"eventtype,omitempty" valid:"required" form:"event type"`
+	ActualEventTypeLevel uint8            `json:"omitempty"`
 
 	TicketID       helpers.PrimaryKey `json:"ticketid" valid:"required"`
 	OpenedByUserID helpers.PrimaryKey `valid:"required"`
@@ -276,22 +276,25 @@ func NewParamsAddEvent(responseForm map[string]string) (*ParamsAddEvent, error) 
 		withEventContent = eventContent
 	}
 
-	var withEventType string
+	var withEventType ticket.EventType
 
 	eventType, exists := responseForm[strings.ToLower(
 		constants.LabelTicketEventType,
 	)]
 	if exists {
-		withEventType = eventType
+		var errCr error
+
+		if withEventType, errCr = ticket.NewEventType(eventType); errCr != nil {
+			return nil,
+				apperrors.ErrEntryNotFound{
+					Key: eventType,
+				}
+		}
 	}
 
 	return &ParamsAddEvent{
-			TicketID: withTicketID,
-			EventType: uint8(
-				ticket.GetEventTypeFor(
-					withEventType,
-				),
-			),
+			TicketID:     withTicketID,
+			EventType:    withEventType,
 			EventContent: withEventContent,
 		},
 		nil
@@ -333,11 +336,12 @@ func (s *Service) AddEvent(ctx context.Context, params *ParamsAddEvent) error {
 			},
 
 			TicketEventType: ticket.TicketEventType{
-				EventType: params.EventType,
+				EvType: params.EventType,
 				TicketEventTypeInfo: &ticket.TicketEventTypeInfo{
 					ActualEventTypeLevel: helpers.Coalesce(
 						ticket.EventLevel(params.ActualEventTypeLevel),
-						ticket.TicketKindToEventType[reconstructedTicket.Kind][ticket.EventType(params.EventType)].DefaultEventTypeLevel,
+						ticket.TicketKindToEventType[reconstructedTicket.Kind][ticket.EventType(params.EventType)].
+							DefaultEventTypeLevel,
 					),
 				},
 			},

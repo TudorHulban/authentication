@@ -123,7 +123,7 @@ func TestTicket(t *testing.T) {
 
 			&ParamsAddEvent{
 				EventContent: e1.Content,
-				EventType:    ticket.KindTicket.OpeningEventType,
+				EventType:    ticket.EventType(ticket.KindTicket.OpeningEventType),
 
 				OpenedByUserID: 1,
 
@@ -142,7 +142,7 @@ func TestTicket(t *testing.T) {
 
 			&ParamsAddEvent{
 				EventContent: e2.Content,
-				EventType:    ticket.KindTicket.ClosingEventType,
+				EventType:    ticket.EventType(ticket.KindTicket.ClosingEventType),
 
 				OpenedByUserID: 1,
 

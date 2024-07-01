@@ -1,6 +1,7 @@
 package ticket
 
 import (
+	"github.com/TudorHulban/authentication/apperrors"
 	"github.com/TudorHulban/authentication/helpers"
 )
 
@@ -9,36 +10,64 @@ type (
 	EventLevel uint8
 )
 
-const (
-	LevelEndUser        = 1
-	LevelEndUserManager = 2
-	LevelEndUserVIP     = 3
+func NewEventType(eventType string) (EventType, error) {
+	var result EventType
 
-	LevelTeam           = 5
-	LevelAgent          = 6
-	LevelLead           = 7
-	LevelTeamManager    = 9
-	LevelProjectManager = 11
-	LevelGroupManager   = 14
-	LevelAccountManager = 16
-	LevelC              = 19
-)
+	var entryFound bool
 
-const (
-	EventTypeOpen                     = EventType(1)
-	EventTypeWorkInProgress           = EventType(2)
-	EventTypeAnalysis                 = EventType(3)
-	EventTypeNoteInternal             = EventType(4)
-	EventTypeWaitingFutherInformation = EventType(5)
-	EventTypeResolution               = EventType(6)
-	EventTypeWith3rdParty             = EventType(7)
-	EventTypeBlocks                   = EventType(8)
-	EventTypeUnBlocks                 = EventType(9)
-	EventTypeEscalationInternal       = EventType(10)
-	EventTypeEscalationCustomer       = EventType(11)
-	EventTypeClose                    = EventType(12)
-)
+	setEventTypeUS.Iter(
+		func(k EventType, v string) (stop bool) {
+			if v == eventType {
+				result = k
 
+				entryFound = true
+
+				return true
+			}
+
+			return false
+		},
+	)
+
+	if entryFound {
+		return result,
+			nil
+	}
+
+	return 0,
+		apperrors.ErrEntryNotFound{
+			Key: eventType,
+		}
+}
+
+// func GetEventTypeFor(eventType string) EventType {
+// 	var result EventType
+
+// 	setEventTypeUS.Iter(
+// 		func(k EventType, v string) (stop bool) {
+// 			if v == eventType {
+// 				result = k
+
+// 				return true
+// 			}
+
+// 			return false
+// 		},
+// 	)
+
+// 	return result
+// }
+
+func (ev EventType) String() string {
+	value, exists := setEventTypeUS.Get(ev)
+	if !exists {
+		return msgUnknownEventType
+	}
+
+	return value
+}
+
+// for all ticket types
 var setEventTypeUS = helpers.NewImmutableSetFrom[EventType, string](
 	[]helpers.KV[EventType, string]{
 		{
@@ -94,29 +123,35 @@ var setEventTypeUS = helpers.NewImmutableSetFrom[EventType, string](
 
 var SetEventType = setEventTypeUS
 
-func GetStringStatusFor(numeric EventType) string {
-	value, exists := setEventTypeUS.Get(numeric)
-	if !exists {
-		return "unknown status" //TODO: add constant
-	}
-
-	return value
+type ParamsGetNextEventTypes struct {
+	EventKind TicketKind
+	EventType string
 }
 
-func GetEventTypeFor(eventType string) EventType {
-	var result EventType
+func GetNextEventTypesFor(params *ParamsGetNextEventTypes) ([]string, error) {
+	evType, errCr := NewEventType(params.EventType)
+	if errCr != nil {
+		return nil,
+			errCr
+	}
 
-	setEventTypeUS.Iter(
-		func(k EventType, v string) (stop bool) {
-			if v == eventType {
-				result = k
-
-				return true
+	nextEventTypes, exists := TicketKindToEventType[params.EventKind][evType]
+	if !exists {
+		return nil,
+			apperrors.ErrInvalidInput{
+				InputName: params.EventType,
 			}
+	}
 
-			return false
-		},
+	result := make(
+		[]string,
+		len(nextEventTypes.AllowedNextEventTypes),
+		len(nextEventTypes.AllowedNextEventTypes),
 	)
 
-	return result
+	for ix, value := range nextEventTypes.AllowedNextEventTypes {
+		result[ix] = value.String()
+	}
+
+	return result, nil
 }

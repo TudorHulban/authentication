@@ -41,9 +41,7 @@ func (s *Service) RenderTicketEventInTableRow(ctx context.Context, params *Param
 		params.TicketEvent.TicketPK,
 		params.TicketEvent.PrimaryKey,
 
-		ticket.GetStringStatusFor(
-			ticket.EventType(params.TicketEvent.TicketEventType.EventType),
-		),
+		params.TicketEvent.TicketEventType.EvType.String(),
 
 		userInfo.Name,
 		helpers.UnixNanoTo(
@@ -67,9 +65,7 @@ func (s *Service) RenderTicketEventWContentInTableRow(ctx context.Context, param
 		params.Index,
 		params.TicketEvent.PrimaryKey,
 
-		ticket.GetStringStatusFor(
-			ticket.EventType(params.TicketEvent.TicketEventType.EventType),
-		),
+		params.TicketEvent.TicketEventType.EvType.String(),
 
 		userInfo.Name,
 		helpers.UnixNanoTo(

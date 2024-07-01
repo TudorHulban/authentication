@@ -30,7 +30,7 @@ func (s *Service) RenderTicketInTableRow(ctx context.Context, params *ParamsTick
 		fmt.Println(errGetUserInfo) //TODO: proper log
 	}
 
-	numericStatus, errGetStatus := s.serviceTicket.GetTicketStatus(
+	ticketEventType, errGetStatus := s.serviceTicket.GetTicketStatus(
 		ctx,
 		&sticket.ParamsGetTicketStatus{
 			TicketID: params.Ticket.PrimaryKey,
@@ -55,7 +55,7 @@ func (s *Service) RenderTicketInTableRow(ctx context.Context, params *ParamsTick
 
 		params.Ticket.Name,
 
-		ticket.GetStringStatusFor(numericStatus),
+		ticketEventType.String(),
 		userInfo.Name,
 		helpers.UnixNanoTo(
 			params.Ticket.UpdatedAt,
