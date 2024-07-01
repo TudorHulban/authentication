@@ -20,7 +20,7 @@ func (a *App) formSearchTicketCreateEvent(ticket *ticket.Ticket) g.Node {
 			ActionButtonCreateTicketEvent: constants.RouteTicketEvent,
 
 			LabelButtonSearch:            "Search",
-			LabelButtonCreateTicketEvent: constants.LabelTicketEventContent,
+			LabelButtonCreateTicketEvent: constants.LabelBtnTicketCreateEvent,
 
 			TargetsSwapSearch:            swapTargetsBodyTicket,
 			TargetsSwapCreateTicketEvent: swapTargetsBodyTicket,

@@ -41,29 +41,31 @@ func main() {
 		)
 	}
 
-	_, errFixture := fixtures.FixtureTicketWEvents(
-		context.Background(),
-		&fixtures.PiersFixtureTicketWEvents{
-			ServiceTicket: app.ServiceTicket,
-		},
-		&fixtures.ParamsFixtureTaskWEvents{
-			TicketName: fmt.Sprintf(
-				"Ticket %d%d",
-				time.Now().Minute(),
-				time.Now().Second(),
-			),
+	if pkUser > 0 {
+		_, errFixture := fixtures.FixtureTicketWEvents(
+			context.Background(),
+			&fixtures.PiersFixtureTicketWEvents{
+				ServiceTicket: app.ServiceTicket,
+			},
+			&fixtures.ParamsFixtureTaskWEvents{
+				TicketName: fmt.Sprintf(
+					"Ticket %d%d",
+					time.Now().Minute(),
+					time.Now().Second(),
+				),
 
-			TicketKind:           ticket.KindTicket,
-			TicketOpenedByUserID: pkUser,
-			NumberEvents:         3,
-		},
-	)
-	if errFixture != nil {
-		fmt.Println(errFixture)
-
-		os.Exit(
-			apperrors.OSExitForFixtureIssues,
+				TicketKind:           ticket.KindTicket,
+				TicketOpenedByUserID: pkUser,
+				NumberEvents:         3,
+			},
 		)
+		if errFixture != nil {
+			fmt.Println(errFixture)
+
+			os.Exit(
+				apperrors.OSExitForFixtureIssues,
+			)
+		}
 	}
 
 	fmt.Println(

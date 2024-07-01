@@ -2,7 +2,7 @@ package ticket
 
 var TicketKindToEventType = map[TicketKind]map[EventType]*TicketEventTypeInfo{
 	KindTicket: {
-		EventTypeInit: {
+		EventTypeOpen: {
 			DefaultEventTypeLevel: LevelEndUser,
 			AllowedNextEventTypes: []uint8{
 				2,
@@ -47,13 +47,13 @@ var TicketKindToEventType = map[TicketKind]map[EventType]*TicketEventTypeInfo{
 	},
 
 	KindSale: map[EventType]*TicketEventTypeInfo{
-		EventTypeInit: &TicketEventTypeInfo{
+		EventTypeOpen: &TicketEventTypeInfo{
 			DefaultEventTypeLevel: 1,
 		},
 	},
 
 	KindLead: map[EventType]*TicketEventTypeInfo{
-		EventTypeInit: &TicketEventTypeInfo{
+		EventTypeOpen: &TicketEventTypeInfo{
 			DefaultEventTypeLevel: 1,
 		},
 	},

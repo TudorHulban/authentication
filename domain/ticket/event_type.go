@@ -22,7 +22,7 @@ const (
 )
 
 const (
-	EventTypeInit                     = EventType(1)
+	EventTypeOpen                     = EventType(1)
 	EventTypeWorkInProgress           = EventType(2)
 	EventTypeAnalysis                 = EventType(3)
 	EventTypeNoteInternal             = EventType(4)

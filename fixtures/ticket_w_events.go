@@ -39,6 +39,14 @@ func FixtureTicketWEvents(ctx context.Context, piers *PiersFixtureTicketWEvents,
 
 	loremIpsumGenerator := loremipsum.New()
 
+	eventTypes := []ticket.EventType{
+		ticket.EventTypeOpen,
+		ticket.EventTypeWorkInProgress,
+		ticket.EventTypeAnalysis,
+		ticket.EventTypeNoteInternal,
+		ticket.EventTypeResolution,
+	}
+
 	for ix := range params.NumberEvents {
 		if errAddEvent := piers.ServiceTicket.AddEvent(
 			ctx,
@@ -49,7 +57,7 @@ func FixtureTicketWEvents(ctx context.Context, piers *PiersFixtureTicketWEvents,
 					ix+1,
 					loremIpsumGenerator.Sentence(),
 				),
-				EventType:      ticket.KindTicket.OpeningEventType,
+				EventType:      uint8(eventTypes[ix]),
 				OpenedByUserID: params.TicketOpenedByUserID,
 
 				TicketID: idTicket,
