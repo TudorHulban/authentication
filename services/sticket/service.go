@@ -242,8 +242,8 @@ func (s *Service) CloseTicket(ctx context.Context, ticketID helpers.PrimaryKey) 
 }
 
 type ParamsAddEvent struct {
-	EventContent         string `json:"eventcontent,omitempty" valid:"required"`
-	EventType            uint8  `json:"eventtype,omitempty" valid:"required"`
+	EventContent         string `json:"eventcontent,omitempty" valid:"required" form:"event content"`
+	EventType            uint8  `json:"eventtype,omitempty" valid:"required" form:"event type"`
 	ActualEventTypeLevel uint8  `json:"omitempty"`
 
 	TicketID       helpers.PrimaryKey `json:"ticketid" valid:"required"`
@@ -276,8 +276,22 @@ func NewParamsAddEvent(responseForm map[string]string) (*ParamsAddEvent, error) 
 		withEventContent = eventContent
 	}
 
+	var withEventType string
+
+	eventType, exists := responseForm[strings.ToLower(
+		constants.LabelTicketEventType,
+	)]
+	if exists {
+		withEventType = eventType
+	}
+
 	return &ParamsAddEvent{
-			TicketID:     withTicketID,
+			TicketID: withTicketID,
+			EventType: uint8(
+				ticket.GetEventTypeFor(
+					withEventType,
+				),
+			),
 			EventContent: withEventContent,
 		},
 		nil
@@ -322,9 +336,8 @@ func (s *Service) AddEvent(ctx context.Context, params *ParamsAddEvent) error {
 				EventType: params.EventType,
 				TicketEventTypeInfo: &ticket.TicketEventTypeInfo{
 					ActualEventTypeLevel: helpers.Coalesce(
-						ticket.EventType(params.ActualEventTypeLevel),
-						ticket.TicketKindToEventType[reconstructedTicket.Kind][ticket.EventType(params.EventType)].
-							DefaultEventTypeLevel,
+						ticket.EventLevel(params.ActualEventTypeLevel),
+						ticket.TicketKindToEventType[reconstructedTicket.Kind][ticket.EventType(params.EventType)].DefaultEventTypeLevel,
 					),
 				},
 			},

@@ -31,6 +31,6 @@ func (s *Service) GetTicketStatus(ctx context.Context, params *ParamsGetTicketSt
 			errGetEvent
 	}
 
-	return lastVisibleEvent.ActualEventTypeLevel,
+	return ticket.EventType(lastVisibleEvent.EventType),
 		nil
 }

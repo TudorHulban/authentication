@@ -50,7 +50,7 @@ func ParseMultipartForm(formData []byte, requestHeaders map[string][]string) (ma
 			}
 	}
 
-	mr := multipart.NewReader(
+	multipartReader := multipart.NewReader(
 		bytes.NewReader(formData),
 		boundary,
 	)
@@ -58,7 +58,7 @@ func ParseMultipartForm(formData []byte, requestHeaders map[string][]string) (ma
 	result := make(map[string]string)
 
 	for {
-		part, err := mr.NextPart()
+		part, err := multipartReader.NextPart()
 		if err == io.EOF {
 			break
 		}

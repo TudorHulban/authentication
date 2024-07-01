@@ -4,7 +4,10 @@ import (
 	"github.com/TudorHulban/authentication/helpers"
 )
 
-type EventType uint8
+type (
+	EventType  uint8
+	EventLevel uint8
+)
 
 const (
 	LevelEndUser        = 1
@@ -98,4 +101,22 @@ func GetStringStatusFor(numeric EventType) string {
 	}
 
 	return value
+}
+
+func GetEventTypeFor(eventType string) EventType {
+	var result EventType
+
+	setEventTypeUS.Iter(
+		func(k EventType, v string) (stop bool) {
+			if v == eventType {
+				result = k
+
+				return true
+			}
+
+			return false
+		},
+	)
+
+	return result
 }

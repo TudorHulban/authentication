@@ -7,7 +7,7 @@ import (
 
 type Events []*Event
 
-func (evs Events) GetLastEventFor(level EventType) (*Event, error) {
+func (evs Events) GetLastEventFor(level EventLevel) (*Event, error) {
 	for ix := len(evs) - 1; ix >= 0; ix-- {
 		if helpers.Sanitize(evs[ix].TicketEventTypeInfo).ActualEventTypeLevel >= level {
 			return evs[ix],

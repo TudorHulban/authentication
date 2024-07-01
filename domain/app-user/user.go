@@ -9,7 +9,7 @@ type UserInfo struct {
 	helpers.PrimaryKey
 
 	Name  string
-	Level ticket.EventType
+	Level ticket.EventLevel
 
 	helpers.Timestamp
 }
