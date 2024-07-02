@@ -16,18 +16,19 @@ const (
 )
 
 const (
-	EventTypeOpen                     = EventType(1)
-	EventTypeWorkInProgress           = EventType(2)
-	EventTypeAnalysis                 = EventType(3)
-	EventTypeNoteInternal             = EventType(4)
-	EventTypeWaitingFutherInformation = EventType(5)
-	EventTypeResolution               = EventType(6)
-	EventTypeWith3rdParty             = EventType(7)
-	EventTypeBlocks                   = EventType(8)
-	EventTypeUnBlocks                 = EventType(9)
-	EventTypeEscalationInternal       = EventType(10)
-	EventTypeEscalationCustomer       = EventType(11)
-	EventTypeClose                    = EventType(12)
+	EventTypeOpen = EventType(iota + 1)
+	EventTypeAssignTo
+	EventTypeWorkInProgress
+	EventTypeAnalysis
+	EventTypeNoteInternal
+	EventTypeWaitingFutherInformation
+	EventTypeResolution
+	EventTypeWith3rdParty
+	EventTypeBlocks
+	EventTypeUnBlocks
+	EventTypeEscalationInternal
+	EventTypeEscalationCustomer
+	EventTypeClose
 )
 
 const msgUnknownEventType = "unknown event type"

@@ -35,13 +35,15 @@ func (e ErrNilInput) Error() string {
 }
 
 type ErrInvalidInput struct {
-	InputName string
+	InputName  string
+	InputValue any
 }
 
 func (e ErrInvalidInput) Error() string {
 	return fmt.Sprintf(
-		"invalid Input, name: %s",
+		"invalid input, name: %s, value: %#v",
 		e.InputName,
+		e.InputValue,
 	)
 }
 
@@ -51,7 +53,7 @@ type ErrNegativeInput struct {
 
 func (e ErrNegativeInput) Error() string {
 	return fmt.Sprintf(
-		"negative Input Name: %s",
+		"negative input name: %s",
 		e.InputName,
 	)
 }

@@ -1,6 +1,11 @@
 package ticket
 
-import "github.com/TudorHulban/authentication/helpers"
+import (
+	"fmt"
+	"strings"
+
+	"github.com/TudorHulban/authentication/helpers"
+)
 
 type EventInfo struct {
 	Content        string
@@ -28,6 +33,34 @@ type Event struct {
 
 	TicketEventType
 	*EventInfo
+}
+
+func (ev Event) String() string {
+	result := []string{
+		fmt.Sprintf(
+			"Event %s belonging to ticket ID: %s",
+			ev.PrimaryKey.String(),
+			ev.TicketPK.String(),
+		),
+	}
+
+	result = append(
+		result,
+		fmt.Sprintf(
+			"Event type: %s",
+			ev.EvType.String(),
+		),
+	)
+
+	result = append(
+		result,
+		fmt.Sprintf(
+			"Event opened by user ID: %s",
+			ev.OpenedByUserID.String(),
+		),
+	)
+
+	return strings.Join(result, "\n")
 }
 
 func GetIDEvent(item *Event) helpers.PrimaryKey {

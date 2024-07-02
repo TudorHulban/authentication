@@ -1,6 +1,8 @@
 package ticket
 
 import (
+	"fmt"
+
 	"github.com/TudorHulban/authentication/apperrors"
 	"github.com/TudorHulban/authentication/helpers"
 )
@@ -40,25 +42,9 @@ func NewEventType(eventType string) (EventType, error) {
 		}
 }
 
-// func GetEventTypeFor(eventType string) EventType {
-// 	var result EventType
-
-// 	setEventTypeUS.Iter(
-// 		func(k EventType, v string) (stop bool) {
-// 			if v == eventType {
-// 				result = k
-
-// 				return true
-// 			}
-
-// 			return false
-// 		},
-// 	)
-
-// 	return result
-// }
-
 func (ev EventType) String() string {
+	fmt.Println("EventType", ev) // TODO: crashing
+
 	value, exists := setEventTypeUS.Get(ev)
 	if !exists {
 		return msgUnknownEventType
@@ -76,46 +62,50 @@ var setEventTypeUS = helpers.NewImmutableSetFrom[EventType, string](
 		},
 		{
 			Key:   2,
-			Value: "WIP",
+			Value: "AssignTo",
 		},
 		{
 			Key:   3,
-			Value: "Analysis",
+			Value: "WIP",
 		},
 		{
 			Key:   4,
-			Value: "NI",
+			Value: "Analysis",
 		},
 		{
 			Key:   5,
-			Value: "WFI",
+			Value: "NI",
 		},
 		{
 			Key:   6,
-			Value: "Resolution",
+			Value: "WFI",
 		},
 		{
 			Key:   7,
-			Value: "With 3rd party",
+			Value: "Resolution",
 		},
 		{
 			Key:   8,
-			Value: "Blocking",
+			Value: "With 3rd party",
 		},
 		{
 			Key:   9,
-			Value: "Unblocking",
+			Value: "Blocking",
 		},
 		{
 			Key:   10,
-			Value: "Escalation Internal",
+			Value: "Unblocking",
 		},
 		{
 			Key:   11,
-			Value: "Escalation Customer",
+			Value: "Escalation Internal",
 		},
 		{
 			Key:   12,
+			Value: "Escalation Customer",
+		},
+		{
+			Key:   13,
 			Value: "Close",
 		},
 	},
@@ -124,24 +114,33 @@ var setEventTypeUS = helpers.NewImmutableSetFrom[EventType, string](
 var SetEventType = setEventTypeUS
 
 type ParamsGetNextEventTypes struct {
-	EventKind TicketKind
-	EventType string
+	TicketKind TicketKind
+	EventType  EventType
 }
 
 func GetNextEventTypesFor(params *ParamsGetNextEventTypes) ([]string, error) {
-	evType, errCr := NewEventType(params.EventType)
-	if errCr != nil {
-		return nil,
-			errCr
-	}
 
-	nextEventTypes, exists := TicketKindToEventType[params.EventKind][evType]
-	if !exists {
+	ticketEventTypeInfo, existsTicketKind := TicketKindToEventType[params.TicketKind]
+	if !existsTicketKind {
 		return nil,
 			apperrors.ErrInvalidInput{
-				InputName: params.EventType,
+				InputName:  "params.TicketKind",
+				InputValue: params.TicketKind,
 			}
 	}
+
+	fmt.Println("xxxxxxxxxxxxxxxxxxxxxx", params.TicketKind, params.EventType)
+
+	nextEventTypes, existsTicketEventType := ticketEventTypeInfo[params.EventType]
+	if !existsTicketEventType {
+		return nil,
+			apperrors.ErrInvalidInput{
+				InputName:  "params.EventType",
+				InputValue: params.EventType,
+			}
+	}
+
+	fmt.Println("yyyyyyyyyyyyyyyyyyyyy")
 
 	result := make(
 		[]string,

@@ -1,11 +1,25 @@
 package ticket
 
+// TODO: test for non existent ticket kinds
+// TODO: move to swiss map
 var TicketKindToEventType = map[TicketKind]map[EventType]*TicketEventTypeInfo{
 	KindTicket: {
 		EventTypeOpen: {
 			DefaultEventTypeLevel: LevelEndUser,
 			AllowedNextEventTypes: []EventType{
-				EventTypeWorkInProgress,
+				EventTypeAssignTo,
+				EventTypeWith3rdParty,
+				EventTypeBlocks,
+				EventTypeUnBlocks,
+				EventTypeEscalationInternal,
+				EventTypeEscalationCustomer,
+				EventTypeClose,
+			},
+		},
+		EventTypeAssignTo: {
+			DefaultEventTypeLevel: LevelEndUser,
+			AllowedNextEventTypes: []EventType{
+				EventTypeNoteInternal,
 				EventTypeWith3rdParty,
 				EventTypeBlocks,
 				EventTypeUnBlocks,
@@ -16,6 +30,15 @@ var TicketKindToEventType = map[TicketKind]map[EventType]*TicketEventTypeInfo{
 		},
 		EventTypeWorkInProgress: {
 			DefaultEventTypeLevel: LevelEndUser,
+			AllowedNextEventTypes: []EventType{
+				EventTypeNoteInternal,
+				EventTypeWith3rdParty,
+				EventTypeBlocks,
+				EventTypeUnBlocks,
+				EventTypeEscalationInternal,
+				EventTypeEscalationCustomer,
+				EventTypeClose,
+			},
 		},
 		EventTypeAnalysis: {
 			DefaultEventTypeLevel: LevelTeam,

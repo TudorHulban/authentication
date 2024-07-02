@@ -25,6 +25,8 @@ type ParamsNewFormSearchTicketCreateEvent struct {
 	ClassButtonCreateTicketEvent  string
 	LabelButtonCreateTicketEvent  string
 	TargetsSwapCreateTicketEvent  []string
+
+	SelectEventTypeOptions []string
 }
 
 func (s *Service) NewFormSearchTicketCreateEvent(params *ParamsNewFormSearchTicketCreateEvent) g.Node {
@@ -125,7 +127,7 @@ func (s *Service) NewFormSearchTicketCreateEvent(params *ParamsNewFormSearchTick
 					ElementName: "Event type",
 					TypeInput:   "text",
 
-					SelectValues: []string{"1", "2"}, // get possible event types based on ticket type flow.
+					SelectValues: params.SelectEventTypeOptions,
 				},
 				{
 					CSSClassDiv: "form-group",

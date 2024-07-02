@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/TudorHulban/authentication/app/constants"
 	"github.com/TudorHulban/authentication/domain/ticket"
@@ -10,7 +11,19 @@ import (
 	g "github.com/maragudk/gomponents"
 )
 
-func (a *App) formSearchTicketCreateEvent(ticket *ticket.Ticket) g.Node {
+func (a *App) formSearchTicketCreateEvent(ctx context.Context, ticket *ticket.Ticket) g.Node {
+	nextPossibleEventTypes, errGet := a.ServiceTicket.GetTicketPossibleEventTypes(
+		ctx,
+		ticket,
+	)
+	if errGet != nil {
+		fmt.Println(errGet) // TODO: proper error handlling
+
+		return nil
+	}
+
+	fmt.Println(nextPossibleEventTypes, "nextPossibleEventTypes")
+
 	return a.serviceRender.NewFormSearchTicketCreateEvent(
 		&srender.ParamsNewFormSearchTicketCreateEvent{
 			TextForm: "Search Ticket / Create Event",
@@ -28,6 +41,8 @@ func (a *App) formSearchTicketCreateEvent(ticket *ticket.Ticket) g.Node {
 			IDEnclosingDiv:      constants.IDContainerSearchItems,
 			IDInputTicketID:     constants.IDSearchItemsInputID,
 			IDInputEventContent: constants.IDTicketEventContent,
+
+			SelectEventTypeOptions: nextPossibleEventTypes,
 		},
 	)
 }
@@ -40,6 +55,7 @@ type ParamsHTMLWithTicketEventsWContent struct {
 func (a *App) HTMLWithTicketEventsWContent(ctx context.Context, params *ParamsHTMLWithTicketEventsWContent) []g.Node {
 	return []g.Node{
 		a.formSearchTicketCreateEvent(
+			ctx,
 			helpers.Sanitize(params).Ticket,
 		),
 

@@ -3,26 +3,26 @@ package ticket
 type TicketKind struct {
 	Kind uint8
 
-	OpeningEventType uint8
-	ClosingEventType uint8
+	OpeningEventType EventType
+	ClosingEventType EventType
 }
 
 var (
 	KindTicket = TicketKind{
 		Kind:             1,
-		OpeningEventType: 1,
-		ClosingEventType: 10,
+		OpeningEventType: EventTypeOpen,
+		ClosingEventType: EventTypeClose,
 	}
 
 	KindSale = TicketKind{
 		Kind:             2,
-		OpeningEventType: 1,
-		ClosingEventType: 10,
+		OpeningEventType: EventTypeOpen,
+		ClosingEventType: EventTypeClose,
 	}
 
 	KindLead = TicketKind{
 		Kind:             3,
-		OpeningEventType: 1,
-		ClosingEventType: 10,
+		OpeningEventType: EventTypeOpen,
+		ClosingEventType: EventTypeClose,
 	}
 )
